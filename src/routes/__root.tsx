@@ -78,7 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        title: "Ayush Agarwal — AI Engineer building intelligent products",
+        title: "Ayush Agarwal | AI Engineer",
       },
       {
         name: "description",
@@ -89,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#09090B" },
       {
         property: "og:title",
-        content: "Ayush Agarwal — AI Engineer",
+        content: "Ayush Agarwal | AI Engineer",
       },
       {
         property: "og:description",
@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Ayush Agarwal — AI Engineer" },
+      { name: "twitter:title", content: "Ayush Agarwal | AI Engineer" },
       {
         name: "twitter:description",
         content: "Building production LLM systems, agents, and inference infrastructure.",
@@ -106,7 +106,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
