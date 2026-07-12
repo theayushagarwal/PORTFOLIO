@@ -43,3 +43,9 @@ dist-ssr
 .agents/
 .gemini/
 
+# Archives and build bundles
+*.zip
+*.tar.gz
+*.tgz
+
+
