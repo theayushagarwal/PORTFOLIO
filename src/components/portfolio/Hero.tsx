@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Reveal } from "./Reveal";
 import { MagneticButton } from "./MagneticButton";
+import { TextScramble } from "./TextScramble";
 import { EASE } from "@/lib/motion";
 import { HERO_STATS, PROFILE } from "@/lib/site-data";
 
@@ -18,6 +19,13 @@ export function Hero({ revealed }: { revealed: boolean }) {
 
   return (
     <section id="top" ref={ref} className="relative overflow-hidden pt-40 pb-32 md:pt-56 md:pb-40">
+      {/* Shifting Gradient Mesh */}
+      <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden" aria-hidden>
+        <div className="mesh-blob mesh-blob-1" />
+        <div className="mesh-blob mesh-blob-2" />
+        <div className="mesh-blob mesh-blob-3" />
+      </div>
+
       {/* Fine dot-grid — structure, not glow. Fades toward the edges. */}
       <div
         aria-hidden
@@ -44,7 +52,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
           transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
         >
           <p className="shiny-text font-display text-lg font-semibold tracking-tight md:text-xl">
-            {PROFILE.name}
+            <TextScramble text={PROFILE.name} delay={0.35} />
           </p>
           <p className="mt-2 max-w-md text-sm text-muted-foreground md:text-base">
             {PROFILE.tagline}

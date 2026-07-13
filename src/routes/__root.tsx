@@ -142,6 +142,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PERSON_JSON_LD }} />
       </head>
       <body>
+        <div className="noise-overlay" />
         {children}
         <Scripts />
       </body>

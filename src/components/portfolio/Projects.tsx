@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from "motion/react";
 import { Reveal } from "./Reveal";
 import { DeviceFrame, PROJECT_VISUALS } from "./project-visuals";
+import { TiltCard } from "./TiltCard";
 import { revealVariants, EASE } from "@/lib/motion";
 import { PROJECTS, type Project } from "@/lib/site-data";
 import { playTick, playSwell, playExit } from "@/lib/sound";
@@ -62,119 +63,110 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
 
   return (
     <>
-      <motion.article
-        ref={ref}
-        onMouseMove={onMove}
-        variants={revealVariants}
-        initial="hidden"
-        whileInView="visible"
-        whileHover="hover"
-        viewport={{ once: true, margin: "-60px" }}
-        className="surface-card group relative grid gap-8 overflow-hidden p-6 md:grid-cols-2 md:gap-10 md:p-8"
-      >
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{ background }}
-        />
+      <TiltCard>
+        <motion.article
+          ref={ref}
+          onMouseMove={onMove}
+          variants={revealVariants}
+          initial="hidden"
+          whileInView="visible"
+          whileHover="hover"
+          viewport={{ once: true, margin: "-60px" }}
+          className="surface-card group relative grid gap-8 overflow-hidden p-6 md:grid-cols-2 md:gap-10 md:p-8"
+        >
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={{ background }}
+          />
 
-        <div className="flex flex-col gap-5 self-center w-full relative z-10">
-          <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
-            {p.image ? (
-              <div className="relative w-full h-auto">
-                <img
-                  src={`${p.image}?v=1.2`}
-                  alt={p.name}
-                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
-                />
-                {p.secondaryImage && (
-                  <div className="absolute top-3 right-3 z-10 shrink-0 flex flex-col gap-1 items-center bg-black/60 backdrop-blur-md border border-white/10 p-1.5 rounded-lg shadow-lg select-none">
-                    <button
-                      onClick={() => setIsLightboxOpen(true)}
-                      aria-label={`View ${p.secondaryLabel || 'admin panel'} screenshot`}
-                      className="group/thumb relative block overflow-hidden rounded border border-border/80 bg-surface/50 p-0.5 transition-colors hover:border-secondary/40"
-                    >
-                      <img
-                        src={`${p.secondaryImage}?v=1.3`}
-                        alt="Admin screenshot thumbnail"
-                        className="h-12 w-20 object-cover object-top transition-transform duration-300 group-hover/thumb:scale-105"
-                      />
-                    </button>
-                    <span className="font-mono text-[8px] uppercase tracking-wider text-white/70">
-                      {p.secondaryLabel || 'admin panel'}
-                    </span>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Visual />
+          <div className="flex flex-col gap-5 self-center w-full relative z-10">
+            <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+              {p.image ? (
+                <div className="relative w-full h-auto">
+                  <img
+                    src={`${p.image}?v=1.2`}
+                    alt={p.name}
+                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
+                  />
+                  {p.secondaryImage && (
+                    <div className="absolute top-3 right-3 z-10 shrink-0 flex flex-col gap-1 items-center bg-black/60 backdrop-blur-md border border-white/10 p-1.5 rounded-lg shadow-lg select-none">
+                      <button
+                        onClick={() => setIsLightboxOpen(true)}
+                        aria-label={`View ${p.secondaryLabel || 'admin panel'} screenshot`}
+                        className="group/thumb relative block overflow-hidden rounded border border-border/80 bg-surface/50 p-0.5 transition-colors hover:border-secondary/40"
+                      >
+                        <img
+                          src={`${p.secondaryImage}?v=1.3`}
+                          alt="Admin screenshot thumbnail"
+                          className="h-12 w-20 object-cover object-top transition-transform duration-300 group-hover/thumb:scale-105"
+                        />
+                      </button>
+                      <span className="font-mono text-[8px] uppercase tracking-wider text-white/70">
+                        {p.secondaryLabel || 'admin panel'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Visual />
+              )}
+            </DeviceFrame>
+
+            {p.name === "Vurlo" && (
+              <ul className="flex flex-col gap-2.5 pl-4 font-mono text-[11px] text-muted-foreground/80 leading-relaxed select-none">
+                <li className="flex items-start gap-2.5">
+                  <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
+                  <span>Firebase Auth + real-time Firestore cart & orders</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
+                  <span>SEO-optimized — 100 Lighthouse score with schema.org structured data</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
+                  <span>Full admin console — products, orders, coupons, stock alerts</span>
+                </li>
+              </ul>
             )}
-          </DeviceFrame>
-
-          {p.name === "Vurlo" && (
-            <ul className="flex flex-col gap-2.5 pl-4 font-mono text-[11px] text-muted-foreground/80 leading-relaxed select-none">
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                <span>Firebase Auth + real-time Firestore cart & orders</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                <span>SEO-optimized — 100 Lighthouse score with schema.org structured data</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                <span>Full admin console — products, orders, coupons, stock alerts</span>
-              </li>
-            </ul>
-          )}
-        </div>
-
-        <div className="relative flex flex-col justify-center">
-          <div className="flex items-center gap-3">
-            <span className="eyebrow">Featured</span>
-            <span className="h-px w-6 bg-border" />
-            <span className="font-mono text-xs text-subtle">
-              {p.year} · {p.role}
-            </span>
           </div>
 
-          <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight md:text-4xl text-foreground">
-            {p.name}
-          </h3>
-          
-          <p className="mt-1 text-[13px] text-subtle/85 font-normal tracking-wide leading-relaxed">
-            {p.tagline}
-          </p>
-          
-          <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-foreground/90 font-medium">
-            {p.summary}
-          </p>
+          <div className="relative flex flex-col justify-center">
+            <div className="flex items-center gap-3">
+              <span className="eyebrow">Featured</span>
+              <span className="h-px w-6 bg-border" />
+              <span className="font-mono text-xs text-subtle">
+                {p.year} · {p.role}
+              </span>
+            </div>
 
-          <ul className="mt-5 flex flex-wrap gap-1.5">
-            {p.stack.map((s) => (
-              <li
-                key={s}
-                className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-[11px] text-muted-foreground/80 font-mono"
-              >
-                {s}
-              </li>
-            ))}
-          </ul>
+            <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight md:text-4xl text-foreground">
+              {p.name}
+            </h3>
+            
+            <p className="mt-1 text-[13px] text-subtle/85 font-normal tracking-wide leading-relaxed">
+              {p.tagline}
+            </p>
+            
+            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-foreground/90 font-medium">
+              {p.summary}
+            </p>
 
-          <div className="mt-8 border-t border-border pt-7">
-            <Metrics metrics={p.metrics} />
+            <div className="mt-8 border-t border-border pt-7">
+              <Metrics metrics={p.metrics} />
+            </div>
+
+            <button
+              onClick={() => onViewCaseStudy(p)}
+              onMouseEnter={() => playTick(0)}
+              className="mt-8 inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
+            >
+              View Case Study
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </button>
           </div>
-
-          <button
-            onClick={() => onViewCaseStudy(p)}
-            onMouseEnter={() => playTick(0)}
-            className="mt-8 inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
-          >
-            View Case Study
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
-        </div>
-      </motion.article>
+        </motion.article>
+      </TiltCard>
 
       {isLightboxOpen && p.secondaryImage && (
         <div 
@@ -225,72 +217,74 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
 
   return (
     <>
-      <motion.article
-        ref={ref}
-        onMouseMove={onMove}
-        variants={revealVariants}
-        initial="hidden"
-        whileInView="visible"
-        whileHover="hover"
-        viewport={{ once: true, margin: "-60px" }}
-        custom={i}
-        className="surface-card group relative flex flex-col overflow-hidden p-6"
-      >
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{ background }}
-        />
+      <TiltCard>
+        <motion.article
+          ref={ref}
+          onMouseMove={onMove}
+          variants={revealVariants}
+          initial="hidden"
+          whileInView="visible"
+          whileHover="hover"
+          viewport={{ once: true, margin: "-60px" }}
+          custom={i}
+          className="surface-card group relative flex flex-col overflow-hidden p-6"
+        >
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={{ background }}
+          />
 
-        <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
-          {p.image ? (
-            <button
-              onClick={() => setIsLightboxOpen(true)}
-              aria-label={`View full ${p.name} screenshot`}
-              className="w-full h-auto block text-left outline-none cursor-zoom-in"
-            >
-              <img
-                src={`${p.image}?v=1.2`}
-                alt={p.name}
-                className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
-              />
-            </button>
-          ) : (
-            <Visual />
-          )}
-        </DeviceFrame>
+          <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+            {p.image ? (
+              <button
+                onClick={() => setIsLightboxOpen(true)}
+                aria-label={`View full ${p.name} screenshot`}
+                className="w-full h-auto block text-left outline-none cursor-zoom-in"
+              >
+                <img
+                  src={`${p.image}?v=1.2`}
+                  alt={p.name}
+                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
+                />
+              </button>
+            ) : (
+              <Visual />
+            )}
+          </DeviceFrame>
 
-        <div className="relative mt-6 flex flex-1 flex-col">
-          <div className="flex items-center gap-3 font-mono text-xs text-subtle">
-            <span>{p.index}</span>
-            <span className="h-px w-5 bg-border" />
-            <span>{p.year}</span>
-          </div>
+          <div className="relative mt-6 flex flex-1 flex-col">
+            <div className="flex items-center gap-3 font-mono text-xs text-subtle">
+              <span>{p.index}</span>
+              <span className="h-px w-5 bg-border" />
+              <span>{p.year}</span>
+            </div>
 
-          <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">{p.name}</h3>
-          <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
+            <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">{p.name}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
 
-          <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
+            <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
 
-          <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-            <span className="font-display text-sm font-semibold tabular-nums text-foreground">
-              {p.metrics[0].v}
-              <span className="ml-1.5 font-mono text-[10px] font-normal uppercase tracking-widest text-subtle">
-                {p.metrics[0].k}
+            <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+              <span className="font-display text-sm font-semibold tabular-nums text-foreground">
+                {p.metrics[0].v}
+                <span className="ml-1.5 font-mono text-[10px] font-normal uppercase tracking-widest text-subtle">
+                  {p.metrics[0].k}
+                </span>
               </span>
-            </span>
-            <button
-              onClick={() => onViewCaseStudy(p)}
-              onMouseEnter={() => playTick(0)}
-              aria-label={`View ${p.name} case study`}
-              className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
-            >
-              <span>Case Study</span>
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
+              <button
+                onClick={() => onViewCaseStudy(p)}
+                onMouseEnter={() => playTick(0)}
+                aria-label={`View ${p.name} case study`}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
+              >
+                <span>Case Study</span>
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+            </div>
           </div>
-        </div>
-      </motion.article>
+        </motion.article>
+      </TiltCard>
 
       {isLightboxOpen && p.image && (
         <div 
