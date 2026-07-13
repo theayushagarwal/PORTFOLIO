@@ -514,8 +514,8 @@
   z-index: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(139, 92, 246, 0.035) 0%,
-    rgba(6, 182, 212, 0.02) 40%,
+    rgba(139, 92, 246, 0.08) 0%,
+    rgba(6, 182, 212, 0.05) 40%,
     transparent 80%
   );
   will-change: transform;
@@ -540,8 +540,7 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(140px);
-  opacity: 0.12;
-  mix-blend-mode: screen;
+  opacity: 0.25;
   will-change: transform;
   pointer-events: none;
 }

@@ -40,13 +40,10 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
         perspective: "1000px",
         rotateX,
         rotateY,
-        transformStyle: "preserve-3d",
       }}
       className={className}
     >
-      <div style={{ transform: "translateZ(10px)", transformStyle: "preserve-3d" }}>
-        {children}
-      </div>
+      {children}
     </motion.div>
   );
 }
