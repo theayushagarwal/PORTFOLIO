@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 
-export function TextScramble({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [displayText, setDisplayText] = useState(text);
+export function TextScramble({ text, delay = 0, trigger = true }: { text: string; delay?: number; trigger?: boolean }) {
+  const [displayText, setDisplayText] = useState(() => {
+    const chars = "!<>-_\\/[]{}—=+*^?#_abcdefghijklmnopqrstuvwxyz";
+    return text
+      .split("")
+      .map((char) => (char === " " ? " " : chars[Math.floor(Math.random() * chars.length)]))
+      .join("");
+  });
 
   useEffect(() => {
+    if (!trigger) return;
     let isMounted = true;
     const chars = "!<>-_\\/[]{}—=+*^?#_abcdefghijklmnopqrstuvwxyz";
     let frame = 0;
@@ -58,7 +65,7 @@ export function TextScramble({ text, delay = 0 }: { text: string; delay?: number
       clearTimeout(timeout);
       cancelAnimationFrame(timer);
     };
-  }, [text, delay]);
+  }, [text, delay, trigger]);
 
   return <span>{displayText}</span>;
 }

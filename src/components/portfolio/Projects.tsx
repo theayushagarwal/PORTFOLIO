@@ -152,6 +152,17 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
               {p.summary}
             </p>
 
+            <ul className="mt-5 flex flex-wrap gap-1.5">
+              {p.stack.map((s) => (
+                <li
+                  key={s}
+                  className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-[11px] text-muted-foreground/80 font-mono"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+
             <div className="mt-8 border-t border-border pt-7">
               <Metrics metrics={p.metrics} />
             </div>

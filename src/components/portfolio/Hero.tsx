@@ -52,7 +52,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
           transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
         >
           <p className="shiny-text font-display text-lg font-semibold tracking-tight md:text-xl">
-            <TextScramble text={PROFILE.name} delay={0.35} />
+            <TextScramble text={PROFILE.name} delay={0.35} trigger={revealed} />
           </p>
           <p className="mt-2 max-w-md text-sm text-muted-foreground md:text-base">
             {PROFILE.tagline}

@@ -37,6 +37,7 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
+        perspective: "1000px",
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
