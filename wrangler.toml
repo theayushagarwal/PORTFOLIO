@@ -1,2 +1,7 @@
 # Wrangler configuration for Cloudflare Pages
+name = "theayushagarwal-portfolio"
 pages_build_output_dir = ".output/public"
+
+[vars]
+SKIP_DEPENDENCY_INSTALL = "true"
+NODE_VERSION = "20"
