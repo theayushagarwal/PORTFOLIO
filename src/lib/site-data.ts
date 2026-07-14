@@ -80,22 +80,24 @@ export const PROJECTS: Project[] = [
   {
     index: "02",
     name: "Veltrix",
-    tagline: "Autonomous content pipeline & fact auditor",
+    tagline: "An Instagram growth account that writes, fact-checks, and publishes itself twice a day",
     summary:
-      "An autonomous content pipeline that runs twice a day on a GitHub Actions cron, deciding what to post and in what format on its own. Gemini writes the caption, then a second independent model — Groq, Cerebras, or OpenRouter — audits it for factual accuracy and shadowban risk before anything goes live. Media generation branches by day: fresh AI photos, Jinja2-rendered listicles screenshotted via headless Playwright, or Reels assembled from the best-performing past post. State lives in SQLite with an optional Supabase mirror, so a checkpoint file lets a run resume cleanly if it's interrupted mid-pipeline.",
+      "Every post ships through an adversarial pipeline before it goes live: Gemini drafts the topic and caption, then Groq and Cerebras — two independent models — must both sign off before it's trusted. A statistically-adaptive embedding check catches duplicate topics without a hardcoded similarity cutoff, and a self-expiring checkpoint file carries each post across two separate GitHub Actions runners so it can sit for a 30-minute human review window before auto-publishing. Branded slides render through Jinja2 + headless Playwright at full carousel resolution.",
     role: "Solo developer",
     year: "2025",
-    stack: ["Python", "Gemini API", "SQLite", "Supabase", "Playwright", "GitHub Actions", "Jinja2"],
+    stack: ["Python", "Gemini API", "Groq", "Cerebras", "SQLite", "Supabase", "Playwright", "GitHub Actions", "Jinja2"],
     metrics: [
       { k: "posts/day", v: "2 (auto)" },
-      { k: "audit stages", v: "2 (dual-brain)" },
+      { k: "independent audits", v: "2 of 2 required" },
       { k: "formats", v: "4 (photo/carousel/reel/listicle)" },
-      { k: "token cost", v: "~$0.0002/post" }
+      { k: "cost/post", v: "~$0.0002" }
     ],
     href: "https://github.com/ayush-agarwal/veltrix",
     visual: "agent-trace",
     visualLabel: "pipeline.run",
     image: "/veltrix-preview.png",
+    secondaryImage: "/veltrix-logs-view.png",
+    secondaryLabel: "execution logs",
   },
   {
     index: "03",

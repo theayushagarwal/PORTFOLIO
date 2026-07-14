@@ -231,89 +231,159 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       glow: "rgba(16, 185, 129, 0.15)",
     },
     whyBuilt: {
-      problem: "Managing multiple social media handles is time-consuming, prone to human writer block, and lacks objective risk filtering.",
-      solution: "Developed an autonomous double-model agent pipeline running via GitHub cron to draft, audit, generate, and upload content.",
-      result: "Fully automated posting cycles costing ~$0.0002 per run with zero manual intervention and factual auditing filters.",
+      problem:
+        "Running a growth Instagram account solo means someone has to write, fact-check, design, and publish twice a day, forever — and the one time a hallucinated stat or a shadowban-trigger phrase slips through, reach tanks for weeks.",
+      solution:
+        "Built an autonomous pipeline where a caption only ships after two independent AI auditors agree it's safe, running unattended on a GitHub Actions cron with a human veto window before anything actually publishes.",
+      scenario: [
+        { t: "T+0s", event: "GitHub Actions cron fires at 18:00 IST — a brand-new, stateless runner boots with zero memory of the last run." },
+        { t: "T+1s", event: "auto_post.py checks pipeline_checkpoint.json first, in case a post from the last run is still sitting in review." },
+        { t: "T+3s", event: "No pending checkpoint found. config.json's WEEKLY_SCHEDULE resolves today's evening slot to CAROUSEL_FLOW; content_generator.py drafts a topic and caption with Gemini." },
+        { t: "T+5s", event: "The topic's embedding is compared against the last 30 days via cosine similarity — adaptive_thresholds() computes today's duplicate cutoff from the mean and standard deviation of recent similarity pairs, not a fixed number." },
+        { t: "T+6s", event: "Similarity lands between the low and high threshold — the ambiguous middle band Vurlo-style fixed cutoffs can't resolve.", danger: true },
+        { t: "T+7s", event: "is_semantic_duplicate_llm() breaks the tie: not a duplicate. Pipeline proceeds." },
+        { t: "T+9s", event: "verify_text_content() sends the caption to Groq and Cerebras independently — both must return caption_ok AND facts_ok, or the whole caption is rejected." },
+        { t: "T+11s", event: "Both approve. Jinja2 renders the slide templates; Playwright screenshots them at 1080x1350, 2x scale, after waiting on networkidle plus a settle buffer for Google Fonts." },
+        { t: "T+14s", event: "save_checkpoint() base64-encodes the slide images into pipeline_checkpoint.json with status: pending_review and a timestamp. The runner exits — the container is destroyed." },
+        { t: "T+1,800s", event: "30 minutes later, the next cron tick's load_checkpoint() finds the same checkpoint, sees age_hours >= 0.5, and auto-approves — publishing through the Instagram Graph API and deleting the checkpoint." },
+      ],
+      solutionSteps: [
+        { step: "Persist state across two runners that never coexist", detail: "save_checkpoint()/load_checkpoint() serialize the topic, caption, and base64-encoded media bytes to a local pipeline_checkpoint.json, since nothing in memory survives a GitHub Actions job ending.", file: "database.py" },
+        { step: "Score duplicates against a moving baseline, not a fixed cutoff", detail: "adaptive_thresholds() derives low/high similarity cutoffs each run from μ + σ and μ + 1.5σ of the recent embedding pairs (capped at 0.78 / 0.88), so the bar shifts with how similar the account's own recent output has actually been.", file: "database.py" },
+        { step: "Never let one model grade its own homework", detail: "verify_text_content() routes the caption to Groq (llama-3.3-70b-versatile) and Cerebras (gpt-oss-120b) independently — different vendors, different base models — and ANDs their decisions together.", file: "text_auditor.py" },
+        { step: "Force a human decision point before anything goes live", detail: "A generated post sits at status: pending_review for a 30-minute window on the dashboard; the next cron tick or a manual --action=approve/reject decides its fate.", file: "auto_post.py" },
+      ],
+      result:
+        "Every post clears two independent auditors and a statistically-adaptive duplicate filter before it's even eligible to publish, and the whole two-post day — drafting, auditing, rendering, and shipping — runs for roughly $0.0002 without a manual click when nobody intervenes.",
+      resultStats: [
+        { label: "Inference cost / post", value: "~$0.0002" },
+        { label: "Independent audits required", value: "2 of 2" },
+        { label: "Human review window", value: "30 min" },
+        { label: "Output formats", value: "4 (photo/carousel/reel/listicle)" },
+      ],
     },
     architecture: [
-      { id: "cron", label: "GitHub Action Cron", desc: "Triggers twice-daily runtime sessions on schedule" },
-      { id: "gemini", label: "Gemini Pro", desc: "Generates creative post copy, hashtags, and visual generation prompts" },
-      { id: "auditor", label: "Auditor Brain", desc: "Independent model (Groq/Cerebras) checks copy for ban risk and fact slips" },
-      { id: "playwright", label: "Playwright Headless", desc: "Screenshots dynamic Jinja2-rendered templates into custom listicle cards" },
-      { id: "supabase", label: "Supabase DB", desc: "Saves media outputs, runs checkpoint logs, and queues publishing schedules" }
+      { id: "cron", label: "GitHub Actions cron → auto_post.py", desc: "fires at fixed IST slot hours and resolves the day's format (photo/carousel/reel/listicle) from config.json's WEEKLY_SCHEDULE map, keyed by weekday and slot instead of one fixed daily template." },
+      { id: "checkpoint", label: "database.py — save_checkpoint() / load_checkpoint()", desc: "the only state that survives between two entirely separate ephemeral runners — serializes topic, caption, and base64-encoded media to pipeline_checkpoint.json, self-expiring after 24 hours." },
+      { id: "content-gen", label: "content_generator.py", desc: "drafts a topic and caption using Gemini, pulling from a weighted voice pool (Punchy, Listicle, Storytelling, Question-Hook, Stat-Led) so back-to-back posts don't read like the same template." },
+      { id: "dedupe", label: "database.py — cosine_similarity() / adaptive_thresholds()", desc: "a three-tier duplicate filter: fast-reject below a statistically adaptive low threshold, fast-flag above a high threshold, and only the ambiguous middle band falls through to an LLM tiebreaker." },
+      { id: "auditor", label: "text_auditor.py — verify_text_content()", desc: "local regex/heuristic pre-checks (emoji density, disclaimer placement, shadowban phrase patterns) reject for free before any API call, then Groq and Cerebras independently audit whatever survives." },
+      { id: "renderer", label: "listicle_pipeline.py — render_pages()", desc: "fills Jinja2 HTML templates with the approved copy, then screenshots them via headless Playwright Chromium at 1080x1350 / 2x device scale, waiting on networkidle plus a fixed settle buffer for web fonts." },
+      { id: "publisher", label: "instagram_publisher.py / threads_publisher.py", desc: "publishes the approved asset set through the Instagram Graph API and cross-posts the same content to Threads, sitting behind the 30-minute review gate rather than firing immediately." },
+      { id: "dashboard", label: "database.py — update_dashboard() → dashboard.html", desc: "renders a static control panel showing the pending-review card with Approve/Reject buttons wired to a GitHub workflow_dispatch, plus live per-post API cost telemetry from APITracker." },
     ],
     features: [
-      "Cron-based Auto-runner",
-      "Dual-brain LLM Auditing",
-      "Dynamic Jinja2 Template Cards",
-      "Playwright Headless Rendering",
-      "State Checkpoint Recovery",
-      "Multi-format Export Pipeline",
-      "Shadowban Risk Filter",
-      "Token Cost Analysis Dashboard"
+      "Zero-touch daily publishing — a GitHub Actions cron resolves each day's format from a weekly schedule map instead of posting the same content type every day.",
+      "Adversarial fact-checking before anything ships — every caption is drafted by Gemini, then independently audited by Groq and Cerebras, with both providers required to agree before it's approved.",
+      "Statistically-adaptive duplicate detection — cosine similarity against the account's post history, scored against thresholds recomputed each run from the mean and standard deviation of recent embedding pairs, not one fixed cutoff.",
+      "Free local pre-screening before any API spend — regex and heuristic checks (emoji count, disclaimer placement, banned-phrase patterns) reject risky captions before a single audit call is made.",
+      "State that survives an ephemeral runner dying mid-post — a self-expiring JSON checkpoint carries topic, caption, and base64-encoded media across two separate GitHub Actions invocations.",
+      "Built-in human veto window — every generated post sits for 30 minutes as pending_review on a live dashboard before auto-publishing, with one-click approve/reject wired to a GitHub workflow.",
+      "Headless-render pipeline for branded slides — Jinja2 templates screenshot through Playwright Chromium at 1080x1350, 2x scale, with explicit waits so slides don't ship mid-font-swap.",
+      "Perceptual duplicate guards for media, separate from text — dhash/pHash image comparisons stop the same visual from posting twice, independent of the caption-level embedding check.",
+      "Cross-platform publishing from one pipeline — the same approved asset set republishes to Threads without regenerating any content.",
+      "Per-run cost telemetry — an APITracker tallies Gemini token costs and per-provider fallback usage straight into the dashboard, so spend is visible per post, not just in aggregate.",
     ],
     challenges: [
       {
-        title: "Dual-Brain Factual Auditing",
-        problem: "Generative models occasionally hallucinate facts or generate copy that triggers policy flags.",
-        difficulty: "A single model checking its own work will repeat the same errors due to internal confirmation bias.",
-        solution: "Implemented an independent auditor loop using Groq/Cerebras running a different base LLM to run adversarial audits.",
-        learned: "True autonomy requires multi-model friction loops to ensure consistency."
+        title: "Making State Survive Between Two Runners That Never Coexist",
+        problem: "auto_post.py runs as a brand-new GitHub Actions job every invocation — no memory, no disk, no in-process variables carry over between the run that drafts a post and the run 30 minutes later that's supposed to publish it.",
+        difficulty: "A GitHub Actions runner is torn down completely when the job ends. Adding a human review window between generation and publish meant handing a fully-generated post — including binary image and video bytes — from one ephemeral container to a container that didn't exist yet.",
+        solution: "save_checkpoint() serializes the topic, caption, and base64-encoded asset bytes to a local pipeline_checkpoint.json with a timestamp; the next cron tick's load_checkpoint() reads it, confirms it's under 24 hours old, and resumes the pipeline exactly where it left off.",
+        fixSteps: [
+          { step: "Base64-encode every binary asset — image bytes, video slide frames — into the checkpoint JSON, not just text fields", file: "auto_post.py" },
+          { step: "Stamp every checkpoint with an ISO timestamp and self-expire it after 24 hours", file: "database.py" },
+          { step: "Check checkpoint.status === 'pending_review' before drafting anything new, so a cron tick during the review window can't generate a second, competing post" },
+        ],
+        learned: "Idempotency isn't optional on ephemeral infrastructure — it's the only way a stateless scheduler can approximate a stateful workflow. The checkpoint file is effectively the pipeline's entire call stack, frozen and reloaded by whichever runner picks it up next.",
       },
       {
-        title: "Playwright Render Stability",
-        problem: "Headless screenshotting on GitHub Actions runners frequently resulted in clipped edges and font loading errors.",
-        difficulty: "Docker containers on clean runners lack local system fonts, leading to layout shifts.",
-        solution: "Wrote startup bash hooks to pull system web fonts and configured Playwright to wait for document.fonts.ready.",
-        learned: "Headless browsers require identical environmental rendering dependencies to behave like local previews."
+        title: "One Model Grading Its Own Homework",
+        problem: "Having Gemini draft a caption and then having Gemini check that same caption for factual accuracy meant asking one model to catch its own blind spots — it tended to repeat the exact mistake it had just made.",
+        difficulty: "Self-review only catches errors the model already 'knows' are errors. Hallucinated facts and shadowban-risk phrasing that felt natural during generation felt just as natural on a second pass by the same weights.",
+        solution: "verify_text_content() runs cheap deterministic checks first, then routes the caption to Groq and Cerebras — two different vendors running two different base models — independently, requiring both to return caption_ok AND facts_ok before anything is approved.",
+        fixSteps: [
+          { step: "Run local regex/heuristic pre-checks first — emoji density over 4, disclaimer placed after hashtags, wall-of-text with no paragraph breaks — rejecting for free before any network call", file: "text_auditor.py" },
+          { step: "Query Groq and Cerebras with the identical audit prompt and brand system instruction, but as fully separate calls" },
+          { step: "AND the two decisions together — one dissenting auditor rejects the whole caption, with its specific fail_reason logged", file: "text_auditor.py" },
+        ],
+        learned: "Cross-vendor disagreement is a signal, not noise. Two different model families are far less likely to share the same hallucination or miss the same shadowban trigger than the same model asked twice.",
       },
       {
-        title: "Checkpoint Recovery Patterns",
-        problem: "If an API call timed out mid-run, the pipeline would crash and duplicate postings on restart.",
-        difficulty: "Network errors are inevitable in external APIs; workflows must be idempotent.",
-        solution: "Stored transaction checkpoints in SQLite, allowing the runtime engine to skip completed steps on rerun.",
-        learned: "Designing workflows as resumable state machine blocks saves tokens and prevents double-posting bugs."
-      }
+        title: "A Fixed Similarity Cutoff Couldn't Tell 'Repeat Topic' From 'Same Niche'",
+        problem: "Embedding similarity is supposed to flag duplicate topics before they get posted twice, but a single hardcoded cosine-similarity cutoff was either too loose after a run of very similar recent posts, or too strict once the account's output had naturally drifted to more varied ground.",
+        difficulty: "The account posts within one niche (AI/fintech), so baseline similarity between any two unrelated topics is already higher than in a general-purpose feed. A cutoff tuned for one stretch of posts became wrong for the next.",
+        solution: "adaptive_thresholds() computes the mean and standard deviation across every pairwise similarity in the recent embedding set, then derives a low/high threshold band from that distribution — falling back to a fixed 0.72/0.82 only when there isn't enough history yet.",
+        fixSteps: [
+          { step: "Compute μ and σ across all recent embedding pairs on every run, not once at setup", file: "database.py" },
+          { step: "Derive low = min(0.78, μ+σ) and high = min(0.88, μ+1.5σ) instead of one constant for every run" },
+          { step: "Route only the ambiguous middle band to a slower LLM tiebreaker (is_semantic_duplicate_llm), keeping the fast embedding path cheap for the clear cases" },
+        ],
+        learned: "A threshold tuned once against a snapshot of data quietly goes stale as the data distribution shifts. Recomputing it from the current population, every time, made the duplicate filter self-correcting instead of something I'd have to keep manually re-tuning.",
+      },
+      {
+        title: "Headless Chromium Was Screenshotting Slides Before Fonts Finished Loading",
+        problem: "Playwright screenshots taken on a clean GitHub Actions runner occasionally captured branded listicle slides mid-font-swap — Outfit and Fira Code hadn't finished downloading from Google Fonts yet, so the slide shipped in the browser's fallback serif.",
+        difficulty: "A fresh CI container has no font cache the way a local dev machine does, and Playwright's networkidle state can technically fire while a CSS @font-face request is still resolving in the background — the race was intermittent, not reliably reproducible locally.",
+        solution: "render_pages() loads each rendered Jinja2 template from a local file:// URI, waits for networkidle, then adds a fixed settle buffer before the screenshot fires — and renders at 2x device scale inside a 1080x1350 viewport for full carousel resolution.",
+        fixSteps: [
+          { step: "page.goto() the rendered HTML from a local temp file so relative image assets resolve the same way they do in dev", file: "listicle_pipeline.py" },
+          { step: "page.wait_for_load_state('networkidle', timeout=5000), then page.wait_for_timeout(1500) as an explicit buffer past the point networkidle technically resolves", file: "listicle_pipeline.py" },
+          { step: "Launch the browser context with viewport 1080x1350 and device_scale_factor: 2 so slides render at full carousel resolution, not scaled up after the fact" },
+        ],
+        learned: "networkidle is a proxy for 'probably done,' not a guarantee — it doesn't know about a font swap that hasn't repainted yet. A short deterministic buffer after the network settles is a blunt fix, but far more reliable in CI than trusting the event alone.",
+      },
     ],
     journey: [
-      { day: "Day 1", milestone: "Core Script & LLM API Hooks", details: "Established text generation pipelines and verified response schema formats." },
-      { day: "Day 3", milestone: "Adversarial Auditor System", details: "Wired Groq/OpenRouter fallback modules to verify primary output." },
-      { day: "Day 5", milestone: "Playwright Layout Templates", details: "Designed HTML templates and wired screen capture nodes." },
-      { day: "Day 8", milestone: "SQLite Checkpoints", details: "Implemented state recovery logic and configured database transactions." },
-      { day: "Day 10", milestone: "GitHub Actions Deployment", details: "Wired cron actions and configured environment secrets." }
+      { day: "Day 1", milestone: "Core Pipeline & LLM Hooks", details: "content_generator.py drafting flow wired to Gemini; config.json's weekly schedule map and voice pool established." },
+      { day: "Day 3", milestone: "Dual-Brain Auditor", details: "text_auditor.py built out — local heuristic pre-checks, then independent Groq and Cerebras audit calls, AND-ed together." },
+      { day: "Day 5", milestone: "Adaptive Duplicate Detection", details: "Embedding cache and adaptive_thresholds() written in database.py, replacing an earlier fixed-cutoff version that kept misfiring." },
+      { day: "Day 7", milestone: "Playwright + Jinja2 Render Pipeline", details: "listicle_pipeline.py template rendering and headless screenshot capture stood up; chased down the font-loading race in CI." },
+      { day: "Day 9", milestone: "Checkpoint & Review Gate", details: "save_checkpoint()/load_checkpoint() shipped in database.py; auto_post.py wired to the 30-minute pending_review window and dashboard approve/reject actions." },
+      { day: "Day 10", milestone: "Publishing & Dashboard", details: "instagram_publisher.py and threads_publisher.py cross-posting wired up; dashboard.html control panel and APITracker cost telemetry finished before enabling the cron." },
     ],
     lighthouse: {
       performance: 99,
-      accessibility: 100,
+      accessibility: 97,
       bestPractices: 100,
-      seo: 92
+      seo: 88,
     },
     decisions: [
       {
-        tech: "Gemini API",
-        title: "Primary Content Engine",
-        explanation: "Offers massive context sizes and low latency for copy drafting at near-zero costs."
+        tech: "Gemini 2.5 Flash + gemini-embedding-2",
+        title: "One Provider for Both Drafting and Embeddings",
+        explanation: "Gemini writes the initial topic/caption and also generates the embedding vectors used for duplicate detection — keeping the 'creative' half of the pipeline on one low-cost, low-latency provider.",
       },
       {
-        tech: "Playwright",
+        tech: "Groq + Cerebras",
+        title: "Independent Adversarial Audit, Not a Second Opinion From the Same Vendor",
+        explanation: "verify_text_content() requires both providers — running different base models (llama-3.3-70b-versatile, gpt-oss-120b) — to independently approve a caption, so a shared blind spot in one model family can't rubber-stamp a mistake.",
+      },
+      {
+        tech: "Playwright + Jinja2",
         title: "Headless Card Generation",
-        explanation: "Allows converting standard Tailwind HTML templates directly into high-res images, bypassing canvas design limitations."
+        explanation: "Branded listicle slides are real HTML/CSS templates screenshotted at 1080x1350, 2x scale — layout, typography, and responsive-style rules come for free instead of hand-positioning text on a canvas.",
       },
       {
-        tech: "GitHub Actions",
-        title: "Zero-Cost Orchestration",
-        explanation: "Cron features serve as a robust task scheduler without paying for cloud server instances."
-      }
+        tech: "Local JSON checkpoint + SQLite",
+        title: "Zero-Infra State for a Scheduler With No Server",
+        explanation: "No process stays alive between runs. pipeline_checkpoint.json and veltrix.db are the entire state layer, both just files the workflow commits back to the repo — no database server to provision or pay for.",
+      },
+      {
+        tech: "GitHub Actions cron + workflow_dispatch",
+        title: "Free Scheduler That Doubles as the Approval Queue",
+        explanation: "The same GitHub Actions infra that runs the cron also handles the manual approve/reject action for the human review gate, so there's no separate approval service or webhook receiver to host.",
+      },
     ],
     lessons: [
-      "Support dynamic video rendering using ffmpeg layers",
-      "Add audio synthesis for automated voiceovers",
-      "Introduce visual AI models to audit created card layouts",
-      "Provide custom hook triggers to publish straight to accounts"
+      "Move the checkpoint's binary asset payload out of a committed JSON file and into object storage (Supabase/Cloudinary) — base64-encoding video frames into the checkpoint bloats the repo's history over time.",
+      "Cache Groq/Cerebras audit responses so a topic that gets re-evaluated after a checkpoint recovery doesn't burn two more audit calls for content that's already been reviewed.",
+      "Extend perceptual image-hash duplicate checking to Reel source frames, not just PHOTO/CAROUSEL stills — a remade Reel can currently reuse near-identical frames undetected.",
+      "Replace the fixed 1.5s Playwright settle buffer with an actual document.fonts.ready wait inside the page — it works today, but it's a guess dressed up as a timeout.",
     ],
     gallery: [
-      { label: "Content Flow Diagram", img: "/veltrix-preview.png" },
-      { label: "System Execution logs", img: "/veltrix-logs-view.png" }
+      { label: "Live Control Panel", img: "/veltrix-preview.png" },
+      { label: "Pipeline Execution Logs", img: "/veltrix-logs-view.png" },
     ],
   },
   Vcentre: {
