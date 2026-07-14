@@ -26,12 +26,17 @@ export interface ProjectDetail {
     milestone: string;
     details: string;
   }[];
-  lighthouse: {
+  lighthouse?: {
     performance: number;
     accessibility: number;
     bestPractices: number;
     seo: number;
   };
+  reliability?: {
+    label: string;
+    value: string;
+    detail: string;
+  }[];
   decisions: {
     tech: string;
     title: string;
@@ -342,12 +347,12 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { day: "Day 9", milestone: "Checkpoint & Review Gate", details: "save_checkpoint()/load_checkpoint() shipped in database.py; auto_post.py wired to the 30-minute pending_review window and dashboard approve/reject actions." },
       { day: "Day 10", milestone: "Publishing & Dashboard", details: "instagram_publisher.py and threads_publisher.py cross-posting wired up; dashboard.html control panel and APITracker cost telemetry finished before enabling the cron." },
     ],
-    lighthouse: {
-      performance: 99,
-      accessibility: 97,
-      bestPractices: 100,
-      seo: 88,
-    },
+    reliability: [
+      { label: "Checkpoint TTL", value: "24 hrs", detail: "self-expires so a stuck runner never resurrects a stale, half-finished post" },
+      { label: "Duplicate-check tiers", value: "3", detail: "embedding similarity → adaptive threshold band → LLM tiebreaker for the ambiguous zone" },
+      { label: "Independent audit models", value: "2", detail: "Groq + Cerebras must both approve before Gemini's own draft is trusted" },
+      { label: "Retry backoff attempts", value: "5", detail: "exponential + jitter, fails fast past a 10s wait so provider fallbacks can kick in instead" },
+    ],
     decisions: [
       {
         tech: "Gemini 2.5 Flash + gemini-embedding-2",

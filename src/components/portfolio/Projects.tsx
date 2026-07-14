@@ -1275,25 +1275,52 @@ export function Projects() {
                 </div>
               </section>
 
-              {/* Section 7: Performance */}
+              {/* Section 7: Performance — Lighthouse audit for websites, operational reliability for bots/pipelines */}
               <section id="ws-sec-performance" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">07 . Technical Audits</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Performance & Audits</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    Audited system lighthouse stats for performance, accessibility, best practices, and SEO.
-                  </p>
-                </div>
+                {details.lighthouse ? (
+                  <>
+                    <div className="border-b border-white/5 pb-6">
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">07 . Technical Audits</span>
+                      <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Performance & Audits</h3>
+                      <p className="mt-2 text-sm text-subtle">
+                        Audited system lighthouse stats for performance, accessibility, best practices, and SEO.
+                      </p>
+                    </div>
 
-                <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg flex flex-col justify-center">
-                  <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Lighthouse Audit (Active SVG Gauges)</span>
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                    <LighthouseDial score={details.lighthouse.performance} label="Performance" />
-                    <LighthouseDial score={details.lighthouse.accessibility} label="Accessibility" />
-                    <LighthouseDial score={details.lighthouse.bestPractices} label="Best Practices" />
-                    <LighthouseDial score={details.lighthouse.seo} label="SEO" />
-                  </div>
-                </div>
+                    <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg flex flex-col justify-center">
+                      <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Lighthouse Audit (Active SVG Gauges)</span>
+                      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                        <LighthouseDial score={details.lighthouse.performance} label="Performance" />
+                        <LighthouseDial score={details.lighthouse.accessibility} label="Accessibility" />
+                        <LighthouseDial score={details.lighthouse.bestPractices} label="Best Practices" />
+                        <LighthouseDial score={details.lighthouse.seo} label="SEO" />
+                      </div>
+                    </div>
+                  </>
+                ) : details.reliability ? (
+                  <>
+                    <div className="border-b border-white/5 pb-6">
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">07 . System Reliability</span>
+                      <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Operational Metrics</h3>
+                      <p className="mt-2 text-sm text-subtle">
+                        No public-facing site to audit — these are the safeguards that keep an unattended pipeline honest.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      {details.reliability.map((stat) => (
+                        <div
+                          key={stat.label}
+                          className="rounded-xl border border-white/10 bg-card p-5 shadow-lg flex flex-col gap-2"
+                        >
+                          <span className="font-mono text-[9px] uppercase tracking-widest text-subtle">{stat.label}</span>
+                          <span className="font-display text-3xl font-semibold text-foreground">{stat.value}</span>
+                          <p className="text-xs text-subtle leading-relaxed">{stat.detail}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
               </section>
 
               {/* Section 8: Tech Decisions & Lessons */}
