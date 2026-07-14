@@ -104,14 +104,14 @@ export const PROJECTS: Project[] = [
     name: "Vcentre",
     tagline: "Competitor intelligence pipeline that turns viral outliers into creative briefs",
     summary:
-      "Vcentre scrapes competitor Instagram accounts nightly, looking for posts that broke pattern rather than just posts with high numbers. Reels and photos get scored as separate cohorts against a rolling median, so one viral reel doesn't skew the baseline for an account's regular posts. Anything that clears the threshold routes through a fallback chain of AI providers — GitHub Models first, then Groq or Cerebras — with Gemini reserved only for the final brief write-up to stay on the free tier. The output writes straight into the same database my posting bots read from, so a spotted trend can become a scheduled post without me touching it.",
+      "Vcentre scrapes competitor Instagram accounts nightly and splits every account into Reels vs. Photos cohorts before comparing anything — a single 500k-view Reel can't drag the baseline for an account's ordinary 2k-like photos, since each format is scored against its own rolling median. Every scrape is gated by a 12-hour per-handle cooldown and a circuit breaker that kills a handle after 2 hits in 24 hours, so a bad run never chews through the Apify credit budget. Posts that clear a 3x-median threshold, an absolute floor, and a minimum engagement rate route through a 10-provider LLM fallback chain — Groq and Cerebras handle the bulk of vision/caption/hook audits for free, GitHub Models runs semantic pattern matching, and Gemini is reserved only for the final brief synthesis to stay inside its free-tier budget. Briefs write straight into the same database the posting bots read from, and a closed-loop feedback job scores each published post's real performance back against the pattern it came from, so patterns that under-deliver quietly lose priority instead of getting suggested forever.",
     role: "Solo developer",
     year: "2026",
-    stack: ["Python", "FastAPI", "SQLite", "Supabase", "Groq", "GitHub Actions", "Instaloader"],
+    stack: ["Python", "Apify", "SQLite", "Supabase", "Groq", "Cerebras", "GitHub Actions", "FastAPI"],
     metrics: [
       { k: "monthly cost", v: "$0" },
       { k: "outlier threshold", v: "3x median" },
-      { k: "AI providers", v: "5 (fallback chain)" },
+      { k: "AI fallback chain", v: "10 providers" },
       { k: "cron cadence", v: "daily @ 2AM UTC" }
     ],
     href: "https://github.com/ayush-agarwal/vcentre",

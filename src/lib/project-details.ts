@@ -398,81 +398,149 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       glow: "rgba(99, 102, 241, 0.15)",
     },
     whyBuilt: {
-      problem: "Scraping competitor data blindly yields raw volume peaks, which are often just a reflection of their account size rather than true creative outliers.",
-      solution: "Built a competitive scanner calculating median outliers and compiling structured creative brief tables automatically.",
-      result: "Nightly scraping logs analyzing accounts at 3x median virality benchmarks and writing briefs to database slots.",
+      problem:
+        "Scraping every competitor post nightly buries the handful of genuinely viral posts inside routine volume — a big account's normal Tuesday photo outscores a small account's true breakout in raw likes, and one 500k-view Reel sitting in the same list as an account's usual 2k-like photos would drag any shared median wildly upward, making every other post at that account look artificially unremarkable.",
+      solution:
+        "Score every post against its own account's rolling median, isolated by format — Reels vs. Photos — so one outlier can't poison the baseline, then gate the whole scrape behind cooldowns and a circuit breaker so Apify credits are only spent on accounts that are actually due for a refresh.",
+      scenario: [
+        { t: "T+0s", event: "GitHub Actions cron fires main.py at 2AM UTC — config.load() validates niches.yaml/agents.yaml and key_ping.py pings all 10 providers before anything else runs." },
+        { t: "T+2s", event: "db.set_pipeline_start() anchors the Gemini daily budget window, then OurPostsSync pulls the posting bots' own recent post history so the contrast engine isn't running blind." },
+        { t: "T+5s", event: "scraper.scrape_batch() fires one parallel Apify call across every competitor + owned-account handle — but only for handles clear of the 12-hour cooldown and under the 2-hit/24h circuit breaker." },
+        { t: "T+40s", event: "The Apify dataset resolves; posts are matched back to handles by ownerUsername, keyword-filtered per niche, and upserted into competitor_posts.", },
+        { t: "T+42s", event: "outlier.py splits each handle's posts into Reels vs. Photos cohorts, computes the rolling median per cohort, and flags a post only if it clears 3x median AND an absolute floor AND a 1% engagement rate.", danger: true },
+        { t: "T+45s", event: "Flagged outliers route through router.run() for vision audit, caption audit, hook scoring, and strategy contrast — Groq first, then Cerebras/NVIDIA/GitHub Models, with Gemini held back for the final step." },
+        { t: "T+50s", event: "Gemini synthesizes the structured JSON brief only if the daily call budget has room left; the brief writes into creative_briefs, the same table the posting bots read from directly." },
+        { t: "T+52s", event: "HealthChecker scans for zero-post niches, zero-outlier runs, and 14-day zero-brief streaks, then prune_old_posts() trims anything older than 60 days." },
+      ],
+      solutionSteps: [
+        { step: "Batch every handle into one parallel Apify call", detail: "scrape_batch() sends all competitor + owned-account profile URLs into a single Apify actor run instead of one call per handle, matching results back by ownerUsername — cutting API calls from N down to 1 per pipeline run.", file: "scraper.py" },
+        { step: "Gate every scrape behind a cooldown and a circuit breaker", detail: "_is_cooldown_active() skips any handle successfully scraped in the last 12 hours; _is_circuit_breaker_active() kills a handle after 2 attempts in a rolling 24h window — both checked before a single Apify credit is spent.", file: "scraper.py" },
+        { step: "Isolate cohorts before a median is ever computed", detail: "detect() splits posts into is_reel==1 vs is_reel==0 before statistics.median() runs, so a Reel's view count never enters a Photo cohort's baseline or vice versa.", file: "outlier.py" },
+        { step: "Require three signals to agree before calling something viral", detail: "is_outlier only trips when a post clears the median multiplier, an absolute floor (3,000 views / 500 likes), and a minimum 1% composite engagement rate — a raw view spike alone isn't enough.", file: "outlier.py" },
+        { step: "Route every AI task through a 10-provider fallback chain", detail: "AgentRouter.run() tries the task's preferred provider first, then walks a fixed fallback order across 10 providers, placing any rate-limited agent on a 5-minute cooldown instead of retrying it immediately.", file: "router.py" },
+        { step: "Feed real post performance back into pattern scoring", detail: "process_closed_loop_feedback() compares each newly-synced post's real likes against a 30-day baseline and updates the viral_patterns table's success weight, so patterns that under-deliver lose priority automatically.", file: "db.py" },
+      ],
+      result:
+        "Nightly runs scan every configured niche, isolate true format-relative outliers instead of raw volume peaks, and queue structured creative briefs directly into the posting bots' database — with the whole pipeline, from scraping to brief synthesis, running on free-tier AI credits and a $0/month infrastructure bill.",
+      resultStats: [
+        { label: "Monthly infra cost", value: "$0" },
+        { label: "AI fallback depth", value: "10 providers" },
+        { label: "Outlier confirmation gates", value: "3 (median + floor + ER)" },
+        { label: "Scrape credit guards", value: "2 (cooldown + circuit breaker)" },
+      ],
     },
     architecture: [
-      { id: "scrapper", label: "Instagram Scraper", desc: "Scrapes competitor profiles using automated cookies rotation" },
-      { id: "pipeline", label: "Analysis Pipeline", desc: "Compares engagement rates against rolling median baselines" },
-      { id: "brief", label: "Brief Writer", desc: "Uses fallback chain of LLMs to outline video hook, structure, and text copy" },
-      { id: "database", label: "Database Queue", desc: "Saves briefs directly into the database read by posting agents" }
+      { id: "scraper", label: "core/scraper.py", desc: "Batches every competitor + owned handle into one parallel Apify actor call, gated by a 12-hour per-handle cooldown and a 2-hit/24h circuit breaker so credits are never spent on an account just checked." },
+      { id: "outlier", label: "core/outlier.py", desc: "Splits each handle's posts into Reels vs. Photos cohorts, computes a rolling median per cohort, and flags a post viral only when it clears the median multiplier, an absolute floor, and a minimum engagement rate together." },
+      { id: "router", label: "core/router.py", desc: "Routes every AI task — vision audits, caption audits, hook scoring, final synthesis — through a per-task preferred provider first, then a shared 10-provider fallback order with 5-minute rate-limit cooldowns." },
+      { id: "brief", label: "core/brief.py", desc: "Runs vision, caption, hook, and strategy-contrast audits per outlier, then synthesizes everything into one structured JSON creative brief via Gemini, reserved for the final call to stay inside its free-tier budget." },
+      { id: "pattern-engine", label: "core/pattern_engine.py", desc: "Clusters outliers into hook, caption, and visual-theme patterns, deduplicating via Supabase vector similarity search with an LLM semantic-matching fallback at a strict 0.85 confidence threshold." },
+      { id: "health", label: "core/health.py", desc: "Runs five layered checks after every run — zero posts, low scrape yield, zero outliers, budget-aware zero briefs, and a 14-day zero-brief streak — before writing a GitHub Actions summary and optional Discord alert." },
     ],
     features: [
-      "Nightly Scraping Cron",
-      "Rolling Median Outlier Calculation",
-      "Fallback LLM Chain Integration",
-      "Brief Template Generator",
-      "Scraper Session Rotator",
-      "Media Cohort Scoring System",
-      "Automatic Trend Queuer",
-      "Free-Tier Resource Optimization"
+      "Format-isolated median outlier detection (Reels vs. Photos scored separately)",
+      "Composite viral confirmation (median multiplier + absolute floor + engagement-rate gate)",
+      "12-hour cooldown + 2-hit/24h circuit breaker to protect scrape credits",
+      "Single parallel Apify batch call across every competitor + owned account",
+      "10-provider AI fallback chain with per-task routing and rate-limit cooldowns",
+      "Semantic pattern deduplication via vector similarity + LLM tiebreaker fallback",
+      "Closed-loop feedback scoring real post performance back into pattern weights",
+      "Layered health diagnostics distinguishing quiet days from silent failures",
     ],
     challenges: [
       {
-        title: "Rolling Median Baseline Calculation",
-        problem: "A single extremely viral reel can skew baseline averages, making regular outlier detection fail.",
-        difficulty: "Standard averages are highly sensitive to spikes, failing to identify relative outliers.",
-        solution: "Implemented a rolling median engagement algorithm split into separate cohorts for Reels vs. Carousel posts.",
-        learned: "Median indicators are much more resilient than averages when parsing raw engagement datasets."
+        title: "Keeping One Viral Reel From Poisoning the Whole Account's Baseline",
+        problem: "A single 500k-view Reel sitting in the same post list as an account's usual 2k-like photos would drag any shared median or average wildly upward, making every other post at that account look artificially unremarkable.",
+        difficulty: "Reels and photos measure success on totally different scales — views vs. likes — and mixing them into one pooled median means the format with naturally bigger numbers can swamp the signal from the other.",
+        solution: "_calculate_cohort() runs independently per format: OutlierEngine.detect() splits every handle's posts into is_reel==1 and is_reel==0 groups before statistics.median() ever runs, so each format is only ever compared against its own recent history.",
+        fixSteps: [
+          { step: "Split posts by is_reel flag before any statistics call", file: "outlier.py" },
+          { step: "Use views as the Reel metric, likes as the Photo metric — never mix them" },
+          { step: "Require a minimum cohort size of 3 valid posts before computing a median at all" },
+        ],
+        learned: "Median resistance to outliers only holds if it's computed over a genuinely comparable population — pooling two different measurement scales into one median just moves the distortion instead of removing it.",
       },
       {
-        title: "Zero-Cost API Fallbacks",
-        problem: "Relying on a single AI provider causes runtime blocks if free quotas are hit.",
-        difficulty: "Unmanaged APIs cause pipeline breaks. Fallback chains must be stable.",
-        solution: "Established a provider fallback array running GitHub Models first, dropping down to Groq, and using Gemini only as a final brief compiler.",
-        learned: "Chaining fallback providers creates rock-solid reliability on free hosting resources."
-      }
+        title: "Not Burning Apify Credits on Accounts That Haven't Changed",
+        problem: "Every handle scraped costs real Apify credits, and a naive nightly loop would re-scrape all 18+ competitor accounts every single run regardless of whether they'd posted anything new.",
+        difficulty: "A free-tier scraping budget doesn't survive a scheduler that can't tell the difference between 'this account might have something new' and 'we just checked this account 40 minutes ago.'",
+        solution: "Two independent gates run before scrape_batch() includes a handle: _is_cooldown_active() checks scrape_history for a successful scrape within the last 12 hours, and _is_circuit_breaker_active() blocks any handle already attempted twice in the trailing 24 hours.",
+        fixSteps: [
+          { step: "Query scrape_history for the last successful scrape timestamp per handle+niche", file: "scraper.py" },
+          { step: "Skip the handle if that timestamp is under 12 hours old" },
+          { step: "Independently cap attempts — success or failure — at 2 per rolling 24h window" },
+        ],
+        learned: "Rate limiting a scraper isn't just about avoiding a block from the target platform — it's a budget-management problem first, and the two concerns need separate, composable checks rather than one combined heuristic.",
+      },
+      {
+        title: "One AI Provider Going Down Shouldn't Stall the Whole Brief",
+        problem: "Free-tier LLM providers rate-limit or go down independently, and a brief pipeline hard-wired to a single provider would just stop producing briefs the moment that provider had a bad day.",
+        difficulty: "Different tasks — vision audits, caption audits, hook scoring, final JSON synthesis — have different preferred providers for cost/quality reasons, so the fallback logic can't just be 'try provider B if A fails'; it needs a per-task preferred order that still degrades gracefully.",
+        solution: "AgentRouter.run() resolves a task's preferred agent from routing_rules in agents.yaml, then walks a full fallback order across all 10 configured providers, skipping any provider mid rate-limit cooldown and re-raising only if every single one fails.",
+        fixSteps: [
+          { step: "Read the task's preferred provider from routing_rules, then insert it first in the shared fallback order", file: "router.py" },
+          { step: "Catch rate-limit-specific errors and place that agent on a 5-minute cooldown instead of retrying it immediately" },
+          { step: "Skip any agent that doesn't support vision when a base64 image is part of the payload" },
+        ],
+        learned: "A fallback chain is only as good as its failure classification — treating a genuine rate limit the same as a hard failure would've meant retrying a provider guaranteed to reject the very next call.",
+      },
+      {
+        title: "Telling 'No Outliers Today' Apart From 'The Pipeline Is Silently Broken'",
+        problem: "Zero briefs generated on a given day is completely normal on a quiet news day, but it's also exactly what a silent scraping failure or an exhausted Gemini budget looks like from the outside — the raw numbers alone can't tell those two apart.",
+        difficulty: "A single-run alert would either fire too often, crying wolf on quiet days, or too rarely, missing a real multi-day outage — because a healthy pipeline and a broken one can produce an identical zero-briefs result on any individual day.",
+        solution: "HealthChecker.check() runs five layered checks — zero-post detection, low scrape yield vs. expected minimum, zero-outliers-from-nonzero-posts, budget-aware zero-brief diagnosis, and a 14-day consecutive zero-brief streak — before deciding whether to escalate to a GitHub Actions summary and Discord webhook.",
+        fixSteps: [
+          { step: "Distinguish 'Gemini budget exhausted' from 'brief generator actually failed' by checking remaining budget before raising an issue vs. a warning", file: "health.py" },
+          { step: "Track consecutive zero-brief days via a 14-day rolling window query against creative_briefs", file: "health.py" },
+          { step: "Write findings to GITHUB_STEP_SUMMARY and an optional Discord webhook so failures surface without anyone tailing logs" },
+        ],
+        learned: "A health check that can't tell 'nothing happened because there was nothing to find' from 'nothing happened because something broke' isn't actually monitoring anything — the diagnosis has to be as layered as the pipeline it's watching.",
+      },
     ],
     journey: [
-      { day: "Day 1", milestone: "Instagram Scraping Scripts", details: "Tested Instaloader cookie rotators and parsed raw JSON posts." },
-      { day: "Day 3", milestone: "Median Calculation Math", details: "Wrote cohort split scripts and implemented standard deviation metrics." },
-      { day: "Day 5", milestone: "Fallback LLM Pipeline", details: "Chained API keys and configured prompt brief templates." },
-      { day: "Day 8", milestone: "Database Write Node", details: "Linked output to SQLite tables read by automations." },
-      { day: "Day 10", milestone: "Cadence Integration", details: "Scheduled runs at 2AM UTC on Actions runner profiles." }
+      { day: "Day 1", milestone: "Skeleton, Config & Schema", details: "config.py's lazy singleton loader, the niches.yaml/agents.yaml schema, and the initial SQLite schema (migrations.py) stood up before any scraping code existed." },
+      { day: "Day 3", milestone: "Apify Scraper + Rate Limit Gates", details: "scraper.py built out against Apify's instagram-scraper actor, with the 12-hour cooldown and 2-hit circuit breaker wired in from the start to protect the credit budget." },
+      { day: "Day 5", milestone: "Format-Isolated Outlier Engine", details: "outlier.py's cohort-splitting median logic and composite engagement-rate gate replaced an earlier single-pooled-average draft that kept flagging big accounts' routine posts as outliers." },
+      { day: "Day 7", milestone: "10-Provider Router + Brief Generator", details: "router.py's fallback order and brief.py's vision/caption/hook/contrast pipeline shipped together, synthesizing into one structured JSON brief via Gemini." },
+      { day: "Day 9", milestone: "Pattern Engine, Closed-Loop Feedback & Health Checks", details: "pattern_engine.py's semantic pattern matching, db.py's closed-loop performance scoring, and health.py's layered diagnostics finished before enabling the daily 2AM UTC cron." },
     ],
-    lighthouse: {
-      performance: 97,
-      accessibility: 100,
-      bestPractices: 96,
-      seo: 90
-    },
+    reliability: [
+      { label: "Scrape cooldown", value: "12 hrs", detail: "minimum gap between successful scrapes of the same handle in the same niche, checked before any Apify credit is spent" },
+      { label: "Circuit breaker", value: "2 hits / 24h", detail: "a handle stops being scraped mid-day once it's already been attempted twice, protecting the credit budget from a misbehaving niche config" },
+      { label: "Outlier confirmation gates", value: "3", detail: "median multiplier, absolute floor, and minimum engagement rate must all pass together before a post is flagged viral" },
+      { label: "AI fallback depth", value: "10 providers", detail: "Groq → Cerebras → NVIDIA → OpenRouter → GitHub Models → Cohere → SambaNova → Mistral → Gemini → HuggingFace, with rate-limited agents cooled down for 5 minutes instead of retried" },
+    ],
     decisions: [
       {
-        tech: "Python / FastAPI",
-        title: "Fast Data Manipulation",
-        explanation: "Simplifies numerical data structures and handles parsing formats cleanly."
+        tech: "Apify (apify-client)",
+        title: "Reliable Scraping Without Maintaining Cookies",
+        explanation: "Offloads the actual scraping to a managed actor instead of hand-rolling Instagram session/cookie management, trading a small per-run credit cost for scrapes that don't break every time Instagram tweaks its anti-bot detection.",
       },
       {
-        tech: "Groq / Cerebras",
-        title: "Sub-Second Fallback Inference",
-        explanation: "Executes extraction models at extreme speed, preventing task execution timeouts."
+        tech: "Groq + Cerebras",
+        title: "Free, Fast Inference for the Bulk of the Analysis",
+        explanation: "Vision audits, caption audits, and hook scoring all run on Groq/Cerebras's free tiers first — Gemini is only called once per brief, right at the final synthesis step, to stay inside its daily call budget.",
       },
       {
-        tech: "SQLite",
-        title: "Zero-Overhead Database",
-        explanation: "Keeps data records fully local inside the file system without running complex network servers."
-      }
+        tech: "SQLite + Supabase",
+        title: "Local-First With an Optional Sync Layer",
+        explanation: "SQLite is the source of truth for a single run; Supabase sync (profiles, patterns, competitor posts) layers cross-run and cross-niche persistence on top without requiring a database server to stay up.",
+      },
+      {
+        tech: "FastAPI dashboard",
+        title: "A Thin Control Layer, Not the Pipeline Itself",
+        explanation: "dashboard_server.py exposes read/trigger endpoints over the same SQLite data the cron job writes — the dashboard observes and can kick off runs, but the pipeline logic itself lives entirely in schedulers/daily.py.",
+      },
     ],
     lessons: [
-      "Expand scraper to support TikTok competitors",
-      "Add automatic transcript download for outlier videos",
-      "Generate visual storyboard briefs using sketch models",
-      "Link outlier alerts straight to Discord channels"
+      "Move the semantic pattern-matching fallback off a full LLM call and onto a cheaper local embedding comparison first, only escalating to the LLM matcher when cosine similarity is genuinely ambiguous.",
+      "Make the circuit breaker's 2-hit/24h window niche-configurable instead of hardcoded, since some niches have far tighter Apify budgets than others.",
+      "Add TikTok as a second scrape source so outlier detection isn't blind to a competitor's cross-platform virality.",
+      "Surface closed-loop feedback scores directly on the dashboard so a declining pattern's success rate is visible before it's automatically retired.",
     ],
     gallery: [
       { label: "Dashboard Trend View", img: "/vcentre-preview.png" },
-      { label: "AI Creative Briefs", img: "/vcentre-briefs-view.png" }
-    ]
-  }
+      { label: "AI Creative Briefs", img: "/vcentre-briefs-view.png" },
+    ],
+  },
 };
