@@ -27,6 +27,14 @@ const askGroq = createServerFn({ method: "POST" })
               content: `You are an AI assistant representing Ayush Agarwal on his portfolio website.
 Ayush is a 17-year-old Systems & Agent Engineer based in Bengaluru, India. He builds high-performance e-commerce engines, AI agent pipelines, and developer tooling. He starts his CSE degree at VIT (Vellore Institute of Technology) in August 2026.
 
+Availability:
+- Open to remote software engineering roles, high-velocity contract work, and freelance consulting.
+- Due to starting college in August 2026, he is actively seeking remote part-time positions, flexible freelance contracts, or summer internships.
+
+Engineering Philosophy:
+- Pragmatism over theoretical hype. He builds "systems that ship, agents that work, and products that scale."
+- Prioritizes engineering integrity: implementing proper outlier baselines, multi-model consensus, fallback chains, and circuit breakers to prevent systemic failure.
+
 Key Stats & Outcomes:
 - Shipped 3 production AI/SaaS projects solo in 30 days total (June - July 2026).
 - Portfolio infra cost: ₹0 (designed for maximum efficiency using free tiers).
@@ -38,7 +46,7 @@ Key Projects:
    - Built solo in 10 days. Features in-memory caching, atomic database transaction stock-locking to prevent overselling, and 100 Lighthouse SEO.
 2. Veltrix (Autonomous Instagram Growth Pipeline):
    - Tech: Python, Gemini API, Groq, Cerebras, SQLite, Supabase, Playwright, Jinja2, GitHub Actions.
-   - Publishes twice daily. Runs adversarial consensus loops: Gemini drafts content, Groq + Cerebras act as independent auditors. Renders full resolution carousel slides via Jinja2 & headless Playwright. Cost per post is only ~$0.0002.
+   - Publishes twice daily. Runs adversarial consensus loops: Gemini drafts content, Groq + Cerebras act as independent auditors. Renders full resolution slides via Jinja2 & headless Playwright. Cost per post is only ~$0.0002.
 3. Vcentre (Competitor Intelligence Scraper):
    - Tech: Python, Apify, SQLite, Supabase, Groq, Cerebras, FastAPI, GitHub Actions.
    - Scrapes competitor Instagram accounts nightly. Cohort-scores Reels/Photos separately, filters outliers (>3x-median engagement), analyzes content via a 10-provider LLM fallback chain, and outputs creative briefs. Cost is $0/month.
@@ -55,13 +63,21 @@ Social Links:
 - Email: hello@ayush.dev
 - Contact: Suggest filling out the contact form at the bottom of the page or emailing hello@ayush.dev.
 
+Navigational & Page Context Hints:
+- You can direct users to scroll and explore sections of this page:
+  - Timeline: "Check out the chronological timeline under the About section."
+  - Stack: "Scroll down to see his full visual stack competencies."
+  - Projects: "Click any project card in the Selected Work section to open the live workspace code panel."
+
 Guardrails & Instructions:
 - Do not make up facts or project details.
 - If asked about topics outside Ayush's background, politely redirect them back to his portfolio work.
 - Format responses beautifully using **bolding** and inline code \`like this\` where appropriate.
 - When mentioning emails, keep them as hello@ayush.dev.
 
-Tone: Engineering-focused, direct, crisp, and professional. Keep answers under 3-4 sentences.`
+Tone & Style:
+- Engineering-focused, direct, and crisp.
+- Keep simple answers short (3-4 sentences). For deep technical/architectural queries, feel free to give comprehensive, detailed answers up to 400-500 tokens.`
             },
             {
               role: "user",
@@ -199,7 +215,38 @@ export function Chatbox() {
     setInputValue("");
     setIsLoading(true);
 
-    const cacheKey = text.trim().toLowerCase();
+    // Normalize keys: lowercase, strip punctuation/emojis, collapse whitespace
+    const cacheKey = text
+      .trim()
+      .toLowerCase()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
+      .replace(/\s+/g, " ");
+
+    // Bounded eviction setter to stay within storage limits safely
+    const safeSetItem = (key: string, value: string) => {
+      try {
+        if (typeof window !== "undefined") {
+          const keysStr = sessionStorage.getItem("vagent_cache_keys");
+          let keys: string[] = keysStr ? JSON.parse(keysStr) : [];
+          
+          keys = keys.filter((k) => k !== key);
+          keys.push(key);
+
+          // Enforce 50-item cache size ceiling (FIFO eviction)
+          if (keys.length > 50) {
+            const oldest = keys.shift();
+            if (oldest) {
+              sessionStorage.removeItem(`vagent_cache_${oldest}`);
+            }
+          }
+
+          sessionStorage.setItem(`vagent_cache_${key}`, value);
+          sessionStorage.setItem("vagent_cache_keys", JSON.stringify(keys));
+        }
+      } catch (e) {
+        console.warn("sessionStorage cache write bypassed:", e);
+      }
+    };
 
     try {
       // Check client-side sessionStorage cache first
@@ -222,15 +269,11 @@ export function Chatbox() {
         // Fallback to local heuristic responder with simulated thinking delay
         await new Promise((resolve) => setTimeout(resolve, 800));
         const localResponse = getLocalResponse(text);
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem(`vagent_cache_${cacheKey}`, localResponse);
-        }
+        safeSetItem(cacheKey, localResponse);
         playTick(-0.2); // Play sound on receive
         setMessages((prev) => [...prev, { sender: "bot", text: localResponse }]);
       } else {
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem(`vagent_cache_${cacheKey}`, response);
-        }
+        safeSetItem(cacheKey, response);
         playTick(-0.2); // Play sound on receive
         setMessages((prev) => [...prev, { sender: "bot", text: response }]);
       }
@@ -238,9 +281,7 @@ export function Chatbox() {
       console.error(e);
       await new Promise((resolve) => setTimeout(resolve, 800));
       const localResponse = getLocalResponse(text);
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem(`vagent_cache_${cacheKey}`, localResponse);
-      }
+      safeSetItem(cacheKey, localResponse);
       playTick(-0.2);
       setMessages((prev) => [...prev, { sender: "bot", text: localResponse }]);
     } finally {
