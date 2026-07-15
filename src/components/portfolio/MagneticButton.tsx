@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { type ReactNode, useRef } from "react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +26,12 @@ export function MagneticButton({
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 300, damping: 20, mass: 0.4 });
   const springY = useSpring(y, { stiffness: 300, damping: 20, mass: 0.4 });
+
+  // Create secondary springs and transforms for the inner text to create an elastic parallax drift
+  const textX = useSpring(x, { stiffness: 240, damping: 18, mass: 0.5 });
+  const textY = useSpring(y, { stiffness: 240, damping: 18, mass: 0.5 });
+  const innerX = useTransform(textX, (v) => v * 0.3);
+  const innerY = useTransform(textY, (v) => v * 0.3);
 
   const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (reduceMotion) return;
@@ -56,7 +62,9 @@ export function MagneticButton({
         className,
       )}
     >
-      {children}
+      <motion.span style={reduceMotion ? {} : { x: innerX, y: innerY }} className="inline-flex items-center gap-2">
+        {children}
+      </motion.span>
     </motion.a>
   );
 }

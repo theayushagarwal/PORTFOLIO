@@ -11,14 +11,14 @@ import { playTick, playSwell, playExit } from "@/lib/sound";
 import { PROJECT_DETAILS } from "@/lib/project-details";
 import { toast } from "sonner";
 
-function useSpotlight() {
+function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const ref = useRef<HTMLElement>(null);
   const background = useTransform(
     [mouseX, mouseY],
     ([x, y]) =>
-      `radial-gradient(320px circle at ${x}px ${y}px, rgba(6,182,212,0.09), transparent 60%)`,
+      `radial-gradient(320px circle at ${x}px ${y}px, ${glowColor}, transparent 60%)`,
   );
   const onMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = ref.current?.getBoundingClientRect();
@@ -46,7 +46,9 @@ function Metrics({ metrics }: { metrics: Project["metrics"] }) {
 
 /** The strongest project — visual and content side by side, full width. */
 function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: (p: Project) => void }) {
-  const { ref, onMove, background } = useSpotlight();
+  const details = PROJECT_DETAILS[p.name];
+  const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
+  const { ref, onMove, background } = useSpotlight(glowColor);
   const Visual = PROJECT_VISUALS[p.visual];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -72,6 +74,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
           whileInView="visible"
           whileHover="hover"
           viewport={{ once: true, margin: "-60px" }}
+          style={{ transformStyle: "preserve-3d" }}
           className="surface-card group relative grid gap-8 overflow-hidden p-6 md:grid-cols-2 md:gap-10 md:p-8"
         >
           <motion.div
@@ -80,7 +83,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
             style={{ background }}
           />
 
-          <div className="flex flex-col gap-5 self-center w-full relative z-10">
+          <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} className="flex flex-col gap-5 self-center w-full relative z-10">
             <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
               {p.image ? (
                 <div className="relative w-full h-auto">
@@ -131,7 +134,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
             )}
           </div>
 
-          <div className="relative flex flex-col justify-center">
+          <div style={{ transform: "translateZ(15px)" }} className="relative flex flex-col justify-center">
             <div className="flex items-center gap-3">
               <span className="eyebrow">Featured</span>
               <span className="h-px w-6 bg-border" />
@@ -211,7 +214,9 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
 
 /** Supporting projects — compact, visual on top, one line of proof below. */
 function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onViewCaseStudy: (p: Project) => void }) {
-  const { ref, onMove, background } = useSpotlight();
+  const details = PROJECT_DETAILS[p.name];
+  const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
+  const { ref, onMove, background } = useSpotlight(glowColor);
   const Visual = PROJECT_VISUALS[p.visual];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -238,6 +243,7 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
           whileHover="hover"
           viewport={{ once: true, margin: "-60px" }}
           custom={i}
+          style={{ transformStyle: "preserve-3d" }}
           className="surface-card group relative flex flex-col overflow-hidden p-6"
         >
           <motion.div
@@ -246,25 +252,27 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
             style={{ background }}
           />
 
-          <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
-            {p.image ? (
-              <button
-                onClick={() => setIsLightboxOpen(true)}
-                aria-label={`View full ${p.name} screenshot`}
-                className="w-full h-auto block text-left outline-none cursor-zoom-in"
-              >
-                <img
-                  src={`${p.image}?v=1.2`}
-                  alt={p.name}
-                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
-                />
-              </button>
-            ) : (
-              <Visual />
-            )}
-          </DeviceFrame>
+          <div style={{ transform: "translateZ(30px)" }}>
+            <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+              {p.image ? (
+                <button
+                  onClick={() => setIsLightboxOpen(true)}
+                  aria-label={`View full ${p.name} screenshot`}
+                  className="w-full h-auto block text-left outline-none cursor-zoom-in"
+                >
+                  <img
+                    src={`${p.image}?v=1.2`}
+                    alt={p.name}
+                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
+                  />
+                </button>
+              ) : (
+                <Visual />
+              )}
+            </DeviceFrame>
+          </div>
 
-          <div className="relative mt-6 flex flex-1 flex-col">
+          <div style={{ transform: "translateZ(15px)" }} className="relative mt-6 flex flex-1 flex-col">
             <div className="flex items-center gap-3 font-mono text-xs text-subtle">
               <span>{p.index}</span>
               <span className="h-px w-5 bg-border" />
