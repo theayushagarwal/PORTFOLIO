@@ -199,24 +199,50 @@ export function Chatbox() {
     setInputValue("");
     setIsLoading(true);
 
+    const cacheKey = text.trim().toLowerCase();
+
     try {
+      // Check client-side sessionStorage cache first
+      if (typeof window !== "undefined") {
+        const cachedResponse = sessionStorage.getItem(`vagent_cache_${cacheKey}`);
+        if (cachedResponse) {
+          // Play instant responsive audio feedback + minor typing indicator delay
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          playTick(-0.2);
+          setMessages((prev) => [...prev, { sender: "bot", text: cachedResponse }]);
+          setIsLoading(false);
+          return;
+        }
+      }
+
       // Call the server function which queries Groq
       const response = await askGroq({ data: text });
 
       if (response === "__NO_API_KEY__" || response === "__API_ERROR__") {
         // Fallback to local heuristic responder with simulated thinking delay
         await new Promise((resolve) => setTimeout(resolve, 800));
+        const localResponse = getLocalResponse(text);
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem(`vagent_cache_${cacheKey}`, localResponse);
+        }
         playTick(-0.2); // Play sound on receive
-        setMessages((prev) => [...prev, { sender: "bot", text: getLocalResponse(text) }]);
+        setMessages((prev) => [...prev, { sender: "bot", text: localResponse }]);
       } else {
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem(`vagent_cache_${cacheKey}`, response);
+        }
         playTick(-0.2); // Play sound on receive
         setMessages((prev) => [...prev, { sender: "bot", text: response }]);
       }
     } catch (e) {
       console.error(e);
       await new Promise((resolve) => setTimeout(resolve, 800));
+      const localResponse = getLocalResponse(text);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem(`vagent_cache_${cacheKey}`, localResponse);
+      }
       playTick(-0.2);
-      setMessages((prev) => [...prev, { sender: "bot", text: getLocalResponse(text) }]);
+      setMessages((prev) => [...prev, { sender: "bot", text: localResponse }]);
     } finally {
       setIsLoading(false);
     }
