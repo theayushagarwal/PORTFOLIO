@@ -12,6 +12,7 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress } from "@/components/portfolio/ScrollProgress";
 import { CursorFollower } from "@/components/portfolio/CursorFollower";
+import { Chatbox } from "@/components/portfolio/Chatbox";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -47,6 +48,7 @@ function Portfolio() {
 
       <ScrollProgress />
       <CursorFollower />
+      <Chatbox />
       <Nav />
 
       <main>
