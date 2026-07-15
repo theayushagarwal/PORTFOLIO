@@ -20,7 +20,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
   return (
     <section id="top" ref={ref} className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
       {/* Shifting Gradient Mesh */}
-      <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden mesh-container" aria-hidden>
         <div className="mesh-blob mesh-blob-1" />
         <div className="mesh-blob mesh-blob-2" />
         <div className="mesh-blob mesh-blob-3" />

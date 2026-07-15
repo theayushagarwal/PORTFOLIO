@@ -144,6 +144,19 @@
 
 @utility font-serif-accent {
   font-family: var(--font-serif-accent);
+  background: linear-gradient(to right, #a78bfa, #22d3ee, #f472b6, #a78bfa);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-gradient-shift 8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes text-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Fine structural dot-grid used behind the hero — no glow, just texture. */
@@ -568,6 +581,18 @@
   top: 5%;
   left: 40%;
   animation: mesh-float-3 22s infinite ease-in-out;
+}
+
+.mesh-container {
+  animation: hue-shift 30s linear infinite;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+@keyframes hue-shift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 /* 4. Elegant Premium Scrollbar */
