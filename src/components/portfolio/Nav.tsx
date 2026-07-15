@@ -21,28 +21,33 @@ export function Nav() {
     };
   }, [open]);
 
-  // Scrollspy to update active navigation item
+  // High-performance IntersectionObserver Scrollspy
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 250; // offset for earlier detection
-      const sections = ["top", "work", "about", "stack", "contact"];
-      
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
+    const sections = ["top", "work", "about", "stack", "contact"];
+    
+    // rootMargin offset simulates the previous 250px offset earlier detection beautifully
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -60% 0px", 
+      threshold: 0,
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sections.forEach((sectionId) => {
+      const el = document.getElementById(sectionId);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
