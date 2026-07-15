@@ -74,7 +74,7 @@ export function CursorFollower() {
       <div
         ref={ringRef}
         style={{ opacity: 0 }}
-        className="pointer-events-none fixed left-0 top-0 z-[99999] h-5 w-5 rounded-full border border-primary/50 bg-primary/5 will-change-transform transition-[transform,scale] duration-100 ease-out hidden md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[99999] h-5 w-5 rounded-full border border-primary/50 bg-primary/5 will-change-transform hidden md:block"
       />
       {/* Inner instant dot */}
       <div
