@@ -33,17 +33,19 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
   };
 
   return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        perspective: "1000px",
-        rotateX,
-        rotateY,
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <div style={{ perspective: "1000px" }} className={className}>
+      <motion.div
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        className="w-full h-full"
+      >
+        {children}
+      </motion.div>
+    </div>
   );
 }

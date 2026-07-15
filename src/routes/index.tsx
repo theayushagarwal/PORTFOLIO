@@ -25,11 +25,8 @@ function Portfolio() {
     if (!container) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      container.style.setProperty("--mouse-x", `${x}px`);
-      container.style.setProperty("--mouse-y", `${y}px`);
+      container.style.setProperty("--mouse-x", `${e.clientX}px`);
+      container.style.setProperty("--mouse-y", `${e.clientY}px`);
     };
 
     container.addEventListener("mousemove", handleMouseMove);
