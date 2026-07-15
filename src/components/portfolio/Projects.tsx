@@ -787,7 +787,7 @@ export function Projects() {
         <Reveal>
           <div className="flex items-end justify-between gap-8">
             <div>
-              <p className="eyebrow">Selected work · 2024 — 2026</p>
+              <p className="eyebrow">Selected work · 2026</p>
               <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">
                 Systems shipped, <br className="hidden md:block" />
                 not just experiments.
