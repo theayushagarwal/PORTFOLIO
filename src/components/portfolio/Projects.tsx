@@ -136,6 +136,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
                         <img
                           src={`${p.secondaryImage}?v=1.3`}
                           alt="Admin screenshot thumbnail"
+                          loading="lazy"
                           className="h-12 w-20 object-cover object-top transition-transform duration-300 group-hover/thumb:scale-105"
                         />
                       </button>
@@ -297,6 +298,7 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
                   <img
                     src={`${p.image}?v=1.2`}
                     alt={p.name}
+                    loading="lazy"
                     className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
                   />
                 </button>
@@ -1427,14 +1429,14 @@ export function Projects() {
                     {details.gallery.map((item, idx) => (
                       <div key={`${item.label}-${idx}`} className="flex-none w-[85vw] sm:w-[480px]">
                         <DeviceFrame label={item.label} noPadding className="border-white/10 overflow-hidden shadow-md">
-                          <img src={`${item.img}?v=1.2`} alt={item.label} className="w-full object-cover object-top max-h-[300px]" />
+                          <img src={`${item.img}?v=1.2`} alt={item.label} loading="lazy" className="w-full object-cover object-top max-h-[300px]" />
                         </DeviceFrame>
                       </div>
                     ))}
                     {activeProject.secondaryImage && (
                       <div className="flex-none w-[85vw] sm:w-[480px]">
                         <DeviceFrame label={activeProject.secondaryLabel || "Admin console"} noPadding className="border-white/10 overflow-hidden shadow-md">
-                          <img src={`${activeProject.secondaryImage}?v=1.3`} alt="Secondary screenshot" className="w-full object-cover object-top max-h-[300px]" />
+                          <img src={`${activeProject.secondaryImage}?v=1.3`} alt="Secondary screenshot" loading="lazy" className="w-full object-cover object-top max-h-[300px]" />
                         </DeviceFrame>
                       </div>
                     )}
