@@ -84,7 +84,7 @@ export const PROJECTS: Project[] = [
     summary:
       "Every post ships through an adversarial pipeline before it goes live: Gemini drafts the topic and caption, then Groq and Cerebras — two independent models — must both sign off before it's trusted. A statistically-adaptive embedding check catches duplicate topics without a hardcoded similarity cutoff, and a self-expiring checkpoint file carries each post across two separate GitHub Actions runners so it can sit for a 30-minute human review window before auto-publishing. Branded slides render through Jinja2 + headless Playwright at full carousel resolution.",
     role: "Solo developer",
-    year: "2025",
+    year: "2026",
     stack: ["Python", "Gemini API", "Groq", "Cerebras", "SQLite", "Supabase", "Playwright", "GitHub Actions", "Jinja2"],
     metrics: [
       { k: "posts/day", v: "2 (auto)" },
