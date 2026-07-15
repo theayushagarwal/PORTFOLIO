@@ -18,7 +18,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section id="top" ref={ref} className="relative overflow-hidden pt-40 pb-32 md:pt-56 md:pb-40">
+    <section id="top" ref={ref} className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
       {/* Shifting Gradient Mesh */}
       <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden" aria-hidden>
         <div className="mesh-blob mesh-blob-1" />
@@ -54,12 +54,12 @@ export function Hero({ revealed }: { revealed: boolean }) {
           <p className="shiny-text font-display text-lg font-semibold tracking-tight md:text-xl">
             <TextScramble text={PROFILE.name} delay={0.35} trigger={revealed} />
           </p>
-          <p className="mt-2 max-w-md text-sm text-muted-foreground md:text-base">
+          <p className="mt-1.5 max-w-md text-sm text-muted-foreground md:text-base">
             {PROFILE.tagline}
           </p>
         </motion.div>
 
-        <Reveal delay={1} className="mt-8 block">
+        <Reveal delay={1} className="mt-5 block">
           <div className="flex items-center gap-3">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-60" />
@@ -70,7 +70,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
         </Reveal>
 
         <Reveal delay={2}>
-          <h1 className="mt-8 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-7xl lg:text-[5.25rem]">
+          <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-7xl lg:text-[5.25rem]">
             {PROFILE.headline.line1}
             <br />
             <span className="text-muted-foreground">{PROFILE.headline.line2}</span>{" "}
@@ -79,13 +79,13 @@ export function Hero({ revealed }: { revealed: boolean }) {
         </Reveal>
 
         <Reveal delay={3}>
-          <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
             {PROFILE.pitch}
           </p>
         </Reveal>
 
         <Reveal delay={4}>
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <MagneticButton href="#work" variant="primary">
               View selected work
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -97,7 +97,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
         </Reveal>
 
         <Reveal delay={6}>
-          <dl className="mt-24 grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
+          <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
             {HERO_STATS.map((s) => (
               <div key={s.k} className="flex flex-col">
                 <dt className="order-2 mt-1 text-xs uppercase tracking-widest text-subtle">

@@ -1,6 +1,13 @@
 import { Reveal } from "./Reveal";
 import { PROFILE } from "@/lib/site-data";
 
+const MILESTONES = [
+  { date: "Late 2025", title: "Shipped Veltrix Bot", desc: "Engineered multi-model LLM consensus engine auto-publishing twice daily." },
+  { date: "Early 2026", title: "Initiated Vurlo SaaS", desc: "Designed full-stack e-commerce architecture, Firestore rules, and Razorpay routing." },
+  { date: "Feb 2026", title: "Launched Vcentre Scraper", desc: "Created 10-provider LLM scraping pipeline and feedback scoring loop." },
+  { date: "Mar 2026", title: "Crafted Portfolio Redesign", desc: "Developed glassmorphic 3D developer showcase with fluid animations." },
+];
+
 export function About() {
   return (
     <section id="about" className="relative py-32 md:py-40">
@@ -23,8 +30,29 @@ export function About() {
               </Reveal>
             ))}
 
+            <Reveal delay={2}>
+              <div className="mt-12 space-y-6">
+                <p className="eyebrow">Milestones</p>
+                <div className="relative pl-6 border-l border-border space-y-8 mt-4">
+                  {MILESTONES.map((m, idx) => (
+                    <div key={idx} className="relative">
+                      {/* Timeline dot */}
+                      <span className="absolute -left-[29px] top-1.5 flex h-3 w-3 items-center justify-center rounded-full border border-primary bg-background">
+                        <span className="h-1 w-1 rounded-full bg-primary" />
+                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-primary font-semibold">{m.date}</span>
+                        <h4 className="font-display font-semibold text-foreground text-sm">{m.title}</h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
             <Reveal delay={3}>
-              <div className="mt-10 grid grid-cols-2 gap-8 border-t border-border pt-8">
+              <div className="mt-12 grid grid-cols-2 gap-8 border-t border-border pt-8">
                 <div>
                   <p className="eyebrow">Currently</p>
                   <p className="mt-2 text-sm text-foreground">{PROFILE.currently}</p>

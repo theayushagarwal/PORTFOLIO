@@ -21,7 +21,8 @@ export function Stack() {
             <Reveal key={g.group} delay={i}>
               <div className="h-full bg-background p-8">
                 <p className="eyebrow">{g.group}</p>
-                <ul className="mt-6 flex flex-wrap gap-2">
+                <p className="mt-2 text-xs text-muted-foreground/80 leading-relaxed font-normal">{g.desc}</p>
+                <ul className="mt-5 flex flex-wrap gap-2">
                   {g.items.map((it) => (
                     <li
                       key={it}

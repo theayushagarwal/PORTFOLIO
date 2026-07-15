@@ -9,6 +9,7 @@ export function Nav() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("top");
 
   useEffect(() => scrollY.on("change", (y) => setScrolled(y > 20)), [scrollY]);
 
@@ -19,6 +20,30 @@ export function Nav() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  // Scrollspy to update active navigation item
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 250; // offset for earlier detection
+      const sections = ["top", "work", "about", "stack", "contact"];
+      
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
@@ -41,14 +66,24 @@ export function Nav() {
           <nav className="hidden items-center gap-8 md:flex">
             {NAV_ITEMS.map((item, i) => {
               const pan = (i / (NAV_ITEMS.length - 1)) * 2 - 1;
+              const isActive = activeSection === item.href.slice(1);
               return (
                 <a
                   key={item.href}
                   href={item.href}
                   onMouseEnter={() => playTick(pan)}
-                  className="link-underline text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  className={`relative text-sm font-medium transition-colors py-1 ${
+                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   {item.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeNavIndicator"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-primary"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </a>
               );
             })}
@@ -89,6 +124,7 @@ export function Nav() {
             <nav className="flex h-full flex-col items-center justify-center gap-8 px-6">
               {NAV_ITEMS.map((item, i) => {
                 const pan = (i / (NAV_ITEMS.length - 1)) * 2 - 1;
+                const isActive = activeSection === item.href.slice(1);
                 return (
                   <motion.a
                     key={item.href}
@@ -98,7 +134,9 @@ export function Nav() {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.08 * i, ease: EASE }}
-                    className="font-display text-3xl font-semibold tracking-tight text-foreground"
+                    className={`font-display text-3xl font-semibold tracking-tight transition-colors ${
+                      isActive ? "text-primary" : "text-foreground"
+                    }`}
                   >
                     {item.label}
                   </motion.a>

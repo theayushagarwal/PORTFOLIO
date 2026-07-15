@@ -11,9 +11,9 @@ export const PROFILE = {
   status: "17-year-old developer crafting high-fidelity products & interfaces",
   tagline: "Autonomous pipelines. Commerce engines. Interfaces that feel alive.",
   headline: {
-    line1: "Designing interfaces,",
-    line2: "and engineering them",
-    accent: "to feel alive.",
+    line1: "Building systems that ship.",
+    line2: "Agents that work. Products",
+    accent: "that scale.",
   },
   pitch:
     "I'm a developer and designer specialized in high-performance e-commerce engines, multi-model AI agent pipelines, and interfaces polished enough to ship.",
@@ -33,10 +33,10 @@ export const PROFILE = {
 } as const;
 
 export const HERO_STATS = [
-  { k: "Age", v: "17" },
-  { k: "Main stack", v: "TS / Python / AI Agents" },
-  { k: "Projects built", v: "15+" },
-  { k: "Based in", v: PROFILE.location },
+  { k: "Infra cost", v: "₹0" },
+  { k: "Lighthouse Score", v: "100" },
+  { k: "Shipped products", v: "3" },
+  { k: "Build time", v: "30 days" },
 ] as const;
 
 export type Project = {
@@ -120,22 +120,26 @@ export const PROJECTS: Project[] = [
     image: "/vcentre-preview.webp",
   },
 ];
-export const STACK: { group: string; items: string[] }[] = [
+export const STACK: { group: string; desc: string; items: string[] }[] = [
   {
-    group: "Models & Inference",
-    items: ["OpenAI", "Anthropic", "vLLM", "Ollama", "TGI", "Llama.cpp"],
+    group: "AI Agents & Pipelines",
+    desc: "State machine routing, adversarial review loops, multi-model consensus, and autonomous automation.",
+    items: ["Python", "Gemini API", "Groq", "Cerebras", "LangGraph", "GitHub Actions"],
   },
   {
-    group: "Agents & Orchestration",
-    items: ["LangGraph", "DSPy", "Temporal", "Inngest", "Modal"],
+    group: "E-Commerce & SaaS Systems",
+    desc: "Production transactional logic, payment routing, real-time sync, and granular database security.",
+    items: ["React 19", "TanStack Start", "Firebase Auth", "Firestore Rules", "Razorpay Checkout"],
   },
   {
-    group: "Retrieval & Data",
-    items: ["pgvector", "Qdrant", "Turbopuffer", "DuckDB", "Postgres"],
+    group: "Data & Systems Infrastructure",
+    desc: "Web scraping cohort analysis, embedding similarities, headless browsers, and serverless hosting.",
+    items: ["SQLite", "Supabase", "FastAPI", "Playwright", "Jinja2 Templates", "Cloudflare Pages"],
   },
   {
-    group: "Product & Systems",
-    items: ["TypeScript", "Rust", "Python", "Next.js", "Swift", "React"],
+    group: "Client & Interface Crafting",
+    desc: "High-fidelity layouts, dynamic 3D physics, glassmorphic rendering, and fluid animations.",
+    items: ["TypeScript", "Tailwind CSS", "Framer Motion", "Figma Design", "HTML5 & CSS3"],
   },
 ];
 
