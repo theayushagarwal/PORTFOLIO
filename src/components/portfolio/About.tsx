@@ -17,8 +17,8 @@ export function About() {
             <Reveal>
               <p className="eyebrow">About</p>
               <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">
-                Half design, <br />
-                half code.
+                Built to ship. <br />
+                Wired to scale.
               </h2>
             </Reveal>
           </div>
