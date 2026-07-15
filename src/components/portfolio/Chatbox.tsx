@@ -200,7 +200,7 @@ export function Chatbox() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 font-sans hidden md:block">
+    <div className="fixed bottom-6 right-6 z-40 font-sans">
       {/* Hover Tooltip */}
       <div 
         className={`absolute right-14 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg border border-white/10 bg-surface/95 px-3 py-1.5 text-[9px] uppercase tracking-widest text-foreground shadow-lg backdrop-blur-md font-mono select-none transition-all duration-200 pointer-events-none ${
@@ -232,7 +232,7 @@ export function Chatbox() {
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.95, y: 15, filter: "blur(6px)" }}
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="absolute bottom-16 right-0 w-80 sm:w-96 h-[460px] surface-card backdrop-blur-xl border border-white/10 flex flex-col rounded-2xl overflow-hidden shadow-2xl z-40 select-text origin-bottom-right"
+            className="absolute bottom-16 right-0 w-[calc(100vw-3rem)] sm:w-96 h-[400px] sm:h-[460px] surface-card backdrop-blur-xl border border-white/10 flex flex-col rounded-2xl overflow-hidden shadow-2xl z-40 select-text origin-bottom-right"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-4 py-3 select-none">
