@@ -12,20 +12,54 @@ import { PROJECT_DETAILS } from "@/lib/project-details";
 import { toast } from "sonner";
 
 function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(-999);
+  const mouseY = useMotionValue(-999);
   const ref = useRef<HTMLElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
   const background = useTransform(
     [mouseX, mouseY],
     ([x, y]) =>
       `radial-gradient(320px circle at ${x}px ${y}px, ${glowColor}, transparent 60%)`,
   );
-  const onMove = (e: React.MouseEvent<HTMLElement>) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const handleMouseEnter = () => {
+      rectRef.current = el.getBoundingClientRect();
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!rectRef.current) {
+        rectRef.current = el.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      mouseX.set(e.clientX - rect.left);
+      mouseY.set(e.clientY - rect.top);
+    };
+
+    const handleMouseLeave = () => {
+      rectRef.current = null;
+      mouseX.set(-999);
+      mouseY.set(-999);
+    };
+
+    el.addEventListener("mouseenter", handleMouseEnter, { passive: true });
+    el.addEventListener("mousemove", handleMouseMove, { passive: true });
+    el.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+
+    return () => {
+      el.removeEventListener("mouseenter", handleMouseEnter);
+      el.removeEventListener("mousemove", handleMouseMove);
+      el.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [mouseX, mouseY, glowColor]);
+
+  // Backwards compatibility with JSX handlers
+  const onMove = () => {};
+
   return { ref, onMove, background };
 }
 
