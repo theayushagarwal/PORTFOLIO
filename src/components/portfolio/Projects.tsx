@@ -677,9 +677,7 @@ export function Projects() {
 
   // Transition stage timing handler
   const handleViewCaseStudy = (p: Project) => {
-    console.log("handleViewCaseStudy triggered for", p.name);
     if (isTransitioning) {
-      console.log("Transition already in progress. Ignoring.");
       return;
     }
     setIsTransitioning(true);
@@ -725,7 +723,6 @@ export function Projects() {
   };
 
   const handleExitWorkspace = () => {
-    console.log("handleExitWorkspace triggered");
     if (isTransitioning || !activeProject) return;
     setIsTransitioning(true);
     playExit(); // Synthesize descending power-down sound
@@ -977,13 +974,13 @@ export function Projects() {
                     </span>
                   </div>
 
-                  {/* Document Navigation Tabs - hidden on mobile for cleaner layout */}
-                  <nav className="hidden items-center gap-1.5 lg:flex relative z-10">
+                  {/* Document Navigation Tabs - scrollable on mobile, static on desktop */}
+                  <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none py-1 max-w-[40%] sm:max-w-[50%] md:max-w-[60%] lg:max-w-none lg:overflow-x-visible relative z-10 whitespace-nowrap [mask-image:linear-gradient(to_right,black_85%,transparent)] lg:[mask-image:none]">
                     {TABS.map((tab, idx) => (
                       <button
                         key={tab.id}
                         onClick={() => scrollToSection(tab.id, idx)}
-                        className={`relative rounded-lg px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest cursor-pointer transition-colors duration-200 ${
+                        className={`relative rounded-lg px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer transition-colors duration-200 flex-shrink-0 ${
                           activeSection === tab.id ? "text-foreground font-semibold" : "text-muted-foreground/80 hover:text-foreground"
                         }`}
                       >
@@ -1037,7 +1034,7 @@ export function Projects() {
                 <div className="grid gap-8 md:grid-cols-3">
                   {/* Left Column: Hero screenshot */}
                   <div className="md:col-span-2 space-y-6">
-                    <DeviceFrame label={`${activeProject.name.toLowerCase()}/hero.png`} noPadding className="border-white/10 shadow-2xl overflow-hidden bg-black/40">
+                    <DeviceFrame label={`${activeProject.name.toLowerCase()}/hero.webp`} noPadding className="border-white/10 shadow-2xl overflow-hidden bg-black/40">
                       {activeProject.image ? (
                         <img src={`${activeProject.image}?v=1.2`} alt="Hero view" className="w-full object-cover object-top max-h-[360px]" />
                       ) : (
@@ -1078,19 +1075,19 @@ export function Projects() {
                           <p className="mt-0.5 text-xs text-foreground/90 font-semibold">{activeProject.year}</p>
                         </div>
                         <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Users / Volume</h5>
+                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Deployment</h5>
                           <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
-                            {activeProject.name === "Vurlo" ? "1,200+ active" :
-                             activeProject.name === "Veltrix" ? "2 posts / day" :
-                             "Outliers @ 3x median"}
+                            {activeProject.name === "Vurlo" ? "Production SaaS" :
+                             activeProject.name === "Veltrix" ? "2 posts / day (auto)" :
+                             "Daily scan @ 2AM UTC"}
                           </p>
                         </div>
                         <div>
                           <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Core Stack</h5>
                           <p className="mt-0.5 text-xs text-foreground/90 font-semibold truncate">
-                            {activeProject.name === "Vurlo" ? "React 19 / Firestore" :
+                            {activeProject.name === "Vurlo" ? "React 19 / Firebase" :
                              activeProject.name === "Veltrix" ? "Python / Playwright" :
-                             "FastAPI / Supabase"}
+                             "FastAPI / SQLite"}
                           </p>
                         </div>
                       </div>
@@ -1106,18 +1103,22 @@ export function Projects() {
                           Visit Live Site <ArrowUpRight className="h-3 w-3" />
                         </a>
                       )}
-                      <a
-                        href={
-                          activeProject.name === "Vurlo"
-                            ? "https://github.com/ayush-agarwal/vurlo"
-                            : activeProject.href
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/10 py-2 font-mono text-xs text-foreground hover:bg-white/10 transition-all"
-                      >
-                        View Source Code
-                      </a>
+                      {activeProject.name === "Vurlo" ? (
+                        <a
+                          href="https://github.com/theayushagarwal/vurlo-ecommerce"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/10 py-2 font-mono text-xs text-foreground hover:bg-white/10 transition-all"
+                        >
+                          View Source Code
+                        </a>
+                      ) : (
+                        <div
+                          className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/5 py-2 font-mono text-xs text-subtle/50 cursor-not-allowed select-none"
+                        >
+                          Private Repository
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1382,14 +1383,14 @@ export function Projects() {
                   <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Horizontal Screenshot Scroll</span>
                   <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin select-none">
                     {details.gallery.map((item, idx) => (
-                      <div key={`${item.label}-${idx}`} className="flex-none w-[280px] sm:w-[480px]">
+                      <div key={`${item.label}-${idx}`} className="flex-none w-[85vw] sm:w-[480px]">
                         <DeviceFrame label={item.label} noPadding className="border-white/10 overflow-hidden shadow-md">
                           <img src={`${item.img}?v=1.2`} alt={item.label} className="w-full object-cover object-top max-h-[300px]" />
                         </DeviceFrame>
                       </div>
                     ))}
                     {activeProject.secondaryImage && (
-                      <div className="flex-none w-[280px] sm:w-[480px]">
+                      <div className="flex-none w-[85vw] sm:w-[480px]">
                         <DeviceFrame label={activeProject.secondaryLabel || "Admin console"} noPadding className="border-white/10 overflow-hidden shadow-md">
                           <img src={`${activeProject.secondaryImage}?v=1.3`} alt="Secondary screenshot" className="w-full object-cover object-top max-h-[300px]" />
                         </DeviceFrame>

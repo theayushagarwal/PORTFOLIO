@@ -6,27 +6,27 @@
 
 export const PROFILE = {
   name: "Ayush Agarwal",
-  role: "Design Engineer",
+  role: "Systems & Agent Engineer",
   location: "Bengaluru, IN",
   status: "17-year-old developer crafting high-fidelity products & interfaces",
-  tagline: "Turning complexity into simplicity through AI and software.",
+  tagline: "Autonomous pipelines. Commerce engines. Interfaces that feel alive.",
   headline: {
     line1: "Designing interfaces,",
     line2: "and engineering them",
     accent: "to feel alive.",
   },
   pitch:
-    "I'm a developer and designer focused on building polished web applications. I care about speed, typography, and the tiny details of motion choreography.",
+    "I'm a developer and designer specialized in high-performance e-commerce engines, multi-model AI agent pipelines, and interfaces polished enough to ship.",
   bio: [
-    "I'm a 17-year-old designer-engineer based in India. I love bridging the gap between beautiful aesthetics and clean, performant code. I spend my time coding in TypeScript, React, and Swift, while designing in Figma and experimenting with CSS/motion choreography.",
-    "I focus on creating software that isn't just functional, but delightful to interact with. Whether it's crafting smooth transitions, designing layouts, or building robust backends, I care deeply about the final 10% of polish.",
+    "I'm 17, based in India, and I've spent the last year building things that were probably too ambitious for my age — a full ecommerce SaaS (vurlo.store) with Razorpay, Firebase security rules, an AI chatbot and full SEO, an autonomous Instagram pipeline with adversarial AI consensus, and a nightly competitor intelligence scraper. All three shipped in under a month, alongside this portfolio. I work in TypeScript and Python, design in Figma, and I'm joining VIT CSE in August.",
+    "I care more about whether a system actually works than whether it looks impressive on a slide. Every project I've shipped has a failure mode I thought about — a circuit breaker, a fallback chain, a review gate. The polish matters, but only after the foundation doesn't break.",
   ],
-  currently: "Building high-fidelity interfaces and creative tools.",
+  currently: "Shipped 3 production AI/SaaS projects in 30 days. Starting VIT CSE in August.",
   previously: "Freelance Designer · Two open-source teams.",
   email: "hello@ayush.dev",
   socials: {
-    github: "https://github.com/",
-    linkedin: "https://linkedin.com/in/",
+    github: "https://github.com/theayushagarwal",
+    linkedin: "https://linkedin.com/in/ayushagarwal17",
     twitter: "https://twitter.com/",
     resume: "#",
   },
@@ -34,7 +34,7 @@ export const PROFILE = {
 
 export const HERO_STATS = [
   { k: "Age", v: "17" },
-  { k: "Main stack", v: "TS / React / Motion" },
+  { k: "Main stack", v: "TS / Python / AI Agents" },
   { k: "Projects built", v: "15+" },
   { k: "Based in", v: PROFILE.location },
 ] as const;
@@ -59,11 +59,11 @@ export const PROJECTS: Project[] = [
   {
     index: "01",
     name: "Vurlo",
-    tagline: "A full-stack e-commerce storefront built solo, from landing page to checkout",
-    summary: "I built and shipped this storefront solo in 10 days. TanStack Start server functions handle Razorpay signature verification securely, while Firestore listeners keep cart and order state live in real time. Built a custom admin console for products, orders, coupons, and stock requests—from scratch.",
+    tagline: "Full-stack e-commerce SaaS platform with Razorpay payments, Firebase rules, and custom AI chatbot",
+    summary: "I built and shipped a complete e-commerce SaaS platform solo at vurlo.store. It integrates Firebase Auth, granular Firestore security rules, Razorpay checkout, and an interactive AI chatbot helper. Engineered for performance with lazy-loading, product quick-view modals, and server-side SEO & GEO optimization, all managed via a custom admin panel.",
     role: "Founder & Full-Stack Engineer",
     year: "2026",
-    stack: ["React 19", "TanStack Start", "TanStack Router", "TanStack Query", "Tailwind CSS", "Firebase", "Razorpay"],
+    stack: ["React 19", "TanStack Start", "Firebase Auth & Rules", "Razorpay", "Tailwind CSS", "Gemini API", "TypeScript"],
     metrics: [
       { k: "Build Time", v: "10 days" },
       { k: "Lighthouse SEO", v: "100" },
@@ -73,8 +73,8 @@ export const PROJECTS: Project[] = [
     href: "https://vurlo.store",
     visual: "agent-trace",
     visualLabel: "vurlo.store",
-    image: "/vurlo-preview.png",
-    secondaryImage: "/vurlo-admin.png",
+    image: "/vurlo-preview.webp",
+    secondaryImage: "/vurlo-admin.webp",
     secondaryLabel: "admin panel",
   },
   {
@@ -92,11 +92,11 @@ export const PROJECTS: Project[] = [
       { k: "formats", v: "4 (photo/carousel/reel/listicle)" },
       { k: "cost/post", v: "~$0.0002" }
     ],
-    href: "https://github.com/ayush-agarwal/veltrix",
+    href: "",
     visual: "agent-trace",
     visualLabel: "pipeline.run",
-    image: "/veltrix-preview.png",
-    secondaryImage: "/veltrix-logs-view.png",
+    image: "/veltrix-preview.webp",
+    secondaryImage: "/veltrix-logs-view.webp",
     secondaryLabel: "execution logs",
   },
   {
@@ -114,10 +114,10 @@ export const PROJECTS: Project[] = [
       { k: "AI fallback chain", v: "10 providers" },
       { k: "cron cadence", v: "daily @ 2AM UTC" }
     ],
-    href: "https://github.com/ayush-agarwal/vcentre",
+    href: "",
     visual: "graph-network",
     visualLabel: "outlier.scan",
-    image: "/vcentre-preview.png",
+    image: "/vcentre-preview.webp",
   },
 ];
 export const STACK: { group: string; items: string[] }[] = [

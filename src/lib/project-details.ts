@@ -100,16 +100,18 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { id: "ai-recommend", label: "api/ai-recommend.ts", desc: "uses AI to suggest complementary products directly on the cart page — sends current cart catalog items to Gemini 2.0 Flash and returns matching product IDs, backed by an in-memory cache to save on API costs." },
     ],
     features: [
+      "Complete Firebase Authentication system — secure email/password login/signup workflows with instant client profile instantiation.",
+      "Granular Firestore security rules — locks down user data, admin portals, and orders, preventing back-doors or cross-account access.",
+      "Interactive customer AI chatbot assistant — answers catalog questions, recommends items, and handles pre-sale queries in real time.",
+      "Dynamic product 'Quick View' preview overlays — lets customers check product specs, variants, and galleries without leaving the main collection feed.",
+      "Optimized client-side lazy-loading bundles — routes, modals, and admin panels are loaded on-demand to keep initial JS bundles minuscule.",
+      "Complete SEO & GEO optimization — server-side generated tags, geographic-aware configuration, and automated dynamic sitemap updates to rank perfectly on search engines.",
       "Secure stock reservation before payment — reserves items using a database transaction before the payment gateway modal opens, preventing race conditions.",
       "Automatic stock recovery on aborted payments — a compensating rollback deletes pending orders and restores stock on signature mismatches, modal dismissals, or API constructor throws.",
       "Seamless guest-to-account cart merging — preserves local items in browser storage and combines them into the customer database on sign-in without duplicating quantities.",
       "Flexible promo coupons — handles percentage/fixed discount rules, expiry dates, minimum spending thresholds, and usage caps.",
       "Tamper-proof payment integrations — runs online card payments verified via server-side HMAC-SHA256 checks, with a COD alternative.",
-      "Dynamic AI product suggestions — calls Gemini 2.0 Flash to recommend complementary accessories, falling back to instant local presets while the API loads.",
       "Secure merchant dashboard — role-gated access control for admins to manage product listings, coupon campaigns, and real-time inventory alerts.",
-      "Optimized customer load times — lazy-loads checkout and admin panel components on-demand so storefront visitors don't download code they'll never use.",
-      "Caching strategy for instant return visits — splits codebase vendor libraries into separate chunks, ensuring a database update doesn't force repeat users to re-download the React application.",
-      "Automated image optimization — scales product images down to a 760px ceiling and generates modern next-gen webp pairs during build to maximize page speed.",
     ],
     challenges: [
       {
@@ -224,9 +226,11 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "Wrap coupon usageCount increments in the same transaction as the usageLimit check — right now two concurrent redemptions can both read usageCount before either write lands",
     ],
     gallery: [
-      { label: "Homepage Preview", img: "/vurlo-preview.png" },
-      { label: "Checkout & Payment Flow", img: "/vurlo-checkout-view.png" },
-      { label: "Inventory Console", img: "/vurlo-admin.png" },
+      { label: "Homepage Preview", img: "/vurlo-preview.webp" },
+      { label: "Product Collections", img: "/vurlo-shop.webp" },
+      { label: "Product Quick View", img: "/vurlo-checkout-view.webp" },
+      { label: "Order Tracking", img: "/vurlo-orders.webp" },
+      { label: "Inventory Console", img: "/vurlo-admin.webp" },
     ],
   },
   Veltrix: {
@@ -387,8 +391,8 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "Replace the fixed 1.5s Playwright settle buffer with an actual document.fonts.ready wait inside the page — it works today, but it's a guess dressed up as a timeout.",
     ],
     gallery: [
-      { label: "Live Control Panel", img: "/veltrix-preview.png" },
-      { label: "Pipeline Execution Logs", img: "/veltrix-logs-view.png" },
+      { label: "Live Control Panel", img: "/veltrix-preview.webp" },
+      { label: "Pipeline Execution Logs", img: "/veltrix-logs-view.webp" },
     ],
   },
   Vcentre: {
@@ -539,8 +543,8 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "Surface closed-loop feedback scores directly on the dashboard so a declining pattern's success rate is visible before it's automatically retired.",
     ],
     gallery: [
-      { label: "Dashboard Trend View", img: "/vcentre-preview.png" },
-      { label: "AI Creative Briefs", img: "/vcentre-briefs-view.png" },
+      { label: "Dashboard Trend View", img: "/vcentre-preview.webp" },
+      { label: "AI Creative Briefs", img: "/vcentre-briefs-view.webp" },
     ],
   },
 };
