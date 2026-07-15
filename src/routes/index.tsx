@@ -11,6 +11,7 @@ import { Stack } from "@/components/portfolio/Stack";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress } from "@/components/portfolio/ScrollProgress";
+import { CursorFollower } from "@/components/portfolio/CursorFollower";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -45,6 +46,7 @@ function Portfolio() {
       <AnimatePresence>{showIntro && <Intro onDone={() => setShowIntro(false)} />}</AnimatePresence>
 
       <ScrollProgress />
+      <CursorFollower />
       <Nav />
 
       <main>
