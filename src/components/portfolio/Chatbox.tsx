@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { MessageSquare, X, Send, Bot, Loader2 } from "lucide-react";
+import { Bot, X, Send, Loader2 } from "lucide-react";
 import { createServerFn } from "@tanstack/react-start";
 import { playTick } from "@/lib/sound";
+import { motion, AnimatePresence } from "motion/react";
 
 // Server function calling the Groq API securely
 const askGroq = createServerFn({ method: "POST" })
@@ -220,108 +221,116 @@ export function Chatbox() {
         className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-[0_0_15px_rgba(139,92,246,0.4)] transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer relative z-50 animate-bounce-slow"
         aria-label="Open Chatbot"
       >
-        {isOpen ? <X className="h-5 w-5" /> : <MessageSquare className="h-5 w-5" />}
+        {isOpen ? <X className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
       </button>
 
       {/* Chat window */}
-      {isOpen && (
-        <div className="absolute bottom-16 right-0 w-80 sm:w-96 h-[460px] surface-card backdrop-blur-xl border border-white/10 flex flex-col rounded-2xl overflow-hidden shadow-2xl z-40 select-text">
-          {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-4 py-3 select-none">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-foreground font-semibold flex items-center gap-1">
-                <Bot className="h-3.5 w-3.5 text-primary animate-pulse" /> v-agent.sys initialized
-              </span>
-            </div>
-            <button
-              onClick={() => {
-                playTick(0);
-                setIsOpen(false);
-              }}
-              className="text-subtle transition-colors hover:text-foreground cursor-pointer"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-
-          {/* Messages list */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
-            {messages.map((m, idx) => (
-              <div
-                key={idx}
-                className={`flex w-full ${m.sender === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
-                    m.sender === "user"
-                      ? "bg-primary text-white rounded-tr-none shadow-[0_2px_8px_rgba(139,92,246,0.2)]"
-                      : "bg-surface border border-white/10 text-muted-foreground rounded-tl-none"
-                  }`}
-                >
-                  {formatMessageText(m.text)}
-                </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 15, filter: "blur(6px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.95, y: 15, filter: "blur(6px)" }}
+            transition={{ type: "spring", stiffness: 350, damping: 28 }}
+            className="absolute bottom-16 right-0 w-80 sm:w-96 h-[460px] surface-card backdrop-blur-xl border border-white/10 flex flex-col rounded-2xl overflow-hidden shadow-2xl z-40 select-text origin-bottom-right"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-4 py-3 select-none">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-foreground font-semibold flex items-center gap-1">
+                  <Bot className="h-3.5 w-3.5 text-primary animate-pulse" /> v-agent.sys initialized
+                </span>
               </div>
-            ))}
-            
-            {isLoading && (
-              <div className="flex w-full justify-start">
-                <div className="bg-surface border border-white/10 text-subtle rounded-2xl rounded-tl-none px-4 py-2.5 text-[11px] flex items-center gap-2">
-                  <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                  <span>Agent is searching logs...</span>
+              <button
+                onClick={() => {
+                  playTick(0);
+                  setIsOpen(false);
+                }}
+                className="text-subtle transition-colors hover:text-foreground cursor-pointer"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Messages list */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+              {messages.map((m, idx) => (
+                <div
+                  key={idx}
+                  className={`flex w-full ${m.sender === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
+                      m.sender === "user"
+                        ? "bg-primary text-white rounded-tr-none shadow-[0_2px_8px_rgba(139,92,246,0.2)]"
+                        : "bg-surface border border-white/10 text-muted-foreground rounded-tl-none"
+                    }`}
+                  >
+                    {formatMessageText(m.text)}
+                  </div>
+                </div>
+              ))}
+              
+              {isLoading && (
+                <div className="flex w-full justify-start">
+                  <div className="bg-surface border border-white/10 text-subtle rounded-2xl rounded-tl-none px-4 py-2.5 text-[11px] flex items-center gap-2">
+                    <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                    <span>Agent is searching logs...</span>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Quick prompt chips */}
+            {messages.length === 1 && (
+              <div className="px-4 py-3 border-t border-white/5 bg-black/10 select-none">
+                <p className="text-[9px] uppercase tracking-widest text-subtle mb-2 font-mono">Suggested Prompts</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {QUICK_PROMPTS.map((qp, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSend(qp.query)}
+                      className="text-[10px] text-muted-foreground bg-surface border border-white/5 hover:border-primary/40 hover:text-foreground rounded-full px-2.5 py-1 transition-all cursor-pointer font-medium"
+                    >
+                      {qp.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
-            <div ref={messagesEndRef} />
-          </div>
 
-          {/* Quick prompt chips */}
-          {messages.length === 1 && (
-            <div className="px-4 py-3 border-t border-white/5 bg-black/10 select-none">
-              <p className="text-[9px] uppercase tracking-widest text-subtle mb-2 font-mono">Suggested Prompts</p>
-              <div className="flex flex-wrap gap-1.5">
-                {QUICK_PROMPTS.map((qp, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleSend(qp.query)}
-                    className="text-[10px] text-muted-foreground bg-surface border border-white/5 hover:border-primary/40 hover:text-foreground rounded-full px-2.5 py-1 transition-all cursor-pointer font-medium"
-                  >
-                    {qp.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Input field */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSend(inputValue);
-            }}
-            className="border-t border-white/10 bg-black/30 p-3 flex gap-2 select-none"
-          >
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask v-agent..."
-              className="flex-1 bg-surface border border-white/10 focus:border-primary/60 outline-none rounded-xl px-3 py-1.5 text-xs text-foreground placeholder:text-subtle font-mono"
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !inputValue.trim()}
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            {/* Input field */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSend(inputValue);
+              }}
+              className="border-t border-white/10 bg-black/30 p-3 flex gap-2 select-none"
             >
-              <Send className="h-3.5 w-3.5" />
-            </button>
-          </form>
-        </div>
-      )}
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Ask v-agent..."
+                className="flex-1 bg-surface border border-white/10 focus:border-primary/60 outline-none rounded-xl px-3 py-1.5 text-xs text-foreground placeholder:text-subtle font-mono"
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !inputValue.trim()}
+                className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <Send className="h-3.5 w-3.5" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -96,20 +96,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
           </div>
         </Reveal>
 
-        <Reveal delay={6}>
-          <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
-            {HERO_STATS.map((s) => (
-              <div key={s.k} className="flex flex-col">
-                <dt className="order-2 mt-1 text-xs uppercase tracking-widest text-subtle">
-                  {s.k}
-                </dt>
-                <dd className="order-1 font-display text-2xl font-semibold tabular-nums text-foreground">
-                  {s.v}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
+
       </motion.div>
     </section>
   );

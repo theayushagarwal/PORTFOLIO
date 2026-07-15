@@ -13,6 +13,7 @@ import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress } from "@/components/portfolio/ScrollProgress";
 import { CursorFollower } from "@/components/portfolio/CursorFollower";
 import { Chatbox } from "@/components/portfolio/Chatbox";
+import { StatsBar } from "@/components/portfolio/StatsBar";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -53,7 +54,7 @@ function Portfolio() {
 
       <main>
         <Hero revealed={!showIntro} />
-        <div className="hairline mx-auto max-w-6xl px-6" />
+        <StatsBar />
         <Projects />
         <div className="hairline mx-auto max-w-6xl px-6" />
         <About />
