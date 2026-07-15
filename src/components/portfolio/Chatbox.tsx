@@ -97,8 +97,59 @@ function getLocalResponse(prompt: string): string {
   return "I'm Ayush's virtual agent. I can tell you about Vurlo, Veltrix, Vcentre, his tech stack, or his availability! Try clicking one of the quick prompt chips or ask me a specific question.";
 }
 
+function formatMessageText(text: string) {
+  // Parse email addresses
+  const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g;
+  
+  return text.split("\n").map((line, lineIdx) => {
+    // Split by bold (**bold**) and inline code (`code`)
+    const parts = line.split(/(\*\*.*?\*\*|`.*?`)/g);
+    
+    return (
+      <div key={lineIdx} className={lineIdx > 0 ? "mt-1.5" : ""}>
+        {parts.map((part, partIdx) => {
+          // Bold formatting
+          if (part.startsWith("**") && part.endsWith("**")) {
+            return (
+              <strong key={partIdx} className="font-semibold text-foreground">
+                {part.slice(2, -2)}
+              </strong>
+            );
+          }
+          // Code formatting
+          if (part.startsWith("`") && part.endsWith("`")) {
+            return (
+              <code key={partIdx} className="font-mono text-[11px] bg-black/40 px-1 py-0.5 rounded border border-white/5 text-primary">
+                {part.slice(1, -1)}
+              </code>
+            );
+          }
+          
+          // Email formatting within regular text
+          const subParts = part.split(emailRegex);
+          return subParts.map((subPart, subPartIdx) => {
+            if (emailRegex.test(subPart)) {
+              return (
+                <a 
+                  key={subPartIdx} 
+                  href={`mailto:${subPart}`} 
+                  className="underline text-primary hover:text-secondary transition-colors"
+                >
+                  {subPart}
+                </a>
+              );
+            }
+            return subPart;
+          });
+        })}
+      </div>
+    );
+  });
+}
+
 export function Chatbox() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { sender: "bot", text: "Hey! I'm Ayush's virtual agent. Ask me anything about his projects, tech stack, or availability!" },
   ]);
@@ -128,15 +179,18 @@ export function Chatbox() {
       // Call the server function which queries Groq
       const response = await askGroq({ data: text });
 
-      playTick(-0.2); // Play sound on receive
       if (response === "__NO_API_KEY__" || response === "__API_ERROR__") {
-        // Fallback to local heuristic responder
+        // Fallback to local heuristic responder with simulated thinking delay
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        playTick(-0.2); // Play sound on receive
         setMessages((prev) => [...prev, { sender: "bot", text: getLocalResponse(text) }]);
       } else {
+        playTick(-0.2); // Play sound on receive
         setMessages((prev) => [...prev, { sender: "bot", text: response }]);
       }
     } catch (e) {
       console.error(e);
+      await new Promise((resolve) => setTimeout(resolve, 800));
       playTick(-0.2);
       setMessages((prev) => [...prev, { sender: "bot", text: getLocalResponse(text) }]);
     } finally {
@@ -146,13 +200,24 @@ export function Chatbox() {
 
   return (
     <div className="fixed bottom-6 right-6 z-40 font-sans hidden md:block">
+      {/* Hover Tooltip */}
+      <div 
+        className={`absolute right-14 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg border border-white/10 bg-surface/95 px-3 py-1.5 text-[9px] uppercase tracking-widest text-foreground shadow-lg backdrop-blur-md font-mono select-none transition-all duration-200 pointer-events-none ${
+          showTooltip && !isOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
+        }`}
+      >
+        Ask my virtual agent
+      </div>
+
       {/* Toggle button */}
       <button
         onClick={() => {
           playTick(0);
           setIsOpen(!isOpen);
         }}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-[0_0_15px_rgba(139,92,246,0.4)] transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer relative z-50"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-[0_0_15px_rgba(139,92,246,0.4)] transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer relative z-50 animate-bounce-slow"
         aria-label="Open Chatbot"
       >
         {isOpen ? <X className="h-5 w-5" /> : <MessageSquare className="h-5 w-5" />}
@@ -169,7 +234,7 @@ export function Chatbox() {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground font-semibold flex items-center gap-1">
-                <Bot className="h-3.5 w-3.5 text-primary" /> v-agent.sys initialized
+                <Bot className="h-3.5 w-3.5 text-primary animate-pulse" /> v-agent.sys initialized
               </span>
             </div>
             <button
@@ -191,20 +256,20 @@ export function Chatbox() {
                 className={`flex w-full ${m.sender === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${
+                  className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
                     m.sender === "user"
-                      ? "bg-primary text-white rounded-tr-none"
+                      ? "bg-primary text-white rounded-tr-none shadow-[0_2px_8px_rgba(139,92,246,0.2)]"
                       : "bg-surface border border-white/10 text-muted-foreground rounded-tl-none"
                   }`}
                 >
-                  {m.text}
+                  {formatMessageText(m.text)}
                 </div>
               </div>
             ))}
             
             {isLoading && (
               <div className="flex w-full justify-start">
-                <div className="bg-surface border border-white/10 text-subtle rounded-2xl rounded-tl-none px-4 py-2 text-xs flex items-center gap-2">
+                <div className="bg-surface border border-white/10 text-subtle rounded-2xl rounded-tl-none px-4 py-2.5 text-[11px] flex items-center gap-2">
                   <Loader2 className="h-3 w-3 animate-spin text-primary" />
                   <span>Agent is searching logs...</span>
                 </div>
@@ -215,7 +280,7 @@ export function Chatbox() {
 
           {/* Quick prompt chips */}
           {messages.length === 1 && (
-            <div className="px-4 py-2 border-t border-white/5 bg-black/10 select-none">
+            <div className="px-4 py-3 border-t border-white/5 bg-black/10 select-none">
               <p className="text-[9px] uppercase tracking-widest text-subtle mb-2 font-mono">Suggested Prompts</p>
               <div className="flex flex-wrap gap-1.5">
                 {QUICK_PROMPTS.map((qp, idx) => (
