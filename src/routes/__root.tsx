@@ -74,22 +74,20 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
+    title: "Ayush Agarwal | Systems & Agent Engineer",
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        title: "Ayush Agarwal | AI Engineer",
-      },
-      {
         name: "description",
         content:
-          "AI Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { name: "author", content: "Ayush Agarwal" },
       { name: "theme-color", content: "#09090B" },
       {
         property: "og:title",
-        content: "Ayush Agarwal | AI Engineer",
+        content: "Ayush Agarwal | Systems & Agent Engineer",
       },
       {
         property: "og:description",
@@ -97,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Ayush Agarwal | AI Engineer" },
+      { name: "twitter:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
       {
         name: "twitter:description",
         content: "Building production LLM systems, agents, and inference infrastructure.",
@@ -162,7 +160,7 @@ const PERSON_JSON_LD = JSON.stringify({
     name: "Vellore Institute of Technology",
     alternateName: "VIT"
   },
-  url: "https://github.com/theayushagarwal",
+  url: "https://theayush.pages.dev",
   sameAs: [
     "https://github.com/theayushagarwal",
     "https://linkedin.com/in/ayushagarwal17"
