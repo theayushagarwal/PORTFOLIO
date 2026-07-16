@@ -545,7 +545,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "Surface closed-loop feedback scores directly on the dashboard so a declining pattern's success rate is visible before it's automatically retired.",
     ],
     gallery: [
-      { label: "Dashboard Trend View", img: "/vcentre-preview.webp" },
+      { label: "Competitor Outliers", img: "/vcentre-preview.webp" },
       { label: "AI Creative Briefs", img: "/vcentre-briefs-view.webp" },
     ],
   },
