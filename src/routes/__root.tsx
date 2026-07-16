@@ -165,7 +165,7 @@ const PERSON_JSON_LD = JSON.stringify({
     "name": "Systems & Agent Engineer",
     "description": "Designing and deploying production-grade AI systems, e-commerce engines, and web architectures globally.",
     "skills": "Python, TypeScript, React, Go, SQL",
-    "jobLocation": {
+    "occupationLocation": {
       "@type": "AdministrativeArea",
       "name": "Remote / Global"
     }
