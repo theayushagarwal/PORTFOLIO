@@ -201,7 +201,7 @@ const PROJECTS_JSON_LD = JSON.stringify({
       "url": "https://theayush.pages.dev/projects/vurlo",
       "description": "A production-grade e-commerce SaaS platform solo-built in 10 days. Features real-time stock-locking transactions, custom admin analytics panel, and sub-400ms load times.",
       "programmingLanguage": ["TypeScript", "React", "CSS"],
-      "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
+      "codeRepository": "https://github.com/theayushagarwal/vurlo-ecommerce",
       "author": {
         "@type": "Person",
         "@id": "https://theayush.pages.dev/#person"
