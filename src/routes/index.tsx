@@ -8,6 +8,7 @@ import { Hero } from "@/components/portfolio/Hero";
 import { Projects } from "@/components/portfolio/Projects";
 import { About } from "@/components/portfolio/About";
 import { Stack } from "@/components/portfolio/Stack";
+import { Faq } from "@/components/portfolio/Faq";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress } from "@/components/portfolio/ScrollProgress";
@@ -60,6 +61,8 @@ function Portfolio() {
         <About />
         <div className="hairline mx-auto max-w-6xl px-6" />
         <Stack />
+        <div className="hairline mx-auto max-w-6xl px-6" />
+        <Faq />
         <div className="hairline mx-auto max-w-6xl px-6" />
         <Contact />
       </main>
