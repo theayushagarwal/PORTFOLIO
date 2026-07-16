@@ -615,3 +615,14 @@
   background: rgba(139, 92, 246, 0.45);
 }
 
+/* 5. Hide Lovable AI watermark badge */
+#lovable-badge,
+[id*="lovable-badge"],
+[class*="lovable-badge"] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+
