@@ -17,6 +17,31 @@ import { Chatbox } from "@/components/portfolio/Chatbox";
 import { StatsBar } from "@/components/portfolio/StatsBar";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    title: "Ayush Agarwal | Systems & Agent Engineer",
+    meta: [
+      {
+        name: "description",
+        content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+      },
+      { property: "og:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
+      {
+        property: "og:description",
+        content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+      },
+      { property: "og:url", content: "https://theayush.pages.dev/" },
+      { property: "og:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
+      {
+        name: "twitter:description",
+        content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://theayush.pages.dev/" },
+    ]
+  }),
   component: Portfolio,
 });
 

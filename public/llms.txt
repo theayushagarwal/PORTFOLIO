@@ -3,10 +3,10 @@
 High-performance AI agent architectures, e-commerce SaaS engines, and interactive web platforms.
 
 ## Contact & Links
-- Website: https://theayush.pages.dev/
+- Website: [theayush.pages.dev](https://theayush.pages.dev/)
 - Email: theayush.codes@gmail.com
-- GitHub: https://github.com/theayushagarwal
-- LinkedIn: https://linkedin.com/in/ayushagarwal17
+- GitHub: [github.com/theayushagarwal](https://github.com/theayushagarwal)
+- LinkedIn: [linkedin.com/in/ayushagarwal17](https://linkedin.com/in/ayushagarwal17)
 
 ## Technical Profile
 Specializes in production-grade LLM state machines, secure database schemas, high-velocity backend pipelines, and glassmorphic user interfaces.
@@ -21,22 +21,22 @@ Specializes in production-grade LLM state machines, secure database schemas, hig
 
 ## Key Projects
 
-### Vurlo (Full-Stack E-commerce SaaS)
-- **URL**: https://theayush.pages.dev/projects/vurlo
+### [Vurlo](https://theayush.pages.dev/projects/vurlo) (Full-Stack E-commerce SaaS)
+- **Case Study URL**: [theayush.pages.dev/projects/vurlo](https://theayush.pages.dev/projects/vurlo)
 - **Role**: Founder & Lead Architect
 - **Build Time**: 10 Days
 - **Key Metrics**: 100/100 Lighthouse SEO, 0 inventory oversells, under 400ms loading latency.
 - **Architecture**: Atomic inventory check-and-decrement transactions in Firestore preventing race conditions. Multi-point rollback handlers for aborted payment SDK exits. Server-side payment verification via HMAC-SHA256. Resend mail queues and Gemini recommendation slots.
 
-### Veltrix (Autonomous Social Engine)
-- **URL**: https://theayush.pages.dev/projects/veltrix
+### [Veltrix](https://theayush.pages.dev/projects/veltrix) (Autonomous Social Engine)
+- **Case Study URL**: [theayush.pages.dev/projects/veltrix](https://theayush.pages.dev/projects/veltrix)
 - **Role**: Solo Developer
 - **Cadence**: 2 automated posts/day
 - **Operational Cost**: ~$0.0002 per post
 - **Architecture**: Multimodel adversarial loop. Gemini 2.0 Flash drafts captions; Groq (Llama) and Cerebras act as independent auditors. Posts are committed only if both auditors agree. Renders carousels and images via Jinja2 templates into headless Playwright browsers at native DPI resolutions.
 
-### Vcentre (Competitor Intelligence Scraper)
-- **URL**: https://theayush.pages.dev/projects/vcentre
+### [Vcentre](https://theayush.pages.dev/projects/vcentre) (Competitor Intelligence Scraper)
+- **Case Study URL**: [theayush.pages.dev/projects/vcentre](https://theayush.pages.dev/projects/vcentre)
 - **Role**: Solo Developer
 - **Cadence**: Daily @ 2:00 AM UTC
 - **Stack**: Python, Apify, FastAPI, SQLite
