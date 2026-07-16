@@ -176,7 +176,7 @@ const FAQ_JSON_LD = JSON.stringify({
       "name": "How does Veltrix's adversarial AI consensus loop work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Every social post drafts through a multi-model validation gate: Gemini drafts the slides, then Groq (llama-3.1-8b) and Cerebras (llama-3.1-70b) act as independent auditors. Publication requires absolute consensus (2 out of 2 approval). A statistically-adaptive embedding check prevents topic duplication without hardcoded similarity limits."
+        "text": "Veltrix is an autonomous pipeline that orchestrates 18+ active APIs (content channels, competitor scrapers, database logs, alerting systems). Every social post drafts through a gated validation loop: Gemini is selectively invoked as the paid copywriting model only after free/low-cost Llama audits (Groq + Cerebras) approve the draft. A statistically-adaptive embedding check prevents duplicate topics."
       }
     },
     {
