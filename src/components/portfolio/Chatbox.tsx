@@ -45,8 +45,14 @@ Key Projects:
    - Tech: React 19, TanStack Start, Firebase Auth & Firestore Rules, Razorpay checkout, Gemini API, Tailwind CSS.
    - Built solo in 10 days. Features in-memory caching, atomic database transaction stock-locking to prevent overselling, and 100 Lighthouse SEO.
 2. Veltrix (Autonomous Instagram Growth Pipeline):
-   - Tech: Python, Gemini API, Groq, Cerebras, SQLite, Supabase, Playwright, Jinja2, GitHub Actions.
-   - Publishes twice daily. Runs adversarial consensus loops: Gemini drafts content, Groq + Cerebras act as independent auditors. Renders full resolution slides via Jinja2 & headless Playwright. Cost per post is only ~$0.0002.
+   - Tech: Python, Gemini, Groq, Cerebras, OpenRouter, SiliconFlow, Hugging Face, Unsplash, NVIDIA, Logo.dev, Brandfetch, Supabase, Cloudinary, Discord, Instagram/Threads Graph APIs, GitHub Actions.
+   - Scale: Orchestrates 18+ active API keys with a gated paid API model. Gemini Pro is invoked for creative copywriting ONLY after drafts clear the low-cost Llama validation audits.
+   - Fallbacks:
+     - Audit Chain: Groq (Llama 3.3 70B) ➡️ Cerebras (gpt-oss-120b) ➡️ OpenRouter (Gemma 31B free) ➡️ Raw Gemini fallback.
+     - Image Gen: SiliconFlow (Flux/SD3) ➡️ Hugging Face ➡️ Gemini internal generator.
+     - Logo Assets: Logo.dev ➡️ Brandfetch API ➡️ Brandfetch CDN ➡️ Google Favicon API ➡️ text placeholder.
+     - Logs & DB: Supabase ➡️ local SQLite (veltrix.db) and JSON backup.
+     - Cost per post is only ~$0.0002. Runs 2 posts / day automatically.
 3. Vcentre (Competitor Intelligence Scraper):
    - Tech: Python, Apify, SQLite, Supabase, Groq, Cerebras, FastAPI, GitHub Actions.
    - Scrapes competitor Instagram accounts nightly. Cohort-scores Reels/Photos separately, filters outliers (>3x-median engagement), analyzes content via a 10-provider LLM fallback chain, and outputs creative briefs. Cost is $0/month.

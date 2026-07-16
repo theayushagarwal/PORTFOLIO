@@ -352,10 +352,12 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { day: "Day 10", milestone: "Publishing & Dashboard", details: "instagram_publisher.py and threads_publisher.py cross-posting wired up; dashboard.html control panel and APITracker cost telemetry finished before enabling the cron." },
     ],
     reliability: [
+      { label: "Orchestrated APIs", value: "18+ Keys", detail: "Integrates content channels, competitor scrapers, database logs, alerting systems, and deployment APIs" },
+      { label: "Paid Gateway Gate", value: "Gemini API", detail: "Paid Gemini API invoked ONLY after the free/low-cost Llama audits approve the draft" },
+      { label: "Audit Fallback Chain", value: "4 Layers", detail: "Audits chain dynamically from Groq ➡️ Cerebras ➡️ OpenRouter ➡️ Raw Gemini to avoid blockages" },
+      { label: "Visual Generation", value: "3 Layers", detail: "Fails back from SiliconFlow (Flux/SD3) ➡️ Hugging Face ➡️ Gemini internal image generator" },
       { label: "Checkpoint TTL", value: "24 hrs", detail: "self-expires so a stuck runner never resurrects a stale, half-finished post" },
-      { label: "Duplicate-check tiers", value: "3", detail: "embedding similarity → adaptive threshold band → LLM tiebreaker for the ambiguous zone" },
-      { label: "Independent audit models", value: "2", detail: "Groq + Cerebras must both approve before Gemini's own draft is trusted" },
-      { label: "Retry backoff attempts", value: "5", detail: "exponential + jitter, fails fast past a 10s wait so provider fallbacks can kick in instead" },
+      { label: "Duplicate-check tiers", value: "3", detail: "embedding similarity ➡️ adaptive threshold band ➡️ LLM tiebreaker for the ambiguous zone" },
     ],
     decisions: [
       {
