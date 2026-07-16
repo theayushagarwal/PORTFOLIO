@@ -10,33 +10,68 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectsVurloRouteImport } from './routes/projects/vurlo'
+import { Route as ProjectsVeltrixRouteImport } from './routes/projects/veltrix'
+import { Route as ProjectsVcentreRouteImport } from './routes/projects/vcentre'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsVurloRoute = ProjectsVurloRouteImport.update({
+  id: '/projects/vurlo',
+  path: '/projects/vurlo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsVeltrixRoute = ProjectsVeltrixRouteImport.update({
+  id: '/projects/veltrix',
+  path: '/projects/veltrix',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsVcentreRoute = ProjectsVcentreRouteImport.update({
+  id: '/projects/vcentre',
+  path: '/projects/vcentre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/projects/vcentre': typeof ProjectsVcentreRoute
+  '/projects/veltrix': typeof ProjectsVeltrixRoute
+  '/projects/vurlo': typeof ProjectsVurloRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/projects/vcentre': typeof ProjectsVcentreRoute
+  '/projects/veltrix': typeof ProjectsVeltrixRoute
+  '/projects/vurlo': typeof ProjectsVurloRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/projects/vcentre': typeof ProjectsVcentreRoute
+  '/projects/veltrix': typeof ProjectsVeltrixRoute
+  '/projects/vurlo': typeof ProjectsVurloRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/projects/vcentre' | '/projects/veltrix' | '/projects/vurlo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/projects/vcentre' | '/projects/veltrix' | '/projects/vurlo'
+  id:
+    | '__root__'
+    | '/'
+    | '/projects/vcentre'
+    | '/projects/veltrix'
+    | '/projects/vurlo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProjectsVcentreRoute: typeof ProjectsVcentreRoute
+  ProjectsVeltrixRoute: typeof ProjectsVeltrixRoute
+  ProjectsVurloRoute: typeof ProjectsVurloRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +83,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/vurlo': {
+      id: '/projects/vurlo'
+      path: '/projects/vurlo'
+      fullPath: '/projects/vurlo'
+      preLoaderRoute: typeof ProjectsVurloRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/veltrix': {
+      id: '/projects/veltrix'
+      path: '/projects/veltrix'
+      fullPath: '/projects/veltrix'
+      preLoaderRoute: typeof ProjectsVeltrixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/vcentre': {
+      id: '/projects/vcentre'
+      path: '/projects/vcentre'
+      fullPath: '/projects/vcentre'
+      preLoaderRoute: typeof ProjectsVcentreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProjectsVcentreRoute: ProjectsVcentreRoute,
+  ProjectsVeltrixRoute: ProjectsVeltrixRoute,
+  ProjectsVurloRoute: ProjectsVurloRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

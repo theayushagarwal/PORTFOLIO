@@ -1,6 +1,7 @@
 import { ArrowUpRight, ChevronDown, ExternalLink, Link2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { Link } from "@tanstack/react-router";
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from "motion/react";
 import { Reveal } from "./Reveal";
 import { DeviceFrame, PROJECT_VISUALS } from "./project-visuals";
@@ -11,7 +12,7 @@ import { playTick, playSwell, playExit } from "@/lib/sound";
 import { PROJECT_DETAILS } from "@/lib/project-details";
 import { toast } from "sonner";
 
-function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
+export function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
   const mouseX = useMotionValue(-999);
   const mouseY = useMotionValue(-999);
   const ref = useRef<HTMLElement>(null);
@@ -205,14 +206,14 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
               <Metrics metrics={p.metrics} />
             </div>
 
-            <button
-              onClick={() => onViewCaseStudy(p)}
+            <Link
+              to={`/projects/${p.name.toLowerCase()}`}
               onMouseEnter={() => playTick(0)}
               className="mt-8 inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
             >
               View Case Study
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
+            </Link>
           </div>
         </motion.article>
       </TiltCard>
@@ -327,15 +328,15 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
                   {p.metrics[0].k}
                 </span>
               </span>
-              <button
-                onClick={() => onViewCaseStudy(p)}
+              <Link
+                to={`/projects/${p.name.toLowerCase()}`}
                 onMouseEnter={() => playTick(0)}
                 aria-label={`View ${p.name} case study`}
                 className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
               >
                 <span>Case Study</span>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
+              </Link>
             </div>
           </div>
         </motion.article>
@@ -372,7 +373,7 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
 }
 
 /** Animated circular SVG gauges for performance scores with count-up sync and completion glow */
-function LighthouseDial({ score, label }: { score: number; label: string }) {
+export function LighthouseDial({ score, label }: { score: number; label: string }) {
   const [animatedScore, setAnimatedScore] = useState(0);
   const [justFinished, setJustFinished] = useState(false);
 
@@ -436,7 +437,7 @@ function LighthouseDial({ score, label }: { score: number; label: string }) {
 }
 
 /** Architecture pipeline node with mouse-tracking spotlight + staggered entrance */
-function ArchitectureNode({
+export function ArchitectureNode({
   node,
   idx,
   glow,
@@ -474,7 +475,7 @@ function ArchitectureNode({
 }
 
 /** Visualizes a failure sequence as a literal timeline instead of describing it in prose */
-function ScenarioTimeline({ events }: { events: { t: string; event: string; danger?: boolean }[] }) {
+export function ScenarioTimeline({ events }: { events: { t: string; event: string; danger?: boolean }[] }) {
   return (
     <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
       <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
@@ -517,7 +518,7 @@ function ScenarioTimeline({ events }: { events: { t: string; event: string; dang
 }
 
 /** Numbered step sequence with optional file chips — used for both `solutionSteps` and `fixSteps` */
-function StepSequence({
+export function StepSequence({
   steps,
   accent,
 }: {
@@ -557,7 +558,7 @@ function StepSequence({
 }
 
 /** Expandable accordion challenge cards */
-function ChallengeCard({
+export function ChallengeCard({
   index,
   challenge,
   active,

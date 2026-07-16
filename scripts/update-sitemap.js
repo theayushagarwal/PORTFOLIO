@@ -25,6 +25,36 @@ const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
       <image:title>Vcentre competitor intelligence scraper dashboard</image:title>
     </image:image>
   </url>
+  <url>
+    <loc>https://theayush.pages.dev/projects/vurlo</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://theayush.pages.dev/vurlo-preview.webp</image:loc>
+      <image:title>Vurlo E-commerce case study overview</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://theayush.pages.dev/projects/veltrix</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://theayush.pages.dev/veltrix-preview.webp</image:loc>
+      <image:title>Veltrix AI Agent consensus workflow</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://theayush.pages.dev/projects/vcentre</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://theayush.pages.dev/vcentre-preview.webp</image:loc>
+      <image:title>Vcentre outlier analytics dashboard</image:title>
+    </image:image>
+  </url>
 </urlset>
 `;
 

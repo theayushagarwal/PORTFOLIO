@@ -198,6 +198,7 @@ const PROJECTS_JSON_LD = JSON.stringify({
     {
       "@type": "SoftwareSourceCode",
       "name": "Vurlo",
+      "url": "https://theayush.pages.dev/projects/vurlo",
       "description": "A production-grade e-commerce SaaS platform solo-built in 10 days. Features real-time stock-locking transactions, custom admin analytics panel, and sub-400ms load times.",
       "programmingLanguage": ["TypeScript", "React", "CSS"],
       "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
@@ -209,6 +210,7 @@ const PROJECTS_JSON_LD = JSON.stringify({
     {
       "@type": "SoftwareSourceCode",
       "name": "Veltrix",
+      "url": "https://theayush.pages.dev/projects/veltrix",
       "description": "An autonomous publishing engine orchestrating 18+ APIs. Employs a multi-model adversarial consensus group (Gemini, Groq, Cerebras) to audit captions, and schedules Playwright slide renders.",
       "programmingLanguage": ["Python"],
       "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
@@ -220,6 +222,7 @@ const PROJECTS_JSON_LD = JSON.stringify({
     {
       "@type": "SoftwareSourceCode",
       "name": "Vcentre",
+      "url": "https://theayush.pages.dev/projects/vcentre",
       "description": "Competitor intelligence scraper that detects cohort-specific outliers (Reels vs. Photos medians) and uses a 10-provider LLM fallback chain to generate creative briefs.",
       "programmingLanguage": ["Python", "FastAPI"],
       "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
