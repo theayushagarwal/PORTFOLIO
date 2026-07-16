@@ -394,7 +394,7 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
     gallery: [
       { label: "Live Control Panel", img: "/veltrix-preview.webp" },
-      { label: "Pipeline Execution Logs", img: "/veltrix-logs-view.webp" },
+      { label: "Credential Health Board", img: "/veltrix-logs-view.webp" },
     ],
   },
   Vcentre: {

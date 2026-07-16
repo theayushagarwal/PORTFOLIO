@@ -97,7 +97,7 @@ export const PROJECTS: Project[] = [
     visualLabel: "pipeline.run",
     image: "/veltrix-preview.webp",
     secondaryImage: "/veltrix-logs-view.webp",
-    secondaryLabel: "execution logs",
+    secondaryLabel: "credentials board",
   },
   {
     index: "03",
