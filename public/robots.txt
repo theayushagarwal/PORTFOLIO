@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://theayush.codes/sitemap.xml
+Sitemap: https://theayush.pages.dev/sitemap.xml
