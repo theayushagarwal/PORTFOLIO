@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 font-mono text-xs text-subtle md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1.5">
           <p className="text-foreground font-semibold">Ayush Agarwal</p>
-          <p>© 2026 · Crafted in Bengaluru, India</p>
+          <p>© 2026 · Crafted in Vellore, India</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-4 text-[11px] uppercase tracking-wider">

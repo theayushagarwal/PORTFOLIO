@@ -7,7 +7,7 @@
 export const PROFILE = {
   name: "Ayush Agarwal",
   role: "Systems & Agent Engineer",
-  location: "Bengaluru, IN",
+  location: "Vellore, IN",
   status: "17-year-old developer crafting high-fidelity products & interfaces",
   tagline: "Autonomous pipelines. Commerce engines. Interfaces that feel alive.",
   headline: {

@@ -25,7 +25,7 @@ const askGroq = createServerFn({ method: "POST" })
             {
               role: "system",
               content: `You are an AI assistant representing Ayush Agarwal on his portfolio website.
-Ayush is a 17-year-old Systems & Agent Engineer based in Bengaluru, India. He builds high-performance e-commerce engines, AI agent pipelines, and developer tooling. He starts his CSE degree at VIT (Vellore Institute of Technology) in August 2026.
+Ayush is a 17-year-old Systems & Agent Engineer based in Vellore, India. He builds high-performance e-commerce engines, AI agent pipelines, and developer tooling. He starts his CSE degree at VIT (Vellore Institute of Technology) in August 2026.
 
 Availability:
 - Open to remote software engineering roles, high-velocity contract work, and freelance consulting.
