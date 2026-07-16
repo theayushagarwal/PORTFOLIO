@@ -171,9 +171,9 @@ export function WorkspacePanel({ project }: { project: Project }) {
         className="pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full opacity-40"
       />
 
-      {/* Loading stage */}
+      {/* Loading stage - rendered as absolute overlay when entering/exiting */}
       {(transitionStage === 'entering' || transitionStage === 'exiting') && (
-        <div className="relative z-10 flex flex-col items-center max-w-4xl px-6">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#09090b] px-6 select-none">
           <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-center">
             {(transitionStage === 'entering' 
               ? [
@@ -248,15 +248,18 @@ export function WorkspacePanel({ project }: { project: Project }) {
         </div>
       )}
 
-      {/* Active Case Study Workspace Content */}
-      {transitionStage === 'ready' && (
-        <div
-          ref={workspaceScrollRef}
-          onScroll={handleWorkspaceScroll}
-          className={`relative z-10 flex h-full w-full max-w-6xl flex-col gap-10 overflow-y-auto px-4 pb-16 pt-32 text-left select-text md:px-8 md:pb-24 scroll-smooth workspace-scroll-mask ${
-            showWorkspaceContent ? 'animate-workspace-in' : 'animate-workspace-out'
-          }`}
-        >
+      {/* Active Case Study Workspace Content - Rendered always for SSR indexing */}
+      <div
+        ref={workspaceScrollRef}
+        onScroll={handleWorkspaceScroll}
+        style={{
+          opacity: transitionStage === 'ready' ? 1 : 0,
+          pointerEvents: transitionStage === 'ready' ? 'auto' : 'none',
+        }}
+        className={`relative z-10 flex h-full w-full max-w-6xl flex-col gap-10 overflow-y-auto px-4 pb-16 pt-32 text-left select-text md:px-8 md:pb-24 scroll-smooth workspace-scroll-mask transition-opacity duration-500 ${
+          transitionStage === 'ready' && showWorkspaceContent ? 'animate-workspace-in' : ''
+        }`}
+      >
           {/* Sticky header with documentation links and scroll progress */}
           <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-6xl md:inset-x-8">
             <div className="relative flex items-center justify-between rounded-2xl border border-white/15 bg-card/90 px-5 py-3.5 backdrop-blur-xl shadow-2xl overflow-hidden">
@@ -733,8 +736,7 @@ export function WorkspacePanel({ project }: { project: Project }) {
               <span className="text-[14px] leading-none transition-transform group-hover:translate-x-1">→</span>
             </button>
           </section>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
