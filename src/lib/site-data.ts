@@ -23,7 +23,7 @@ export const PROFILE = {
   ],
   currently: "Shipped 3 production AI/SaaS projects in 30 days. Starting VIT CSE in August.",
   previously: "Freelance Designer · Two open-source teams.",
-  email: "hello@ayush.dev",
+  email: "theayush.codes@gmail.com",
   socials: {
     github: "https://github.com/theayushagarwal",
     linkedin: "https://linkedin.com/in/ayushagarwal17",

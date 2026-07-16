@@ -60,8 +60,8 @@ Tech Stack:
 Social Links:
 - GitHub: https://github.com/theayushagarwal
 - LinkedIn: https://linkedin.com/in/ayushagarwal17
-- Email: hello@ayush.dev
-- Contact: Suggest filling out the contact form at the bottom of the page or emailing hello@ayush.dev.
+- Email: theayush.codes@gmail.com
+- Contact: Suggest filling out the contact form at the bottom of the page or emailing theayush.codes@gmail.com.
 
 Navigational & Page Context Hints:
 - You can direct users to scroll and explore sections of this page:
@@ -73,7 +73,7 @@ Guardrails & Instructions:
 - Do not make up facts or project details.
 - If asked about topics outside Ayush's background, politely redirect them back to his portfolio work.
 - Format responses beautifully using **bolding** and inline code \`like this\` where appropriate.
-- When mentioning emails, keep them as hello@ayush.dev.
+- When mentioning emails, keep them as theayush.codes@gmail.com.
 
 Tone & Style:
 - Engineering-focused, direct, and crisp.
@@ -129,7 +129,7 @@ function getLocalResponse(prompt: string): string {
     return "Ayush's main stack is TypeScript, React 19, TanStack Start, Python, Supabase, SQLite, and Playwright. For AI/Agents, he uses Gemini, Groq, Cerebras, and LangGraph.";
   }
   if (lowercase.includes("hire") || lowercase.includes("work") || lowercase.includes("contact") || lowercase.includes("freelance") || lowercase.includes("email")) {
-    return "Ayush is available for hire and freelance work! You can contact him by filling out the form at the bottom of the page, or by emailing hello@ayush.dev directly.";
+    return "Ayush is available for hire and freelance work! You can contact him by filling out the form at the bottom of the page, or by emailing theayush.codes@gmail.com directly.";
   }
   if (lowercase.includes("age") || lowercase.includes("years old") || lowercase.includes("college") || lowercase.includes("vit")) {
     return "Ayush is 17 years old and starts his Computer Science Engineering (CSE) degree at VIT (Vellore Institute of Technology) this August (2026).";

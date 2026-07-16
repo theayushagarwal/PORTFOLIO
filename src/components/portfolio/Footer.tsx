@@ -14,7 +14,7 @@ export function Footer() {
           <span>·</span>
           <a href="https://linkedin.com/in/ayushagarwal17" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">LinkedIn</a>
           <span>·</span>
-          <a href="mailto:hello@ayush.dev" className="hover:text-primary transition-colors">Email</a>
+          <a href="mailto:theayush.codes@gmail.com" className="hover:text-primary transition-colors">Email</a>
         </div>
 
         <div className="flex items-center gap-4">
