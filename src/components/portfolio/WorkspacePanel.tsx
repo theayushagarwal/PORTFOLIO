@@ -79,8 +79,10 @@ export function WorkspacePanel({ project }: { project: Project }) {
     }
   };
 
+  const [requiresInteraction, setRequiresInteraction] = useState(false);
+
   // Run the entrance sequence on mount
-  useEffect(() => {
+  const startBootSequence = () => {
     playSwell();
     setProgressBarWidth(30);
     setStatusText("Opening Workspace...");
@@ -106,13 +108,30 @@ export function WorkspacePanel({ project }: { project: Project }) {
       setIsTransitioning(false);
     }, 1800);
 
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-    };
+    return [t1, t2, t3, t4];
+  };
+
+  useEffect(() => {
+    const isFirstVisit = typeof document !== "undefined" && !document.body.dataset.audioInitialized;
+
+    if (isFirstVisit) {
+      setRequiresInteraction(true);
+      setProgressBarWidth(15);
+      setStatusText("Audio context suspended by browser. Gesture required...");
+    } else {
+      const timers = startBootSequence();
+      return () => timers.forEach(clearTimeout);
+    }
   }, [project.name]);
+
+  const handleInitializeAudio = () => {
+    if (!requiresInteraction) return;
+    setRequiresInteraction(false);
+    if (typeof document !== "undefined") {
+      document.body.dataset.audioInitialized = "true";
+    }
+    startBootSequence();
+  };
 
   const handleExitWorkspace = () => {
     if (isTransitioning) return;
@@ -173,7 +192,12 @@ export function WorkspacePanel({ project }: { project: Project }) {
 
       {/* Loading stage - rendered as absolute overlay when entering/exiting */}
       {(transitionStage === 'entering' || transitionStage === 'exiting') && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#09090b] px-6 select-none">
+        <div 
+          onClick={handleInitializeAudio}
+          className={`absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#09090b] px-6 select-none ${
+            requiresInteraction ? "cursor-pointer active:bg-[#0c0c0f]" : ""
+          }`}
+        >
           <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-center">
             {(transitionStage === 'entering' 
               ? [
@@ -219,7 +243,7 @@ export function WorkspacePanel({ project }: { project: Project }) {
 
           {/* Thin, premium progress bar */}
           <div 
-            className="mt-14 flex flex-col items-center"
+            className="mt-14 flex flex-col items-center animate-pulse"
             style={{
               animation: 'bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
               animationDelay: '0.4s'
@@ -235,15 +259,23 @@ export function WorkspacePanel({ project }: { project: Project }) {
                 }}
               />
             </div>
-            <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-subtle/85 flex items-center gap-1.5 select-none">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_4px_var(--color-secondary)]" />
-              </span>
-              <span>{transitionStage === 'entering' ? 'INITIALIZING_WORKSPACE' : 'CLOSING_SESSION'}</span>
-              <span>·</span>
-              <span className="tabular-nums font-bold text-foreground">{progressBarWidth}%</span>
-            </div>
+            {requiresInteraction ? (
+              <div className="mt-6 flex flex-col items-center gap-2">
+                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-cyan-400 font-semibold animate-pulse text-center">
+                  &gt; Tap anywhere to boot session audio &lt;
+                </span>
+              </div>
+            ) : (
+              <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-subtle/85 flex items-center gap-1.5 select-none">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_4px_var(--color-secondary)]" />
+                </span>
+                <span>{transitionStage === 'entering' ? 'INITIALIZING_WORKSPACE' : 'CLOSING_SESSION'}</span>
+                <span>·</span>
+                <span className="tabular-nums font-bold text-foreground">{progressBarWidth}%</span>
+              </div>
+            )}
           </div>
         </div>
       )}
