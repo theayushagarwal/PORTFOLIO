@@ -103,6 +103,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Building production LLM systems, agents, and inference infrastructure.",
       },
       { name: "color-scheme", content: "dark" },
+      { name: "geo.region", content: "IN-KA" },
+      { name: "geo.placename", content: "Bengaluru" },
+      { name: "geo.position", content: "12.9716;77.5946" },
+      { name: "ICBM", content: "12.9716, 77.5946" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -130,9 +134,23 @@ const PERSON_JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Ayush Agarwal",
-  jobTitle: "AI Engineer",
-  url: "https://ayush.dev",
-  sameAs: ["https://github.com/", "https://linkedin.com/in/", "https://twitter.com/"],
+  jobTitle: "Systems & Agent Engineer",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bengaluru",
+    addressRegion: "Karnataka",
+    addressCountry: "IN"
+  },
+  alumniOf: {
+    "@type": "EducationalOrganization",
+    name: "Vellore Institute of Technology",
+    alternateName: "VIT"
+  },
+  url: "https://github.com/theayushagarwal",
+  sameAs: [
+    "https://github.com/theayushagarwal",
+    "https://linkedin.com/in/ayushagarwal17"
+  ]
 });
 
 function RootShell({ children }: { children: ReactNode }) {
