@@ -108,11 +108,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:url", content: "https://theayush.pages.dev/" },
       { property: "og:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
       { name: "twitter:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:site_name", content: "Ayush Agarwal Portfolio" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "canonical", href: "https://theayush.pages.dev/" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "manifest", href: "/manifest.json" },
       { rel: "preload", href: "/vurlo-preview.webp?v=1.2", as: "image", type: "image/webp" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
@@ -149,11 +154,16 @@ const PERSON_JSON_LD = JSON.stringify({
     "Database Security",
     "Web Scraping"
   ],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Vellore",
-    addressRegion: "Tamil Nadu",
-    addressCountry: "IN"
+  hasOccupation: {
+    "@type": "Occupation",
+    "name": "Systems & Agent Engineer",
+    "description": "Designing and deploying production-grade AI systems, e-commerce engines, and web architectures globally.",
+    "skills": "Python, TypeScript, React, Go, SQL",
+    "estimatedSalary": [],
+    "jobLocation": {
+      "@type": "AdministrativeArea",
+      "name": "Remote / Global"
+    }
   },
   alumniOf: {
     "@type": "EducationalOrganization",
@@ -165,6 +175,15 @@ const PERSON_JSON_LD = JSON.stringify({
     "https://github.com/theayushagarwal",
     "https://linkedin.com/in/ayushagarwal17"
   ]
+});
+
+const WEBSITE_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ayush Agarwal Portfolio",
+  "url": "https://theayush.pages.dev",
+  "description": "Portfolio of Ayush Agarwal, Systems & Agent Engineer.",
+  "inLanguage": "en-US"
 });
 
 const FAQ_JSON_LD = JSON.stringify({
@@ -220,6 +239,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PERSON_JSON_LD }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_JSON_LD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
       </head>
       <body>
