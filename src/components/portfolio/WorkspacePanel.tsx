@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { DeviceFrame } from "./project-visuals";
 import { PROJECT_DETAILS } from "@/lib/project-details";
-import { playTick, playSwell, playExit } from "@/lib/sound";
+import { playTick, playSwell, playExit, resumeAudio } from "@/lib/sound";
 import { type Project } from "@/lib/site-data";
 import {
   LighthouseDial,
@@ -130,7 +130,14 @@ export function WorkspacePanel({ project }: { project: Project }) {
     if (typeof document !== "undefined") {
       document.body.dataset.audioInitialized = "true";
     }
-    startBootSequence();
+    resumeAudio()
+      .then(() => {
+        startBootSequence();
+      })
+      .catch((e) => {
+        console.warn("Failed to resume audio on click:", e);
+        startBootSequence();
+      });
   };
 
   const handleExitWorkspace = () => {
