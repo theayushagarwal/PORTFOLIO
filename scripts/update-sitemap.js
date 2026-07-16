@@ -1,9 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+import fs from 'fs';
+import path from 'path';
+
+const sitemapPath = path.resolve('public/sitemap.xml');
+const currentDate = new Date().toISOString().split('T')[0];
+
+const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://theayush.pages.dev/</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -20,3 +26,7 @@
     </image:image>
   </url>
 </urlset>
+`;
+
+fs.writeFileSync(sitemapPath, sitemapContent, 'utf8');
+console.log(`Updated sitemap.xml with lastmod date: ${currentDate}`);

@@ -15,6 +15,10 @@
     }
   ],
   "start_url": "/",
+  "scope": "/",
+  "lang": "en-US",
+  "description": "Systems & Agent Engineer Portfolio detailing e-commerce SaaS, AI agent pipelines, and high-fidelity interfaces.",
+  "categories": ["portfolio", "technology"],
   "background_color": "#09090b",
   "theme_color": "#09090b",
   "display": "standalone",

@@ -91,22 +91,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         property: "og:description",
-        content: "Building production LLM systems, agents, and inference infrastructure.",
+        content:
+          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
       {
         name: "twitter:description",
-        content: "Building production LLM systems, agents, and inference infrastructure.",
+        content:
+          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { name: "color-scheme", content: "dark" },
-      { name: "geo.region", content: "IN-TN" },
-      { name: "geo.placename", content: "Vellore" },
-      { name: "geo.position", content: "12.9165;79.1325" },
-      { name: "ICBM", content: "12.9165, 79.1325" },
       { property: "og:url", content: "https://theayush.pages.dev/" },
       { property: "og:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
+      { property: "og:image:width", content: "1024" },
+      { property: "og:image:height", content: "553" },
+      { property: "og:image:alt", content: "Screenshot mockup of Vurlo e-commerce storefront dashboard featuring premium aesthetic room decor and lighting products in India." },
       { name: "twitter:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       { property: "og:locale", content: "en_US" },
@@ -140,10 +141,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 const PERSON_JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Ayush Agarwal",
-  jobTitle: "Systems & Agent Engineer",
-  email: "theayush.codes@gmail.com",
-  knowsAbout: [
+  "@id": "https://theayush.pages.dev/#person",
+  "name": "Ayush Agarwal",
+  "jobTitle": "Systems & Agent Engineer",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "theayush.codes@gmail.com",
+    "contactType": "professional"
+  },
+  "knowsAbout": [
     "AI Agents",
     "Systems Engineering",
     "Large Language Models",
@@ -154,24 +160,23 @@ const PERSON_JSON_LD = JSON.stringify({
     "Database Security",
     "Web Scraping"
   ],
-  hasOccupation: {
+  "hasOccupation": {
     "@type": "Occupation",
     "name": "Systems & Agent Engineer",
     "description": "Designing and deploying production-grade AI systems, e-commerce engines, and web architectures globally.",
     "skills": "Python, TypeScript, React, Go, SQL",
-    "estimatedSalary": [],
     "jobLocation": {
       "@type": "AdministrativeArea",
       "name": "Remote / Global"
     }
   },
-  alumniOf: {
+  "alumniOf": {
     "@type": "EducationalOrganization",
-    name: "Vellore Institute of Technology",
-    alternateName: "VIT"
+    "name": "Vellore Institute of Technology",
+    "alternateName": "VIT"
   },
-  url: "https://theayush.pages.dev",
-  sameAs: [
+  "url": "https://theayush.pages.dev",
+  "sameAs": [
     "https://github.com/theayushagarwal",
     "https://linkedin.com/in/ayushagarwal17"
   ]
@@ -180,10 +185,50 @@ const PERSON_JSON_LD = JSON.stringify({
 const WEBSITE_JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://theayush.pages.dev/#website",
   "name": "Ayush Agarwal Portfolio",
   "url": "https://theayush.pages.dev",
   "description": "Portfolio of Ayush Agarwal, Systems & Agent Engineer.",
   "inLanguage": "en-US"
+});
+
+const PROJECTS_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Vurlo",
+      "description": "A production-grade e-commerce SaaS platform solo-built in 10 days. Features real-time stock-locking transactions, custom admin analytics panel, and sub-400ms load times.",
+      "programmingLanguage": ["TypeScript", "React", "CSS"],
+      "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
+      "author": {
+        "@type": "Person",
+        "@id": "https://theayush.pages.dev/#person"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Veltrix",
+      "description": "An autonomous publishing engine orchestrating 18+ APIs. Employs a multi-model adversarial consensus group (Gemini, Groq, Cerebras) to audit captions, and schedules Playwright slide renders.",
+      "programmingLanguage": ["Python"],
+      "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
+      "author": {
+        "@type": "Person",
+        "@id": "https://theayush.pages.dev/#person"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Vcentre",
+      "description": "Competitor intelligence scraper that detects cohort-specific outliers (Reels vs. Photos medians) and uses a 10-provider LLM fallback chain to generate creative briefs.",
+      "programmingLanguage": ["Python", "FastAPI"],
+      "codeRepository": "https://github.com/theayushagarwal/PORTFOLIO",
+      "author": {
+        "@type": "Person",
+        "@id": "https://theayush.pages.dev/#person"
+      }
+    }
+  ]
 });
 
 const FAQ_JSON_LD = JSON.stringify({
@@ -240,6 +285,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PERSON_JSON_LD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_JSON_LD }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PROJECTS_JSON_LD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
       </head>
       <body>
