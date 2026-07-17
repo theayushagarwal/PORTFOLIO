@@ -48,5 +48,3 @@ This workspace contains Ayush Agarwal's redesigned developer portfolio website.
 ## Build & Deployment Workflows
 - **Build**: Running `npm run build` triggers a prebuild script `node scripts/update-sitemap.js` (which updates sitemap.xml with the current ISO date), then compiles Vite client/server bundles.
 - **Deploy**: Commits pushed to the `main` branch are auto-deployed by Cloudflare Pages to `theayush.pages.dev`.
-- **Git Branching**: All new feature layouts, visuals, or experiments must be committed and pushed to an active `feature/*` branch. Only fast fixes are committed directly to `main`.
-- **Git Authentication**: Prior to pushing, specify the authorized token via `git remote set-url origin https://<token>@github.com/theayushagarwal/PORTFOLIO.git`.
