@@ -30,13 +30,14 @@ export const Route = createFileRoute("/")({
         content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { property: "og:url", content: "https://theayush.pages.dev/" },
-      { property: "og:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
+      { property: "og:image", content: "https://theayush.pages.dev/portfolio-preview.webp" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
       {
         name: "twitter:description",
         content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
+      { name: "twitter:image", content: "https://theayush.pages.dev/portfolio-preview.webp" },
     ],
     links: [
       { rel: "canonical", href: "https://theayush.pages.dev/" },
