@@ -34,6 +34,19 @@ This workspace contains Ayush Agarwal's redesigned developer portfolio website.
 - Images must be in `.webp` format at **85% quality** to keep file sizes small (ideally under 100KB).
 - Implement `loading="lazy"` on all gallery `<img>` tags to improve Core Web Vitals performance.
 
+## Projects & Screenshots
+- **Vurlo**:
+  - Primary preview image: `/vurlo-preview.webp`
+  - Secondary view: `/vurlo-admin.webp`
+- **Veltrix**:
+  - Primary preview image: `/veltrix-preview.webp`
+  - Secondary view (credentials): `/veltrix-logs-view.webp`
+- **Vcentre**:
+  - Primary preview image (outliers): `/vcentre-preview.webp`
+  - Secondary view (briefs): `/vcentre-briefs-view.webp`
+
 ## Build & Deployment Workflows
 - **Build**: Running `npm run build` triggers a prebuild script `node scripts/update-sitemap.js` (which updates sitemap.xml with the current ISO date), then compiles Vite client/server bundles.
 - **Deploy**: Commits pushed to the `main` branch are auto-deployed by Cloudflare Pages to `theayush.pages.dev`.
+- **Git Branching**: All new feature layouts, visuals, or experiments must be committed and pushed to an active `feature/*` branch. Only fast fixes are committed directly to `main`.
+- **Git Authentication**: Prior to pushing, specify the authorized token via `git remote set-url origin https://<token>@github.com/theayushagarwal/PORTFOLIO.git`.
