@@ -2,27 +2,18 @@ import { ArrowUpRight, ChevronDown, ExternalLink, Link2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
-import { motion, useMotionValue, useTransform, AnimatePresence, animate } from "motion/react";
+import { motion, useMotionValue, useTransform, AnimatePresence, animate, MotionValue } from "motion/react";
 import { Reveal } from "./Reveal";
 import { DeviceFrame, PROJECT_VISUALS } from "./project-visuals";
-import { TiltCard } from "./TiltCard";
 import { revealVariants, EASE } from "@/lib/motion";
 import { PROJECTS, type Project } from "@/lib/site-data";
 import { playTick, playSwell, playExit } from "@/lib/sound";
 import { PROJECT_DETAILS } from "@/lib/project-details";
 import { toast } from "sonner";
 
-export function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
-  const mouseX = useMotionValue(-999);
-  const mouseY = useMotionValue(-999);
+export function useSpotlight() {
   const ref = useRef<HTMLElement>(null);
   const rectRef = useRef<DOMRect | null>(null);
-
-  const background = useTransform(
-    [mouseX, mouseY],
-    ([x, y]) =>
-      `radial-gradient(320px circle at ${x}px ${y}px, ${glowColor}, transparent 60%)`,
-  );
 
   useEffect(() => {
     const el = ref.current;
@@ -37,14 +28,16 @@ export function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
         rectRef.current = el.getBoundingClientRect();
       }
       const rect = rectRef.current;
-      mouseX.set(e.clientX - rect.left);
-      mouseY.set(e.clientY - rect.top);
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      el.style.setProperty("--gx", `${x}px`);
+      el.style.setProperty("--gy", `${y}px`);
     };
 
     const handleMouseLeave = () => {
       rectRef.current = null;
-      mouseX.set(-999);
-      mouseY.set(-999);
+      el.style.setProperty("--gx", "-999px");
+      el.style.setProperty("--gy", "-999px");
     };
 
     el.addEventListener("mouseenter", handleMouseEnter, { passive: true });
@@ -56,12 +49,11 @@ export function useSpotlight(glowColor: string = "rgba(6, 182, 212, 0.09)") {
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [mouseX, mouseY, glowColor]);
+  }, []);
 
-  // Backwards compatibility with JSX handlers
   const onMove = () => {};
 
-  return { ref, onMove, background };
+  return { ref, onMove };
 }
 
 function Metrics({ metrics }: { metrics: Project["metrics"] }) {
@@ -78,6 +70,12 @@ function Metrics({ metrics }: { metrics: Project["metrics"] }) {
     </dl>
   );
 }
+
+const ACTIVE_THEMES = [
+  { glow: "rgba(34, 211, 238, 0.025)", border: "rgba(34, 211, 238, 0.35)" }, // Vurlo (Cyan)
+  { glow: "rgba(16, 185, 129, 0.025)", border: "rgba(16, 185, 129, 0.35)" }, // Veltrix (Emerald)
+  { glow: "rgba(99, 102, 241, 0.025)", border: "rgba(99, 102, 241, 0.35)" }, // Vcentre (Indigo)
+];
 
 /** The strongest project — visual and content side by side, full width. */
 function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: (p: Project) => void }) {
@@ -238,6 +236,188 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
           <img
             src={`${p.secondaryImage}?v=1.3`}
             alt={`${p.name} Admin screenshot`}
+            className="max-h-[90vh] max-w-[90vw] md:max-w-[1024px] w-full rounded-lg border border-border object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+    </>
+  );
+}
+
+function CarouselProjectCard({
+  p,
+  i,
+  onViewCaseStudy,
+  rotateX,
+  rotateY,
+  scale,
+  opacity,
+  z,
+  shineX,
+  isActive,
+}: {
+  p: Project;
+  i: number;
+  onViewCaseStudy: (p: Project) => void;
+  rotateX: MotionValue<number>;
+  rotateY: MotionValue<number>;
+  scale: MotionValue<number>;
+  opacity: MotionValue<number>;
+  z: MotionValue<number>;
+  shineX: MotionValue<number>;
+  isActive: boolean;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Interpolate numerical shine percentage to absolute left positioning
+  const shineLeft = useTransform(shineX, (val) => `${val - 100}%`);
+
+  const details = PROJECT_DETAILS[p.name];
+  const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
+  const { ref: spotlightRef, onMove } = useSpotlight();
+  const Visual = PROJECT_VISUALS[p.visual];
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsLightboxOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isLightboxOpen]);
+
+  return (
+    <>
+      <div
+        ref={cardRef}
+        className="w-[280px] sm:w-[480px] md:w-[580px] flex-shrink-0 snap-center py-6"
+        style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
+      >
+        <motion.div
+          style={{
+            rotateX,
+            rotateY,
+            scale,
+            opacity,
+            z,
+            transformStyle: "preserve-3d",
+            willChange: "transform, opacity",
+          }}
+          className="h-full"
+        >
+            <motion.article
+              ref={spotlightRef}
+              onMouseMove={onMove}
+              variants={revealVariants}
+              whileHover="hover"
+              style={{
+                transformStyle: "preserve-3d",
+                "--glow-color": glowColor,
+                borderColor: isActive ? ACTIVE_THEMES[i].border : undefined,
+                boxShadow: isActive ? `0 10px 30px -10px ${ACTIVE_THEMES[i].border}` : undefined,
+              } as React.CSSProperties}
+              className="surface-card group relative flex flex-col overflow-hidden p-6 md:p-8 h-full transition-all duration-500"
+            >
+              {/* Metallic Specular Shine Overlay */}
+              <motion.div
+                style={{
+                  left: shineLeft,
+                  background: "linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.005) 30%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.005) 70%, transparent 100%)",
+                }}
+                className="pointer-events-none absolute inset-y-0 w-[300%] z-10"
+              />
+
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100 project-glow-element"
+                style={{
+                  background: "radial-gradient(320px circle at var(--gx, -999px) var(--gy, -999px), var(--glow-color, rgba(6, 182, 212, 0.09)), transparent 60%)",
+                }}
+              />
+
+              {/* Mockup visual area */}
+              <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}>
+                <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+                  {p.image ? (
+                    <button
+                      onClick={() => setIsLightboxOpen(true)}
+                      aria-label={`View full ${p.name} screenshot`}
+                      className="w-full h-auto block text-left outline-none cursor-zoom-in"
+                    >
+                      <img
+                        src={`${p.image}?v=1.2`}
+                        alt={p.name}
+                        loading="lazy"
+                        className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
+                      />
+                    </button>
+                  ) : (
+                    <Visual />
+                  )}
+                </DeviceFrame>
+              </div>
+
+              {/* Text metadata and specs */}
+              <div style={{ transform: "translateZ(20px)" }} className="relative mt-6 flex flex-1 flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-3 font-mono text-xs text-subtle">
+                    <span>{p.index}</span>
+                    <span className="h-px w-5 bg-border" />
+                    <span>{p.year}</span>
+                  </div>
+
+                  <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight">{p.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
+                  <p className="mt-4 text-xs leading-relaxed text-subtle/90">{p.summary}</p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
+                  <span className="font-display text-sm font-semibold tabular-nums text-foreground">
+                    {p.metrics[0].v}
+                    <span className="ml-1.5 font-mono text-[9px] font-normal uppercase tracking-widest text-subtle">
+                      {p.metrics[0].k}
+                    </span>
+                  </span>
+                  <button
+                    onClick={() => onViewCaseStudy(p)}
+                    onMouseEnter={() => playTick(0)}
+                    aria-label={`View ${p.name} case study`}
+                    className="inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
+                  >
+                    <span>View Workspace</span>
+                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </button>
+                </div>
+              </div>
+            </motion.article>
+        </motion.div>
+      </div>
+
+      {isLightboxOpen && p.image && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLightboxOpen(false);
+            }}
+            aria-label="Close"
+            className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <img
+            src={`${p.image}?v=1.2`}
+            alt={`${p.name} screenshot`}
             className="max-h-[90vh] max-w-[90vw] md:max-w-[1024px] w-full rounded-lg border border-border object-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
@@ -676,6 +856,22 @@ export function Projects() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeChallenge, setActiveChallenge] = useState<number | null>(0); // Default open the first challenge card
   const workspaceScrollRef = useRef<HTMLDivElement>(null);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const [activeCarouselIndex, setActiveCarouselIndex] = useState(0);
+  const containerScrollProgress = useMotionValue(0);
+  const maxScrollRef = useRef(0);
+  const scrollTimeoutRef = useRef<number | null>(null);
+
+  // 3D Carousel Motion values for smooth compositor animations per card
+  const cardRotations = [useMotionValue(0), useMotionValue(-25), useMotionValue(-25)];
+  const cardRotateXs = [useMotionValue(0), useMotionValue(-8), useMotionValue(-8)];
+  const cardScales = [useMotionValue(1), useMotionValue(0.85), useMotionValue(0.85)];
+  const cardOpacities = [useMotionValue(1), useMotionValue(0.55), useMotionValue(0.55)];
+  const cardZs = [useMotionValue(0), useMotionValue(-120), useMotionValue(-120)];
+  const cardShines = [useMotionValue(0), useMotionValue(-150), useMotionValue(-150)];
+
+  // Caching card centers to avoid reading layouts on scroll frames
+  const cardCentersRef = useRef<number[]>([]);
 
   const TABS = [
     { id: 'overview', label: 'Overview' },
@@ -739,40 +935,40 @@ export function Projects() {
     setProgressBarWidth(0);
     playSwell(); // Synthesize ascending workspace portal hum
 
-    // Timeline steps (Total: 400ms)
+    // Timeline steps (Total: 2000ms)
     setStatusText("Opening Workspace...");
     setProgressBarWidth(30);
 
     setTimeout(() => {
       setStatusText("Loading Project...");
       setProgressBarWidth(60);
-    }, 80);
+    }, 400);
 
     setTimeout(() => {
       setStatusText("Preparing Architecture...");
       setProgressBarWidth(85);
-    }, 160);
+    }, 800);
 
     setTimeout(() => {
       setStatusText("Workspace Ready.");
       setProgressBarWidth(100);
-    }, 300);
+    }, 1500);
 
     setTimeout(() => {
       setTransitionStage('ready');
       setShowWorkspaceContent(false);
-      
+
       setTimeout(() => {
         setShowWorkspaceContent(true);
         setActiveSection('overview');
         setScrollProgress(0);
-        setActiveChallenge(0); // Reset challenge accordion state
+        setActiveChallenge(0);
 
         setTimeout(() => {
           setIsTransitioning(false);
-        }, 150);
-      }, 20);
-    }, 400);
+        }, 620);
+      }, 100);
+    }, 2000);
   };
 
   const handleExitWorkspace = () => {
@@ -790,15 +986,15 @@ export function Projects() {
       
       setTimeout(() => {
         setStatusText("Returning to Portfolio...");
-      }, 150);
+      }, 750);
 
       setTimeout(() => {
         setTransitionStage('idle');
         setActiveProject(null);
         setIsTransitioning(false);
-      }, 300);
+      }, 1500);
       
-    }, 100);
+    }, 300);
   };
 
   const [mounted, setMounted] = useState(false);
@@ -826,8 +1022,169 @@ export function Projects() {
     }
   }, [activeProject, transitionStage, isTransitioning]);
 
+  useEffect(() => {
+    const container = carouselContainerRef.current;
+    if (!container) return;
+
+    // Cache card centers and total scroll limit
+    const updateLayout = () => {
+      const cardElements = container.getElementsByClassName("snap-center");
+      const centers = [];
+      for (let i = 0; i < cardElements.length; i++) {
+        const el = cardElements[i] as HTMLElement;
+        centers.push(el.offsetLeft + el.clientWidth / 2);
+      }
+      cardCentersRef.current = centers;
+      maxScrollRef.current = container.scrollWidth - container.clientWidth;
+    };
+
+    const handleScroll = () => {
+      // Instantly kill all active spotlight glows by firing synthetic mouseleave on card articles.
+      // This resets mouseX/mouseY to -999 (off-screen) BEFORE the 3D transforms start,
+      // preventing the gradient repaint from competing with the card switch animation.
+      const articles = container.querySelectorAll("article");
+      articles.forEach((el) =>
+        el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }))
+      );
+
+      // Toggle carousel-scrolling class to disable mouse events and fade out glows on scroll
+      container.classList.add("carousel-scrolling");
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        container.classList.remove("carousel-scrolling");
+      }, 150);
+
+      // Recalculate on the fly if not set yet
+      if (cardCentersRef.current.length === 0 || maxScrollRef.current <= 0) {
+        updateLayout();
+      }
+
+      const scrollLeft = container.scrollLeft;
+      const clientWidth = container.clientWidth;
+      const containerCenter = scrollLeft + clientWidth / 2;
+      const centers = cardCentersRef.current;
+
+      // Update each card's raw transforms locally relative to the viewport center
+      for (let i = 0; i < cardRotations.length; i++) {
+        const center = centers[i] || 0;
+        const distance = center - containerCenter;
+        const maxDist = clientWidth * 0.65;
+        const ratio = Math.max(-1, Math.min(1, distance / maxDist)); // ranges -1 to 1
+
+        cardRotations[i].set(ratio * -25); // rotateY
+        cardRotateXs[i].set(Math.abs(ratio) * -8); // rotateX
+        cardScales[i].set(1 - Math.abs(ratio) * 0.15); // scale
+        cardOpacities[i].set(1 - Math.abs(ratio) * 0.45); // opacity
+        cardZs[i].set(Math.abs(ratio) * -120); // translateZ
+        cardShines[i].set(ratio * 150); // shine X percentage shift
+      }
+
+      // Update active dots index
+      const maxScroll = maxScrollRef.current;
+      if (maxScroll > 0) {
+        const scrollPercent = scrollLeft / maxScroll;
+        const closestIndex = Math.round(scrollPercent * (PROJECTS.length - 1));
+        setActiveCarouselIndex((prev) => {
+          if (prev !== closestIndex && closestIndex >= 0 && closestIndex < PROJECTS.length) {
+            return closestIndex;
+          }
+          return prev;
+        });
+      }
+    };
+
+    // Initial calculations
+    updateLayout();
+    handleScroll();
+
+    // Recalculate after mount tick intervals to ensure rendering positions resolve correctly
+    const renderTimeouts = [150, 400, 1000].map(delay => 
+      window.setTimeout(() => {
+        updateLayout();
+        handleScroll();
+      }, delay)
+    );
+
+    const handleResize = () => {
+      updateLayout();
+      handleScroll();
+    };
+
+    // Listen to scroll for card changes & motion values
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Only read layout dimensions on resize, NOT on every scroll frame
+    window.addEventListener("resize", handleResize, { passive: true });
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      renderTimeouts.forEach(t => window.clearTimeout(t));
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeProject) return;
+
+      const container = carouselContainerRef.current;
+      if (!container) return;
+
+      const cardElements = container.getElementsByClassName("snap-center");
+      if (cardElements.length === 0) return;
+
+      if (e.key === "ArrowRight") {
+        const nextIndex = Math.min(activeCarouselIndex + 1, PROJECTS.length - 1);
+        const nextEl = cardElements[nextIndex] as HTMLElement;
+        if (nextEl) {
+          const targetScrollLeft = nextEl.offsetLeft - (container.clientWidth - nextEl.clientWidth) / 2;
+          animate(container.scrollLeft, targetScrollLeft, {
+            type: "tween",
+            ease: [0.22, 1, 0.36, 1],
+            duration: 0.5,
+            onUpdate: (latest) => {
+              container.scrollLeft = latest;
+            }
+          });
+          playTick(0.1);
+        }
+      } else if (e.key === "ArrowLeft") {
+        const prevIndex = Math.max(activeCarouselIndex - 1, 0);
+        const prevEl = cardElements[prevIndex] as HTMLElement;
+        if (prevEl) {
+          const targetScrollLeft = prevEl.offsetLeft - (container.clientWidth - prevEl.clientWidth) / 2;
+          animate(container.scrollLeft, targetScrollLeft, {
+            type: "tween",
+            ease: [0.22, 1, 0.36, 1],
+            duration: 0.5,
+            onUpdate: (latest) => {
+              container.scrollLeft = latest;
+            }
+          });
+          playTick(-0.1);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeCarouselIndex, activeProject]);
+
   return (
     <section id="work" className="relative py-32 md:py-40">
+      {/* Ambient background glow bleed */}
+      <div 
+        className="pointer-events-none absolute inset-0 -z-10 transition-colors duration-1000 ease-out"
+        style={{
+          background: `radial-gradient(600px circle at 50% 50%, ${ACTIVE_THEMES[activeCarouselIndex]?.glow || "rgba(34, 211, 238, 0)"}, transparent 70%)`
+        }}
+      />
+
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <div className="flex items-end justify-between gap-8">
@@ -838,31 +1195,86 @@ export function Projects() {
                 not just experiments.
               </h2>
             </div>
-            <p className="hidden max-w-xs text-sm text-muted-foreground md:block">
-              Three projects out of twelve — the ones I'd re-ship tomorrow. Full case studies on
-              request.
-            </p>
+            
+            {/* Editorial Sliding Card Counter */}
+            <div className="hidden md:flex flex-col items-end gap-1 font-mono">
+              <span className="text-[9px] uppercase tracking-widest text-muted-foreground/60">Active Case Study</span>
+              <div className="flex items-baseline gap-2 select-none">
+                <div className="h-[48px] overflow-hidden text-5xl font-bold tracking-tight text-foreground flex flex-col">
+                  <div 
+                    className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col"
+                    style={{ transform: `translateY(-${activeCarouselIndex * 48}px)` }}
+                  >
+                    <span className="h-[48px] flex items-center justify-end leading-none">01</span>
+                    <span className="h-[48px] flex items-center justify-end leading-none">02</span>
+                    <span className="h-[48px] flex items-center justify-end leading-none">03</span>
+                  </div>
+                </div>
+                <span className="text-muted-foreground/20 text-2xl font-light">/</span>
+                <span className="text-muted-foreground/50 text-xl font-medium">03</span>
+              </div>
+            </div>
           </div>
         </Reveal>
 
-        <div className="mt-16">
-          <FeaturedProject p={featured} onViewCaseStudy={handleViewCaseStudy} />
+        <div className="relative mt-12">
+          {/* Left/Right Fading Overlays */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-[8vw] z-20 bg-gradient-to-r from-[#07050f] via-[#07050f]/80 to-transparent hidden md:block" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[8vw] z-20 bg-gradient-to-l from-[#07050f] via-[#07050f]/80 to-transparent hidden md:block" />
+
+          {/* Scroll Container */}
+          <div
+            ref={carouselContainerRef}
+            className="flex gap-6 md:gap-12 overflow-x-auto snap-x snap-mandatory scrollbar-none py-8 px-[12vw] sm:px-[20vw] md:px-[25vw] lg:px-[26vw]"
+            style={{}}
+          >
+            {PROJECTS.map((p, i) => (
+              <CarouselProjectCard
+                key={p.index}
+                p={p}
+                i={i}
+                onViewCaseStudy={handleViewCaseStudy}
+                rotateX={cardRotateXs[i]}
+                rotateY={cardRotations[i]}
+                scale={cardScales[i]}
+                opacity={cardOpacities[i]}
+                z={cardZs[i]}
+                shineX={cardShines[i]}
+                isActive={activeCarouselIndex === i}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className={`mt-6 grid gap-6 ${
-          rest.length === 1 
-            ? "grid-cols-1 max-w-2xl mx-auto" 
-            : rest.length === 2 
-              ? "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto" 
-              : "grid-cols-1 md:grid-cols-3"
-        }`}>
-          {rest.map((p, i) => (
-            <CompactProject 
-              key={p.index} 
-              p={p} 
-              i={i} 
-              onViewCaseStudy={handleViewCaseStudy} 
-              direction={i % 2 === 0 ? "left" : "right"} 
+        {/* Navigation Dots */}
+        <div className="mt-6 flex justify-center gap-2 relative z-20">
+          {PROJECTS.map((p, idx) => (
+            <button
+              key={p.index}
+              onClick={() => {
+                const container = carouselContainerRef.current;
+                if (!container) return;
+                const cardElements = container.getElementsByClassName("snap-center");
+                const targetEl = cardElements[idx] as HTMLElement;
+                if (targetEl) {
+                  const targetScrollLeft = targetEl.offsetLeft - (container.clientWidth - targetEl.clientWidth) / 2;
+                  animate(container.scrollLeft, targetScrollLeft, {
+                    type: "tween",
+                    ease: [0.22, 1, 0.36, 1],
+                    duration: 0.5,
+                    onUpdate: (latest) => {
+                      container.scrollLeft = latest;
+                    }
+                  });
+                  playTick((idx / (PROJECTS.length - 1)) * 2 - 1);
+                }
+              }}
+              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                activeCarouselIndex === idx
+                  ? "w-8 bg-primary"
+                  : "w-2.5 bg-white/20 hover:bg-white/40"
+              }`}
+              aria-label={`Go to project ${idx + 1}`}
             />
           ))}
         </div>

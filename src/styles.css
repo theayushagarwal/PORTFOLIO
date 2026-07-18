@@ -763,4 +763,43 @@
   }
 }
 
+/* ============================================================
+ * Hide scrollbars utility
+ * ============================================================ */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* ============================================================
+ * Carousel Scroll Performance Optimizations
+ * ============================================================ */
+.carousel-scrolling .snap-center {
+  pointer-events: none !important;
+}
+
+/* Instantly hide spotlight glows during scroll to free browser repaint resource loops */
+.carousel-scrolling .project-glow-element {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+  transition: none !important;
+}
+
+/* Instantly disable all transitions inside cards during scroll to prevent exit hover lag */
+.carousel-scrolling .surface-card,
+.carousel-scrolling .surface-card img,
+.carousel-scrolling .surface-card * {
+  transition: none !important;
+}
+
+/* Force permanent GPU layer promotion on card images to prevent rasterization/demotion lag when scroll starts */
+.surface-card img {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 

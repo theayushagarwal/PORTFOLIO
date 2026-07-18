@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 
 export function TextScramble({ text, delay = 0, trigger = true }: { text: string; delay?: number; trigger?: boolean }) {
-  const [displayText, setDisplayText] = useState(() => {
-    const chars = "!<>-_\\/[]{}—=+*^?#_abcdefghijklmnopqrstuvwxyz";
-    return text
-      .split("")
-      .map((char) => (char === " " ? " " : chars[Math.floor(Math.random() * chars.length)]))
-      .join("");
-  });
+  const [displayText, setDisplayText] = useState(text);
 
   useEffect(() => {
     if (!trigger) return;
