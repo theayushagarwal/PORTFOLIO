@@ -10,6 +10,7 @@ let suspendTimeout: NodeJS.Timeout | null = null;
 function initAudio() {
   if (typeof window === "undefined") return;
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     audioCtx = new AudioContextClass();
   } catch (e) {
@@ -64,10 +65,10 @@ export function resumeAudio(): Promise<void> {
     initAudio();
   }
   if (!audioCtx) return Promise.resolve();
-  
+
   // Refresh the suspend timer
   resetSuspendTimer();
-  
+
   return audioCtx.resume();
 }
 
@@ -93,7 +94,7 @@ export function initAudioOnFirstInteraction() {
  * 1. playTick: Crisp, mechanical hover click (10/10 liquid pop).
  * Debounced at 45ms and memory-optimized via explicit node graph de-allocation on finish.
  */
-export function playTick(pan: number | any = 0) {
+export function playTick(pan = 0) {
   // Rate-limiting: Prevent multiple ticks triggering too close together (under 45ms)
   const nowMs = performance.now();
   if (nowMs - lastTickTime < 45) {
@@ -109,14 +110,14 @@ export function playTick(pan: number | any = 0) {
 
   // Flavor selection: 3 distinct timbre flavors picked randomly each hover
   const flavors = [
-    { type: "sine" as OscillatorType, startFreq: 2000, endFreq: 1000, baseDuration: 0.025 },    // Flavor A: "bright"
-    { type: "triangle" as OscillatorType, startFreq: 1400, endFreq: 700, baseDuration: 0.025 },   // Flavor B: "woody"
-    { type: "sine" as OscillatorType, startFreq: 2800, endFreq: 1800, baseDuration: 0.018 }   // Flavor C: "glassy"
+    { type: "sine" as OscillatorType, startFreq: 2000, endFreq: 1000, baseDuration: 0.025 }, // Flavor A: "bright"
+    { type: "triangle" as OscillatorType, startFreq: 1400, endFreq: 700, baseDuration: 0.025 }, // Flavor B: "woody"
+    { type: "sine" as OscillatorType, startFreq: 2800, endFreq: 1800, baseDuration: 0.018 }, // Flavor C: "glassy"
   ];
   const selectedFlavor = flavors[Math.floor(Math.random() * flavors.length)];
 
   // Timing jitter: +/-10% variation on chosen flavor's base duration (clamped to 12ms minimum)
-  const duration = Math.max(0.012, jitter(selectedFlavor.baseDuration, 0.10));
+  const duration = Math.max(0.012, jitter(selectedFlavor.baseDuration, 0.1));
 
   // Stereo panner shared by both noise transient and tone layers
   const panner = audioCtx.createStereoPanner();
@@ -128,7 +129,7 @@ export function playTick(pan: number | any = 0) {
   const sampleCount = Math.floor(audioCtx.sampleRate * 0.007); // ~7ms duration
   const noiseBuffer = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
   const bufferData = noiseBuffer.getChannelData(0);
-  
+
   // Fill buffer with random noise samples
   for (let i = 0; i < sampleCount; i++) {
     bufferData[i] = (Math.random() * 2 - 1) * 0.5;
@@ -192,7 +193,7 @@ export function playTick(pan: number | any = 0) {
   // Trigger both components simultaneously
   noiseSource.start(now);
   osc.start(now);
-  
+
   osc.stop(now + duration);
 }
 
@@ -208,7 +209,7 @@ export function playSwell() {
 
   const subOsc = audioCtx.createOscillator();
   const subGain = audioCtx.createGain();
-  
+
   const midOsc = audioCtx.createOscillator();
   const midGain = audioCtx.createGain();
 
@@ -241,7 +242,7 @@ export function playSwell() {
 
   subGain.connect(filter);
   midGain.connect(filter);
-  
+
   filter.connect(audioCtx.destination);
 
   // 3. Shimmer/Gleam layer: quiet, high-frequency tremolo sine sweep at the end of the swell (1.4s to 1.8s)
@@ -307,13 +308,13 @@ export function playExit() {
   if (!resumeContextSync() || !audioCtx) return;
 
   const now = audioCtx.currentTime;
-  const duration = 0.30; // Quick 300ms suction whoosh
+  const duration = 0.3; // Quick 300ms suction whoosh
 
   // Generate white noise for the air sweep
   const sampleCount = Math.floor(audioCtx.sampleRate * duration);
   const noiseBuffer = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
   const bufferData = noiseBuffer.getChannelData(0);
-  
+
   for (let i = 0; i < sampleCount; i++) {
     bufferData[i] = (Math.random() * 2 - 1) * 0.45;
   }

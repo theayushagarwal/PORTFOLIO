@@ -26,7 +26,7 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
     if (!rectRef.current) {
       rectRef.current = e.currentTarget.getBoundingClientRect();
     }
-    
+
     const rect = rectRef.current;
 
     // 3. Pure math on cached values (no DOM reading = zero lag)
@@ -40,7 +40,7 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
   const handleMouseLeave = () => {
     // 4. Clear cache on exit so it recalculates next time
     rectRef.current = null;
-    
+
     // Reset positions smoothly on exit
     x.set(0);
     y.set(0);

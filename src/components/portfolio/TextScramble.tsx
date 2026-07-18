@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 
-export function TextScramble({ text, delay = 0, trigger = true }: { text: string; delay?: number; trigger?: boolean }) {
+export function TextScramble({
+  text,
+  delay = 0,
+  trigger = true,
+}: {
+  text: string;
+  delay?: number;
+  trigger?: boolean;
+}) {
   const [displayText, setDisplayText] = useState(text);
 
   useEffect(() => {

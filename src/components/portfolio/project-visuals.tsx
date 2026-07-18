@@ -24,7 +24,13 @@ export function DeviceFrame({
   fillHeight?: boolean;
 }) {
   return (
-    <div className={cn("overflow-hidden rounded-xl border border-border bg-surface", fillHeight && "flex flex-col h-full", className)}>
+    <div
+      className={cn(
+        "overflow-hidden rounded-xl border border-border bg-surface",
+        fillHeight && "flex flex-col h-full",
+        className,
+      )}
+    >
       <div className="flex items-center gap-2 border-b border-border px-4 py-2.5 shrink-0">
         <div className="flex gap-1.5" aria-hidden="true">
           <span className="h-1.5 w-1.5 rounded-full bg-white/15" />
@@ -33,7 +39,13 @@ export function DeviceFrame({
         </div>
         <span className="font-mono text-[10px] tracking-wide text-subtle">{label}</span>
       </div>
-      <div className={cn("relative flex items-center justify-center w-full", fillHeight ? "flex-1 min-h-0" : aspectClass, noPadding ? "p-0" : "p-6")}>
+      <div
+        className={cn(
+          "relative flex items-center justify-center w-full",
+          fillHeight ? "flex-1 min-h-0" : aspectClass,
+          noPadding ? "p-0" : "p-6",
+        )}
+      >
         {children}
       </div>
     </div>
@@ -119,7 +131,7 @@ export function AgentTraceVisual() {
         variants={{
           hidden: { scaleX: 0, originX: 0 },
           visible: { scaleX: 1, transition: { duration: 0.5, delay: 0.25 } },
-          hover: { x: 48, transition: { duration: 0.3, delay: 0.04 } }
+          hover: { x: 48, transition: { duration: 0.3, delay: 0.04 } },
         }}
       />
       <motion.rect
@@ -132,7 +144,7 @@ export function AgentTraceVisual() {
         variants={{
           hidden: { scaleX: 0, originX: 0 },
           visible: { scaleX: 1, transition: { duration: 0.5, delay: 0.37 } },
-          hover: { x: 48, transition: { duration: 0.3, delay: 0.08 } }
+          hover: { x: 48, transition: { duration: 0.3, delay: 0.08 } },
         }}
       />
       <motion.rect
@@ -145,7 +157,7 @@ export function AgentTraceVisual() {
         variants={{
           hidden: { scaleX: 0, originX: 0 },
           visible: { scaleX: 1, transition: { duration: 0.5, delay: 0.49 } },
-          hover: { x: 48, transition: { duration: 0.3, delay: 0.12 } }
+          hover: { x: 48, transition: { duration: 0.3, delay: 0.12 } },
         }}
       />
       {[44, 92, 132].map((x, i) => (
@@ -333,8 +345,8 @@ export function WaveformVisual() {
         variants={{
           hover: {
             stroke: "rgba(6, 182, 212, 0.4)",
-            transition: { duration: 0.3 }
-          }
+            transition: { duration: 0.3 },
+          },
         }}
       >
         <rect x="0" y="0" width="64" height="34" rx="4" className="fill-transparent" />
@@ -449,4 +461,3 @@ export const PROJECT_VISUALS = {
   waveform: WaveformVisual,
   "graph-network": GraphNetworkVisual,
 } as const;
-

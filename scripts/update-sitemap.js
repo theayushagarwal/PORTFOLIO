@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const sitemapPath = path.resolve('public/sitemap.xml');
-const currentDate = new Date().toISOString().split('T')[0];
+const sitemapPath = path.resolve("public/sitemap.xml");
+const currentDate = new Date().toISOString().split("T")[0];
 
 const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -58,5 +58,5 @@ const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 </urlset>
 `;
 
-fs.writeFileSync(sitemapPath, sitemapContent, 'utf8');
+fs.writeFileSync(sitemapPath, sitemapContent, "utf8");
 console.log(`Updated sitemap.xml with lastmod date: ${currentDate}`);

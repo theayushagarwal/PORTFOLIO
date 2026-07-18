@@ -5,8 +5,8 @@ import { playTick } from "@/lib/sound";
 import { motion, AnimatePresence } from "motion/react";
 
 // Server function calling the Groq API securely
-const askGroq = createServerFn({ method: "POST" })
-  .handler(async ({ data: prompt }: { data: string }) => {
+const askGroq = createServerFn({ method: "POST" }).handler(
+  async ({ data: prompt }: { data: string }) => {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return "__NO_API_KEY__";
@@ -17,7 +17,7 @@ const askGroq = createServerFn({ method: "POST" })
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
           model: "llama-3.1-8b-instant",
@@ -83,12 +83,12 @@ Guardrails & Instructions:
 
 Tone & Style:
 - Engineering-focused, direct, and crisp.
-- Keep simple answers short (3-4 sentences). For deep technical/architectural queries, feel free to give comprehensive, detailed answers up to 400-500 tokens.`
+- Keep simple answers short (3-4 sentences). For deep technical/architectural queries, feel free to give comprehensive, detailed answers up to 400-500 tokens.`,
             },
             {
               role: "user",
               content: prompt,
-            }
+            },
           ],
           temperature: 0.5,
           max_tokens: 500,
@@ -105,7 +105,8 @@ Tone & Style:
       console.error("Groq API error:", err);
       return "__API_ERROR__";
     }
-  });
+  },
+);
 
 interface Message {
   sender: "user" | "bot";
@@ -121,23 +122,51 @@ const QUICK_PROMPTS = [
 
 function getLocalResponse(prompt: string): string {
   const lowercase = prompt.toLowerCase();
-  
-  if (lowercase.includes("veltrix") || lowercase.includes("consensus") || lowercase.includes("instagram")) {
+
+  if (
+    lowercase.includes("veltrix") ||
+    lowercase.includes("consensus") ||
+    lowercase.includes("instagram")
+  ) {
     return "Veltrix is an autonomous Instagram account that designs slides and publishes posts twice a day. It uses an adversarial consensus loop: Gemini drafts content, and Groq + Cerebras act as independent auditors. Headless Playwright renders carousels at full resolution.";
   }
-  if (lowercase.includes("vurlo") || lowercase.includes("e-commerce") || lowercase.includes("saas")) {
+  if (
+    lowercase.includes("vurlo") ||
+    lowercase.includes("e-commerce") ||
+    lowercase.includes("saas")
+  ) {
     return "Vurlo (vurlo.store) is a full-stack e-commerce SaaS platform built solo in 10 days. It handles Razorpay checkouts, granular Firebase security rules, and atomic database transaction stock-locking to prevent overselling.";
   }
-  if (lowercase.includes("vcentre") || lowercase.includes("scraper") || lowercase.includes("competitor")) {
+  if (
+    lowercase.includes("vcentre") ||
+    lowercase.includes("scraper") ||
+    lowercase.includes("competitor")
+  ) {
     return "Vcentre scrapes competitor Instagram accounts nightly. It isolates Reel/Photo engagement baselines, filters outliers using a 3x-median floor, analyses content via a 10-provider LLM fallback chain, and runs a closed-loop performance feedback job.";
   }
-  if (lowercase.includes("stack") || lowercase.includes("tech") || lowercase.includes("languages") || lowercase.includes("framework")) {
+  if (
+    lowercase.includes("stack") ||
+    lowercase.includes("tech") ||
+    lowercase.includes("languages") ||
+    lowercase.includes("framework")
+  ) {
     return "Ayush's main stack is TypeScript, React 19, TanStack Start, Python, Supabase, SQLite, and Playwright. For AI/Agents, he uses Gemini, Groq, Cerebras, and LangGraph.";
   }
-  if (lowercase.includes("hire") || lowercase.includes("work") || lowercase.includes("contact") || lowercase.includes("freelance") || lowercase.includes("email")) {
+  if (
+    lowercase.includes("hire") ||
+    lowercase.includes("work") ||
+    lowercase.includes("contact") ||
+    lowercase.includes("freelance") ||
+    lowercase.includes("email")
+  ) {
     return "Ayush is available for hire and freelance work! You can contact him by filling out the form at the bottom of the page, or by emailing theayush.codes@gmail.com directly.";
   }
-  if (lowercase.includes("age") || lowercase.includes("years old") || lowercase.includes("college") || lowercase.includes("vit")) {
+  if (
+    lowercase.includes("age") ||
+    lowercase.includes("years old") ||
+    lowercase.includes("college") ||
+    lowercase.includes("vit")
+  ) {
     return "Ayush is 17 years old and starts his Computer Science Engineering (CSE) degree at VIT (Vellore Institute of Technology) this August (2026).";
   }
   return "I'm Ayush's virtual agent. I can tell you about Vurlo, Veltrix, Vcentre, his tech stack, or his availability! Try clicking one of the quick prompt chips or ask me a specific question.";
@@ -146,11 +175,11 @@ function getLocalResponse(prompt: string): string {
 function formatMessageText(text: string) {
   // Parse email addresses
   const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g;
-  
+
   return text.split("\n").map((line, lineIdx) => {
     // Split by bold (**bold**) and inline code (`code`)
     const parts = line.split(/(\*\*.*?\*\*|`.*?`)/g);
-    
+
     return (
       <div key={lineIdx} className={lineIdx > 0 ? "mt-1.5" : ""}>
         {parts.map((part, partIdx) => {
@@ -165,20 +194,23 @@ function formatMessageText(text: string) {
           // Code formatting
           if (part.startsWith("`") && part.endsWith("`")) {
             return (
-              <code key={partIdx} className="font-mono text-[11px] bg-black/40 px-1 py-0.5 rounded border border-white/5 text-primary">
+              <code
+                key={partIdx}
+                className="font-mono text-[11px] bg-black/40 px-1 py-0.5 rounded border border-white/5 text-primary"
+              >
                 {part.slice(1, -1)}
               </code>
             );
           }
-          
+
           // Email formatting within regular text
           const subParts = part.split(emailRegex);
           return subParts.map((subPart, subPartIdx) => {
             if (emailRegex.test(subPart)) {
               return (
-                <a 
-                  key={subPartIdx} 
-                  href={`mailto:${subPart}`} 
+                <a
+                  key={subPartIdx}
+                  href={`mailto:${subPart}`}
                   className="underline text-primary hover:text-secondary transition-colors"
                 >
                   {subPart}
@@ -197,7 +229,10 @@ export function Chatbox() {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { sender: "bot", text: "Hey! I'm Ayush's virtual agent. Ask me anything about his projects, tech stack, or availability!" },
+    {
+      sender: "bot",
+      text: "Hey! I'm Ayush's virtual agent. Ask me anything about his projects, tech stack, or availability!",
+    },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -225,7 +260,7 @@ export function Chatbox() {
     const cacheKey = text
       .trim()
       .toLowerCase()
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
+      .replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g, "")
       .replace(/\s+/g, " ");
 
     // Bounded eviction setter to stay within storage limits safely
@@ -234,7 +269,7 @@ export function Chatbox() {
         if (typeof window !== "undefined") {
           const keysStr = sessionStorage.getItem("vagent_cache_keys");
           let keys: string[] = keysStr ? JSON.parse(keysStr) : [];
-          
+
           keys = keys.filter((k) => k !== key);
           keys.push(key);
 
@@ -298,7 +333,7 @@ export function Chatbox() {
   return (
     <div className="fixed bottom-6 right-6 z-40 font-sans">
       {/* Hover Tooltip */}
-      <div 
+      <div
         className={`absolute right-14 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg border border-white/10 bg-surface/95 px-3 py-1.5 text-[9px] uppercase tracking-widest text-foreground shadow-lg backdrop-blur-md font-mono select-none transition-all duration-200 pointer-events-none ${
           showTooltip && !isOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
         }`}
@@ -370,7 +405,7 @@ export function Chatbox() {
                   </div>
                 </div>
               ))}
-              
+
               {isLoading && (
                 <div className="flex w-full justify-start">
                   <div className="bg-surface border border-white/10 text-subtle rounded-2xl rounded-tl-none px-4 py-2.5 text-[11px] flex items-center gap-2">
@@ -385,7 +420,9 @@ export function Chatbox() {
             {/* Quick prompt chips */}
             {messages.length === 1 && (
               <div className="px-4 py-3 border-t border-white/5 bg-black/10 select-none">
-                <p className="text-[9px] uppercase tracking-widest text-subtle mb-2 font-mono">Suggested Prompts</p>
+                <p className="text-[9px] uppercase tracking-widest text-subtle mb-2 font-mono">
+                  Suggested Prompts
+                </p>
                 <div className="flex flex-wrap gap-1.5">
                   {QUICK_PROMPTS.map((qp, idx) => (
                     <button

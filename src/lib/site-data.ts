@@ -59,16 +59,26 @@ export const PROJECTS: Project[] = [
   {
     index: "01",
     name: "Vurlo",
-    tagline: "Full-stack e-commerce SaaS platform with Razorpay payments, Firebase rules, and custom AI chatbot",
-    summary: "I built and shipped a complete e-commerce SaaS platform solo at vurlo.store. It integrates Firebase Auth, granular Firestore security rules, Razorpay checkout, and an interactive AI chatbot helper. Engineered for performance with lazy-loading, product quick-view modals, and server-side SEO & GEO optimization, all managed via a custom admin panel.",
+    tagline:
+      "Full-stack e-commerce SaaS platform with Razorpay payments, Firebase rules, and custom AI chatbot",
+    summary:
+      "I built and shipped a complete e-commerce SaaS platform solo at vurlo.store. It integrates Firebase Auth, granular Firestore security rules, Razorpay checkout, and an interactive AI chatbot helper. Engineered for performance with lazy-loading, product quick-view modals, and server-side SEO & GEO optimization, all managed via a custom admin panel.",
     role: "Founder & Full-Stack Engineer",
     year: "2026",
-    stack: ["React 19", "TanStack Start", "Firebase Auth & Rules", "Razorpay", "Tailwind CSS", "Gemini API", "TypeScript"],
+    stack: [
+      "React 19",
+      "TanStack Start",
+      "Firebase Auth & Rules",
+      "Razorpay",
+      "Tailwind CSS",
+      "Gemini API",
+      "TypeScript",
+    ],
     metrics: [
       { k: "Build Time", v: "10 days" },
       { k: "Lighthouse SEO", v: "100" },
       { k: "Best Practices", v: "96" },
-      { k: "Accessibility", v: "86" }
+      { k: "Accessibility", v: "86" },
     ],
     href: "https://vurlo.store",
     visual: "agent-trace",
@@ -80,17 +90,28 @@ export const PROJECTS: Project[] = [
   {
     index: "02",
     name: "Veltrix",
-    tagline: "An Instagram growth account that writes, fact-checks, and publishes itself twice a day",
+    tagline:
+      "An Instagram growth account that writes, fact-checks, and publishes itself twice a day",
     summary:
       "Every post ships through an adversarial pipeline before it goes live: Gemini drafts the topic and caption, then Groq and Cerebras — two independent models — must both sign off before it's trusted. A statistically-adaptive embedding check catches duplicate topics without a hardcoded similarity cutoff, and a self-expiring checkpoint file carries each post across two separate GitHub Actions runners so it can sit for a 30-minute human review window before auto-publishing. Branded slides render through Jinja2 + headless Playwright at full carousel resolution.",
     role: "Solo developer",
     year: "2026",
-    stack: ["Python", "Gemini API", "Groq", "Cerebras", "SQLite", "Supabase", "Playwright", "GitHub Actions", "Jinja2"],
+    stack: [
+      "Python",
+      "Gemini API",
+      "Groq",
+      "Cerebras",
+      "SQLite",
+      "Supabase",
+      "Playwright",
+      "GitHub Actions",
+      "Jinja2",
+    ],
     metrics: [
       { k: "posts/day", v: "2 (auto)" },
       { k: "independent audits", v: "2 of 2 required" },
       { k: "formats", v: "4 (photo/carousel/reel/listicle)" },
-      { k: "cost/post", v: "~$0.0002" }
+      { k: "cost/post", v: "~$0.0002" },
     ],
     href: "",
     visual: "agent-trace",
@@ -107,12 +128,21 @@ export const PROJECTS: Project[] = [
       "Vcentre scrapes competitor Instagram accounts nightly and scores Reels and Photos as separate cohorts, so one viral Reel can't skew the baseline for an account's regular photos. A 12-hour cooldown and a circuit breaker guard every scrape, and only posts clearing a 3x-median threshold, an absolute floor, and a minimum engagement rate route through a 10-provider LLM fallback chain — Groq and Cerebras handle the bulk of the analysis for free, Gemini only synthesizes the final brief. Briefs write straight into the same database the posting bots read from, and a closed-loop feedback job scores each post's real performance back against the pattern that produced it.",
     role: "Solo developer",
     year: "2026",
-    stack: ["Python", "Apify", "SQLite", "Supabase", "Groq", "Cerebras", "GitHub Actions", "FastAPI"],
+    stack: [
+      "Python",
+      "Apify",
+      "SQLite",
+      "Supabase",
+      "Groq",
+      "Cerebras",
+      "GitHub Actions",
+      "FastAPI",
+    ],
     metrics: [
       { k: "monthly cost", v: "$0" },
       { k: "outlier threshold", v: "3x median" },
       { k: "AI fallback chain", v: "10 providers" },
-      { k: "cron cadence", v: "daily @ 2AM UTC" }
+      { k: "cron cadence", v: "daily @ 2AM UTC" },
     ],
     href: "",
     visual: "graph-network",

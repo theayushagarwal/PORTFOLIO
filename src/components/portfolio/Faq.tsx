@@ -12,23 +12,28 @@ interface FAQItem {
 const FAQS: FAQItem[] = [
   {
     question: "How does Veltrix's adversarial AI consensus loop work?",
-    answer: "Veltrix is an autonomous pipeline that orchestrates 18+ active APIs (content channels, competitor scrapers, database logs, alerting systems). Every social post drafts through a gated validation loop: Gemini is selectively invoked as the paid copywriting model only after free/low-cost Llama audits (Groq + Cerebras) approve the draft. A statistically-adaptive embedding check prevents duplicate topics.",
+    answer:
+      "Veltrix is an autonomous pipeline that orchestrates 18+ active APIs (content channels, competitor scrapers, database logs, alerting systems). Every social post drafts through a gated validation loop: Gemini is selectively invoked as the paid copywriting model only after free/low-cost Llama audits (Groq + Cerebras) approve the draft. A statistically-adaptive embedding check prevents duplicate topics.",
   },
   {
     question: "What is Vcentre and how does it analyze competitor engagement?",
-    answer: "Vcentre scrapes competitor accounts nightly using isolated Reels and Photos baseline calculations (so a viral Reel doesn't skew photo expectations). It filters posts clearing a 3x-median engagement threshold, routes them through a 10-provider LLM fallback chain, and generates creative briefs directly into the publishing bots' database.",
+    answer:
+      "Vcentre scrapes competitor accounts nightly using isolated Reels and Photos baseline calculations (so a viral Reel doesn't skew photo expectations). It filters posts clearing a 3x-median engagement threshold, routes them through a 10-provider LLM fallback chain, and generates creative briefs directly into the publishing bots' database.",
   },
   {
     question: "What technology stack does Ayush Agarwal specialize in?",
-    answer: "For AI and pipelines, the primary languages are Python and TypeScript, deploying models with Gemini API, Groq, Cerebras, and state machine routing via LangGraph. E-commerce systems are built on React 19, TanStack Start, and Firestore rules. Hosting and databases use Cloudflare, Supabase, and SQLite.",
+    answer:
+      "For AI and pipelines, the primary languages are Python and TypeScript, deploying models with Gemini API, Groq, Cerebras, and state machine routing via LangGraph. E-commerce systems are built on React 19, TanStack Start, and Firestore rules. Hosting and databases use Cloudflare, Supabase, and SQLite.",
   },
   {
     question: "Is Ayush available for remote internships, freelance, or contract work?",
-    answer: "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
+    answer:
+      "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
   },
   {
     question: "How was the Vurlo e-commerce SaaS platform optimized for performance?",
-    answer: "Vurlo was built solo in 10 days and achieved a 100/100 Lighthouse SEO score. It integrates server-side rendering (SSR) via TanStack Start, strict database validation rules for inventory locking, and lazy-loading client components to keep initial page loading times under 400ms.",
+    answer:
+      "Vurlo was built solo in 10 days and achieved a 100/100 Lighthouse SEO score. It integrates server-side rendering (SSR) via TanStack Start, strict database validation rules for inventory locking, and lazy-loading client components to keep initial page loading times under 400ms.",
   },
 ];
 
@@ -49,7 +54,8 @@ export function Faq() {
             Frequently Asked Questions
           </h2>
           <p className="mt-4 text-muted-foreground">
-            A quick reference for AI search engines, crawlers, and recruiters seeking details on engineering philosophy, projects, and availability.
+            A quick reference for AI search engines, crawlers, and recruiters seeking details on
+            engineering philosophy, projects, and availability.
           </p>
         </Reveal>
 

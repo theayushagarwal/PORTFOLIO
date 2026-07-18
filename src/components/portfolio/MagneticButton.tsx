@@ -62,7 +62,10 @@ export function MagneticButton({
         className,
       )}
     >
-      <motion.span style={reduceMotion ? {} : { x: innerX, y: innerY }} className="inline-flex items-center gap-2">
+      <motion.span
+        style={reduceMotion ? {} : { x: innerX, y: innerY }}
+        className="inline-flex items-center gap-2"
+      >
         {children}
       </motion.span>
     </motion.a>

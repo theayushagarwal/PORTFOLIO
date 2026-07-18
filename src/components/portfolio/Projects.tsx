@@ -2,7 +2,14 @@ import { ArrowUpRight, ChevronDown, ExternalLink, Link2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
-import { motion, useMotionValue, useTransform, AnimatePresence, animate, MotionValue } from "motion/react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  AnimatePresence,
+  animate,
+  MotionValue,
+} from "motion/react";
 import { Reveal } from "./Reveal";
 import { DeviceFrame, PROJECT_VISUALS } from "./project-visuals";
 import { revealVariants, EASE } from "@/lib/motion";
@@ -78,9 +85,17 @@ const ACTIVE_THEMES = [
 ];
 
 /** The strongest project — visual and content side by side, full width. */
-function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: (p: Project) => void }) {
+function FeaturedProject({
+  p,
+  onViewCaseStudy,
+}: {
+  p: Project;
+  onViewCaseStudy: (p: Project) => void;
+}) {
   const details = PROJECT_DETAILS[p.name];
-  const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
+  const glowColor = details?.theme.glow
+    ? details.theme.glow.replace("0.15", "0.09")
+    : "rgba(6, 182, 212, 0.09)";
   const { ref, onMove, background } = useSpotlight(glowColor);
   const Visual = PROJECT_VISUALS[p.visual];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -114,8 +129,16 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
               style={{ background }}
             />
 
-            <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} className="flex flex-col gap-5 self-center w-full relative z-10">
-              <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+            <div
+              style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}
+              className="flex flex-col gap-5 self-center w-full relative z-10"
+            >
+              <DeviceFrame
+                label={p.visualLabel}
+                className="relative overflow-hidden"
+                noPadding={!!p.image}
+                aspectClass={p.image ? "" : "aspect-[16/10]"}
+              >
                 {p.image ? (
                   <div className="relative w-full h-auto">
                     <img
@@ -127,7 +150,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
                       <div className="absolute top-3 right-3 z-10 shrink-0 flex flex-col gap-1 items-center bg-black/60 backdrop-blur-md border border-white/10 p-1.5 rounded-lg shadow-lg select-none">
                         <button
                           onClick={() => setIsLightboxOpen(true)}
-                          aria-label={`View ${p.secondaryLabel || 'admin panel'} screenshot`}
+                          aria-label={`View ${p.secondaryLabel || "admin panel"} screenshot`}
                           className="group/thumb relative block overflow-hidden rounded border border-border/80 bg-surface/50 p-0.5 transition-colors hover:border-secondary/40"
                         >
                           <img
@@ -138,7 +161,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
                           />
                         </button>
                         <span className="font-mono text-[8px] uppercase tracking-wider text-white/70">
-                          {p.secondaryLabel || 'admin panel'}
+                          {p.secondaryLabel || "admin panel"}
                         </span>
                       </div>
                     )}
@@ -156,7 +179,9 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                    <span>SEO-optimized — 100 Lighthouse score with schema.org structured data</span>
+                    <span>
+                      SEO-optimized — 100 Lighthouse score with schema.org structured data
+                    </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
@@ -166,7 +191,10 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
               )}
             </div>
 
-            <div style={{ transform: "translateZ(15px)" }} className="relative flex flex-col justify-center">
+            <div
+              style={{ transform: "translateZ(15px)" }}
+              className="relative flex flex-col justify-center"
+            >
               <div className="flex items-center gap-3">
                 <span className="eyebrow">Featured</span>
                 <span className="h-px w-6 bg-border" />
@@ -178,11 +206,11 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
               <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight md:text-4xl text-foreground">
                 {p.name}
               </h3>
-              
+
               <p className="mt-1 text-[13px] text-subtle/85 font-normal tracking-wide leading-relaxed">
                 {p.tagline}
               </p>
-              
+
               <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-foreground/90 font-medium">
                 {p.summary}
               </p>
@@ -216,7 +244,7 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
       </Reveal>
 
       {isLightboxOpen && p.secondaryImage && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
           onClick={() => setIsLightboxOpen(false)}
         >
@@ -228,8 +256,19 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
             aria-label="Close"
             className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
 
@@ -274,7 +313,9 @@ function CarouselProjectCard({
   const shineLeft = useTransform(shineX, (val) => `${val - 100}%`);
 
   const details = PROJECT_DETAILS[p.name];
-  const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
+  const glowColor = details?.theme.glow
+    ? details.theme.glow.replace("0.15", "0.09")
+    : "rgba(6, 182, 212, 0.09)";
   const { ref: spotlightRef, onMove } = useSpotlight();
   const Visual = PROJECT_VISUALS[p.visual];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -309,91 +350,105 @@ function CarouselProjectCard({
           }}
           className="h-full"
         >
-            <motion.article
-              ref={spotlightRef}
-              onMouseMove={onMove}
-              variants={revealVariants}
-              whileHover="hover"
-              style={{
+          <motion.article
+            ref={spotlightRef}
+            onMouseMove={onMove}
+            variants={revealVariants}
+            whileHover="hover"
+            style={
+              {
                 transformStyle: "preserve-3d",
                 "--glow-color": glowColor,
                 borderColor: isActive ? ACTIVE_THEMES[i].border : undefined,
                 boxShadow: isActive ? `0 10px 30px -10px ${ACTIVE_THEMES[i].border}` : undefined,
-              } as React.CSSProperties}
-              className="surface-card group relative flex flex-col overflow-hidden p-6 md:p-8 h-full transition-all duration-500"
-            >
-              {/* Metallic Specular Shine Overlay */}
-              <motion.div
-                style={{
-                  left: shineLeft,
-                  background: "linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.005) 30%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.005) 70%, transparent 100%)",
-                }}
-                className="pointer-events-none absolute inset-y-0 w-[300%] z-10"
-              />
+              } as React.CSSProperties
+            }
+            className="surface-card group relative flex flex-col overflow-hidden p-6 md:p-8 h-full transition-all duration-500"
+          >
+            {/* Metallic Specular Shine Overlay */}
+            <motion.div
+              style={{
+                left: shineLeft,
+                background:
+                  "linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.005) 30%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.005) 70%, transparent 100%)",
+              }}
+              className="pointer-events-none absolute inset-y-0 w-[300%] z-10"
+            />
 
-              <motion.div
-                aria-hidden
-                className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100 project-glow-element"
-                style={{
-                  background: "radial-gradient(320px circle at var(--gx, -999px) var(--gy, -999px), var(--glow-color, rgba(6, 182, 212, 0.09)), transparent 60%)",
-                }}
-              />
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100 project-glow-element"
+              style={{
+                background:
+                  "radial-gradient(320px circle at var(--gx, -999px) var(--gy, -999px), var(--glow-color, rgba(6, 182, 212, 0.09)), transparent 60%)",
+              }}
+            />
 
-              {/* Mockup visual area */}
-              <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}>
-                <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
-                  {p.image ? (
-                    <button
-                      onClick={() => setIsLightboxOpen(true)}
-                      aria-label={`View full ${p.name} screenshot`}
-                      className="w-full h-auto block text-left outline-none cursor-zoom-in"
-                    >
-                      <img
-                        src={`${p.image}?v=1.2`}
-                        alt={p.name}
-                        loading="lazy"
-                        className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
-                      />
-                    </button>
-                  ) : (
-                    <Visual />
-                  )}
-                </DeviceFrame>
-              </div>
-
-              {/* Text metadata and specs */}
-              <div style={{ transform: "translateZ(20px)" }} className="relative mt-6 flex flex-1 flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-3 font-mono text-xs text-subtle">
-                    <span>{p.index}</span>
-                    <span className="h-px w-5 bg-border" />
-                    <span>{p.year}</span>
-                  </div>
-
-                  <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight">{p.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
-                  <p className="mt-4 text-xs leading-relaxed text-subtle/90">{p.summary}</p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
-                  <span className="font-display text-sm font-semibold tabular-nums text-foreground">
-                    {p.metrics[0].v}
-                    <span className="ml-1.5 font-mono text-[9px] font-normal uppercase tracking-widest text-subtle">
-                      {p.metrics[0].k}
-                    </span>
-                  </span>
+            {/* Mockup visual area */}
+            <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}>
+              <DeviceFrame
+                label={p.visualLabel}
+                className="relative overflow-hidden"
+                noPadding={!!p.image}
+                aspectClass={p.image ? "" : "aspect-[16/10]"}
+              >
+                {p.image ? (
                   <button
-                    onClick={() => onViewCaseStudy(p)}
-                    onMouseEnter={() => playTick(0)}
-                    aria-label={`View ${p.name} case study`}
-                    className="inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
+                    onClick={() => setIsLightboxOpen(true)}
+                    aria-label={`View full ${p.name} screenshot`}
+                    className="w-full h-auto block text-left outline-none cursor-zoom-in"
                   >
-                    <span>View Workspace</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <img
+                      src={`${p.image}?v=1.2`}
+                      alt={p.name}
+                      loading="lazy"
+                      className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
+                    />
                   </button>
+                ) : (
+                  <Visual />
+                )}
+              </DeviceFrame>
+            </div>
+
+            {/* Text metadata and specs */}
+            <div
+              style={{ transform: "translateZ(20px)" }}
+              className="relative mt-6 flex flex-1 flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center gap-3 font-mono text-xs text-subtle">
+                  <span>{p.index}</span>
+                  <span className="h-px w-5 bg-border" />
+                  <span>{p.year}</span>
                 </div>
+
+                <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight">
+                  {p.name}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
+                <p className="mt-4 text-xs leading-relaxed text-subtle/90">{p.summary}</p>
               </div>
-            </motion.article>
+
+              <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
+                <span className="font-display text-sm font-semibold tabular-nums text-foreground">
+                  {p.metrics[0].v}
+                  <span className="ml-1.5 font-mono text-[9px] font-normal uppercase tracking-widest text-subtle">
+                    {p.metrics[0].k}
+                  </span>
+                </span>
+                <button
+                  onClick={() => onViewCaseStudy(p)}
+                  onMouseEnter={() => playTick(0)}
+                  aria-label={`View ${p.name} case study`}
+                  className="inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
+                >
+                  <span>View Workspace</span>
+                  <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </button>
+              </div>
+            </div>
+          </motion.article>
         </motion.div>
       </div>
 
@@ -410,8 +465,19 @@ function CarouselProjectCard({
             aria-label="Close"
             className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
 
@@ -428,19 +494,21 @@ function CarouselProjectCard({
 }
 
 /** Supporting projects — compact, visual on top, one line of proof below. */
-function CompactProject({ 
-  p, 
-  i, 
-  onViewCaseStudy, 
-  direction = "up" 
-}: { 
-  p: Project; 
-  i: number; 
+function CompactProject({
+  p,
+  i,
+  onViewCaseStudy,
+  direction = "up",
+}: {
+  p: Project;
+  i: number;
   onViewCaseStudy: (p: Project) => void;
   direction?: "up" | "left" | "right";
 }) {
   const details = PROJECT_DETAILS[p.name];
-  const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
+  const glowColor = details?.theme.glow
+    ? details.theme.glow.replace("0.15", "0.09")
+    : "rgba(6, 182, 212, 0.09)";
   const { ref, onMove, background } = useSpotlight(glowColor);
   const Visual = PROJECT_VISUALS[p.visual];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -476,7 +544,12 @@ function CompactProject({
             />
 
             <div style={{ transform: "translateZ(30px)" }}>
-              <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+              <DeviceFrame
+                label={p.visualLabel}
+                className="relative overflow-hidden"
+                noPadding={!!p.image}
+                aspectClass={p.image ? "" : "aspect-[16/10]"}
+              >
                 {p.image ? (
                   <button
                     onClick={() => setIsLightboxOpen(true)}
@@ -496,7 +569,10 @@ function CompactProject({
               </DeviceFrame>
             </div>
 
-            <div style={{ transform: "translateZ(15px)" }} className="relative mt-6 flex flex-1 flex-col">
+            <div
+              style={{ transform: "translateZ(15px)" }}
+              className="relative mt-6 flex flex-1 flex-col"
+            >
               <div className="flex items-center gap-3 font-mono text-xs text-subtle">
                 <span>{p.index}</span>
                 <span className="h-px w-5 bg-border" />
@@ -506,7 +582,9 @@ function CompactProject({
               <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">{p.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
 
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {p.summary}
+              </p>
 
               <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
                 <span className="font-display text-sm font-semibold tabular-nums text-foreground">
@@ -531,7 +609,7 @@ function CompactProject({
       </Reveal>
 
       {isLightboxOpen && p.image && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
           onClick={() => setIsLightboxOpen(false)}
         >
@@ -543,8 +621,19 @@ function CompactProject({
             aria-label="Close"
             className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
 
@@ -605,10 +694,10 @@ export function LighthouseDial({ score, label }: { score: number; label: string 
             cx="40"
             cy="40"
             r={radius}
-            style={{ 
+            style={{
               stroke: strokeColor,
               strokeDasharray: circumference,
-              strokeDashoffset: strokeDashoffset
+              strokeDashoffset: strokeDashoffset,
             }}
             strokeWidth="5.5"
             fill="transparent"
@@ -637,7 +726,7 @@ export function ArchitectureNode({
   const { ref, onMove, background } = useSpotlight();
   return (
     <motion.div
-      ref={ref as any}
+      ref={ref as React.RefObject<HTMLDivElement>}
       onMouseMove={onMove}
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -663,7 +752,11 @@ export function ArchitectureNode({
 }
 
 /** Visualizes a failure sequence as a literal timeline instead of describing it in prose */
-export function ScenarioTimeline({ events }: { events: { t: string; event: string; danger?: boolean }[] }) {
+export function ScenarioTimeline({
+  events,
+}: {
+  events: { t: string; event: string; danger?: boolean }[];
+}) {
   return (
     <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
       <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
@@ -684,7 +777,9 @@ export function ScenarioTimeline({ events }: { events: { t: string; event: strin
                 e.danger ? "bg-red-500/20 border-red-500/50" : "bg-card border-white/15"
               }`}
             >
-              <span className={`h-1.5 w-1.5 rounded-full ${e.danger ? "bg-red-400 animate-pulse" : "bg-secondary"}`} />
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${e.danger ? "bg-red-400 animate-pulse" : "bg-secondary"}`}
+              />
             </span>
             <div className="flex flex-wrap items-baseline gap-2">
               <span
@@ -694,7 +789,9 @@ export function ScenarioTimeline({ events }: { events: { t: string; event: strin
               >
                 {e.t}
               </span>
-              <p className={`text-xs leading-relaxed ${e.danger ? "text-red-200/95 font-medium" : "text-foreground/80"}`}>
+              <p
+                className={`text-xs leading-relaxed ${e.danger ? "text-red-200/95 font-medium" : "text-foreground/80"}`}
+              >
                 {e.event}
               </p>
             </div>
@@ -738,7 +835,9 @@ export function StepSequence({
               </code>
             )}
           </div>
-          {s.detail && <p className="mt-1 text-xs leading-relaxed text-foreground/70">{s.detail}</p>}
+          {s.detail && (
+            <p className="mt-1 text-xs leading-relaxed text-foreground/70">{s.detail}</p>
+          )}
         </motion.div>
       ))}
     </div>
@@ -776,7 +875,9 @@ export function ChallengeCard({
           <span className="font-mono text-xs text-subtle">0{index + 1}.</span>
           {challenge.title}
         </span>
-        <ChevronDown className={`h-4 w-4 text-subtle transition-transform duration-300 ${active ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`h-4 w-4 text-subtle transition-transform duration-300 ${active ? "rotate-180" : ""}`}
+        />
       </button>
       <AnimatePresence initial={false}>
         {active && (
@@ -802,7 +903,9 @@ export function ChallengeCard({
                 className="relative rounded-lg border-l-2 pl-3"
                 style={{ borderColor: accentGlow }}
               >
-                <span className="block font-mono text-[9px] uppercase tracking-widest text-subtle mb-1">Problem</span>
+                <span className="block font-mono text-[9px] uppercase tracking-widest text-subtle mb-1">
+                  Problem
+                </span>
                 <p className="text-foreground/90 font-medium text-[13px]">{challenge.problem}</p>
               </motion.div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -810,7 +913,9 @@ export function ChallengeCard({
                   variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }}
                   transition={{ type: "spring", stiffness: 320, damping: 28 }}
                 >
-                  <span className="block font-mono text-[9px] uppercase tracking-widest text-subtle mb-1">Why it was difficult</span>
+                  <span className="block font-mono text-[9px] uppercase tracking-widest text-subtle mb-1">
+                    Why it was difficult
+                  </span>
                   <p>{challenge.difficulty}</p>
                 </motion.div>
                 <motion.div
@@ -818,7 +923,9 @@ export function ChallengeCard({
                   transition={{ type: "spring", stiffness: 320, damping: 28 }}
                   className="sm:col-span-2"
                 >
-                  <span className="block font-mono text-[9px] uppercase tracking-widest text-subtle mb-3">The fix</span>
+                  <span className="block font-mono text-[9px] uppercase tracking-widest text-subtle mb-3">
+                    The fix
+                  </span>
                   {challenge.fixSteps ? (
                     <StepSequence steps={challenge.fixSteps} accent={accentGlow} />
                   ) : (
@@ -831,7 +938,9 @@ export function ChallengeCard({
                 transition={{ type: "spring", stiffness: 320, damping: 28 }}
                 className="pt-2 border-t border-white/5"
               >
-                <span className="block font-mono text-[9px] uppercase tracking-widest text-secondary/80 mb-1">What I learned</span>
+                <span className="block font-mono text-[9px] uppercase tracking-widest text-secondary/80 mb-1">
+                  What I learned
+                </span>
                 <p className="text-secondary/90 italic">"{challenge.learned}"</p>
               </motion.div>
             </motion.div>
@@ -846,13 +955,15 @@ export function Projects() {
   const [featured, ...rest] = PROJECTS;
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionStage, setTransitionStage] = useState<'idle' | 'entering' | 'ready' | 'exiting'>('idle');
-  const [statusText, setStatusText] = useState('');
+  const [transitionStage, setTransitionStage] = useState<"idle" | "entering" | "ready" | "exiting">(
+    "idle",
+  );
+  const [statusText, setStatusText] = useState("");
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [showWorkspaceContent, setShowWorkspaceContent] = useState(false);
 
   // Workspace Scroll States
-  const [activeSection, setActiveSection] = useState('overview');
+  const [activeSection, setActiveSection] = useState("overview");
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeChallenge, setActiveChallenge] = useState<number | null>(0); // Default open the first challenge card
   const workspaceScrollRef = useRef<HTMLDivElement>(null);
@@ -874,15 +985,15 @@ export function Projects() {
   const cardCentersRef = useRef<number[]>([]);
 
   const TABS = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'why-built', label: 'Why Built' },
-    { id: 'architecture', label: 'Architecture' },
-    { id: 'features', label: 'Features' },
-    { id: 'challenges', label: 'Challenges' },
-    { id: 'journey', label: 'Journey' },
-    { id: 'performance', label: 'Performance' },
-    { id: 'decisions', label: 'Decisions' },
-    { id: 'gallery', label: 'Gallery' },
+    { id: "overview", label: "Overview" },
+    { id: "why-built", label: "Why Built" },
+    { id: "architecture", label: "Architecture" },
+    { id: "features", label: "Features" },
+    { id: "challenges", label: "Challenges" },
+    { id: "journey", label: "Journey" },
+    { id: "performance", label: "Performance" },
+    { id: "decisions", label: "Decisions" },
+    { id: "gallery", label: "Gallery" },
   ];
 
   // Dynamic details module lookup
@@ -895,7 +1006,7 @@ export function Projects() {
     setScrollProgress(progress);
 
     const scrollTop = target.scrollTop;
-    const offsets = TABS.map(tab => {
+    const offsets = TABS.map((tab) => {
       const el = document.getElementById(`ws-sec-${tab.id}`);
       return { id: tab.id, offsetTop: el ? el.offsetTop - 140 : 0 };
     });
@@ -916,7 +1027,7 @@ export function Projects() {
     if (el && workspaceScrollRef.current) {
       workspaceScrollRef.current.scrollTo({
         top: el.offsetTop - 110,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
       // Spatial panning audio trigger: map tab index to -1..1 range
       const pan = (index / (TABS.length - 1)) * 2 - 1;
@@ -931,7 +1042,7 @@ export function Projects() {
     }
     setIsTransitioning(true);
     setActiveProject(p);
-    setTransitionStage('entering');
+    setTransitionStage("entering");
     setProgressBarWidth(0);
     playSwell(); // Synthesize ascending workspace portal hum
 
@@ -955,12 +1066,12 @@ export function Projects() {
     }, 1500);
 
     setTimeout(() => {
-      setTransitionStage('ready');
+      setTransitionStage("ready");
       setShowWorkspaceContent(false);
 
       setTimeout(() => {
         setShowWorkspaceContent(true);
-        setActiveSection('overview');
+        setActiveSection("overview");
         setScrollProgress(0);
         setActiveChallenge(0);
 
@@ -975,25 +1086,24 @@ export function Projects() {
     if (isTransitioning || !activeProject) return;
     setIsTransitioning(true);
     playExit(); // Synthesize descending power-down sound
-    
+
     setShowWorkspaceContent(false);
-    setProgressBarWidth(100); 
-    
+    setProgressBarWidth(100);
+
     setTimeout(() => {
-      setTransitionStage('exiting');
+      setTransitionStage("exiting");
       setStatusText("Closing Workspace...");
-      setProgressBarWidth(0); 
-      
+      setProgressBarWidth(0);
+
       setTimeout(() => {
         setStatusText("Returning to Portfolio...");
       }, 750);
 
       setTimeout(() => {
-        setTransitionStage('idle');
+        setTransitionStage("idle");
         setActiveProject(null);
         setIsTransitioning(false);
       }, 1500);
-      
     }, 300);
   };
 
@@ -1004,9 +1114,9 @@ export function Projects() {
 
   // Prevent scroll & close on Escape when workspace is active
   useEffect(() => {
-    if (activeProject && transitionStage !== 'idle') {
-      document.body.style.overflow = 'hidden';
-      
+    if (activeProject && transitionStage !== "idle") {
+      document.body.style.overflow = "hidden";
+
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape" && !isTransitioning) {
           handleExitWorkspace();
@@ -1014,11 +1124,11 @@ export function Projects() {
       };
       window.addEventListener("keydown", handleKeyDown);
       return () => {
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
         window.removeEventListener("keydown", handleKeyDown);
       };
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
   }, [activeProject, transitionStage, isTransitioning]);
 
@@ -1043,9 +1153,7 @@ export function Projects() {
       // This resets mouseX/mouseY to -999 (off-screen) BEFORE the 3D transforms start,
       // preventing the gradient repaint from competing with the card switch animation.
       const articles = container.querySelectorAll("article");
-      articles.forEach((el) =>
-        el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false }))
-      );
+      articles.forEach((el) => el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false })));
 
       // Toggle carousel-scrolling class to disable mouse events and fade out glows on scroll
       container.classList.add("carousel-scrolling");
@@ -1100,11 +1208,11 @@ export function Projects() {
     handleScroll();
 
     // Recalculate after mount tick intervals to ensure rendering positions resolve correctly
-    const renderTimeouts = [150, 400, 1000].map(delay => 
+    const renderTimeouts = [150, 400, 1000].map((delay) =>
       window.setTimeout(() => {
         updateLayout();
         handleScroll();
-      }, delay)
+      }, delay),
     );
 
     const handleResize = () => {
@@ -1114,14 +1222,14 @@ export function Projects() {
 
     // Listen to scroll for card changes & motion values
     container.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     // Only read layout dimensions on resize, NOT on every scroll frame
     window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       container.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
-      renderTimeouts.forEach(t => window.clearTimeout(t));
+      renderTimeouts.forEach((t) => window.clearTimeout(t));
       if (scrollTimeoutRef.current) {
         window.clearTimeout(scrollTimeoutRef.current);
       }
@@ -1142,14 +1250,15 @@ export function Projects() {
         const nextIndex = Math.min(activeCarouselIndex + 1, PROJECTS.length - 1);
         const nextEl = cardElements[nextIndex] as HTMLElement;
         if (nextEl) {
-          const targetScrollLeft = nextEl.offsetLeft - (container.clientWidth - nextEl.clientWidth) / 2;
+          const targetScrollLeft =
+            nextEl.offsetLeft - (container.clientWidth - nextEl.clientWidth) / 2;
           animate(container.scrollLeft, targetScrollLeft, {
             type: "tween",
             ease: [0.22, 1, 0.36, 1],
             duration: 0.5,
             onUpdate: (latest) => {
               container.scrollLeft = latest;
-            }
+            },
           });
           playTick(0.1);
         }
@@ -1157,14 +1266,15 @@ export function Projects() {
         const prevIndex = Math.max(activeCarouselIndex - 1, 0);
         const prevEl = cardElements[prevIndex] as HTMLElement;
         if (prevEl) {
-          const targetScrollLeft = prevEl.offsetLeft - (container.clientWidth - prevEl.clientWidth) / 2;
+          const targetScrollLeft =
+            prevEl.offsetLeft - (container.clientWidth - prevEl.clientWidth) / 2;
           animate(container.scrollLeft, targetScrollLeft, {
             type: "tween",
             ease: [0.22, 1, 0.36, 1],
             duration: 0.5,
             onUpdate: (latest) => {
               container.scrollLeft = latest;
-            }
+            },
           });
           playTick(-0.1);
         }
@@ -1178,10 +1288,10 @@ export function Projects() {
   return (
     <section id="work" className="relative py-32 md:py-40">
       {/* Ambient background glow bleed */}
-      <div 
+      <div
         className="pointer-events-none absolute inset-0 -z-10 transition-colors duration-1000 ease-out"
         style={{
-          background: `radial-gradient(600px circle at 50% 50%, ${ACTIVE_THEMES[activeCarouselIndex]?.glow || "rgba(34, 211, 238, 0)"}, transparent 70%)`
+          background: `radial-gradient(600px circle at 50% 50%, ${ACTIVE_THEMES[activeCarouselIndex]?.glow || "rgba(34, 211, 238, 0)"}, transparent 70%)`,
         }}
       />
 
@@ -1195,13 +1305,15 @@ export function Projects() {
                 not just experiments.
               </h2>
             </div>
-            
+
             {/* Editorial Sliding Card Counter */}
             <div className="hidden md:flex flex-col items-end gap-1 font-mono">
-              <span className="text-[9px] uppercase tracking-widest text-muted-foreground/60">Active Case Study</span>
+              <span className="text-[9px] uppercase tracking-widest text-muted-foreground/60">
+                Active Case Study
+              </span>
               <div className="flex items-baseline gap-2 select-none">
                 <div className="h-[48px] overflow-hidden text-5xl font-bold tracking-tight text-foreground flex flex-col">
-                  <div 
+                  <div
                     className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col"
                     style={{ transform: `translateY(-${activeCarouselIndex * 48}px)` }}
                   >
@@ -1257,14 +1369,15 @@ export function Projects() {
                 const cardElements = container.getElementsByClassName("snap-center");
                 const targetEl = cardElements[idx] as HTMLElement;
                 if (targetEl) {
-                  const targetScrollLeft = targetEl.offsetLeft - (container.clientWidth - targetEl.clientWidth) / 2;
+                  const targetScrollLeft =
+                    targetEl.offsetLeft - (container.clientWidth - targetEl.clientWidth) / 2;
                   animate(container.scrollLeft, targetScrollLeft, {
                     type: "tween",
                     ease: [0.22, 1, 0.36, 1],
                     duration: 0.5,
                     onUpdate: (latest) => {
                       container.scrollLeft = latest;
-                    }
+                    },
                   });
                   playTick((idx / (PROJECTS.length - 1)) * 2 - 1);
                 }
@@ -1281,641 +1394,844 @@ export function Projects() {
       </div>
 
       {/* Workspace Portal Backdrop Overlay */}
-      {mounted && activeProject && transitionStage !== 'idle' && createPortal(
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Workspace Portal"
-          className="animate-portal-in fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#09090b] p-4 backdrop-blur-[12px] select-none"
-        >
-          {/* Grid background layer */}
-          <div className="absolute inset-0 workspace-grid pointer-events-none" />
+      {mounted &&
+        activeProject &&
+        transitionStage !== "idle" &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Workspace Portal"
+            className="animate-portal-in fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#09090b] p-4 backdrop-blur-[12px] select-none"
+          >
+            {/* Grid background layer */}
+            <div className="absolute inset-0 workspace-grid pointer-events-none" />
 
-          {/* Ambient project theme color fields */}
-          {details && (
-            <>
-              <div
-                aria-hidden
-                style={{ backgroundColor: details.theme.glow, filter: 'blur(140px)' }}
-                className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full opacity-60"
-              />
-              <div
-                aria-hidden
-                style={{ backgroundColor: details.theme.glow, filter: 'blur(140px)' }}
-                className="pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full opacity-40"
-              />
-            </>
-          )}
+            {/* Ambient project theme color fields */}
+            {details && (
+              <>
+                <div
+                  aria-hidden
+                  style={{ backgroundColor: details.theme.glow, filter: "blur(140px)" }}
+                  className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full opacity-60"
+                />
+                <div
+                  aria-hidden
+                  style={{ backgroundColor: details.theme.glow, filter: "blur(140px)" }}
+                  className="pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full opacity-40"
+                />
+              </>
+            )}
 
-          {/* Loading stage */}
-          {(transitionStage === 'entering' || transitionStage === 'exiting') && (
-            <div className="relative z-10 flex flex-col items-center max-w-4xl px-6">
-              <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-center">
-                {(transitionStage === 'entering' 
-                  ? [
-                      { text: "Opening.", weight: "font-semibold text-foreground" },
-                      { text: "the", weight: "font-normal italic text-muted-foreground font-serif-accent" },
-                      { text: `${activeProject.name}.`, weight: "font-semibold text-foreground" }
-                    ]
-                  : [
-                      { text: "Closing.", weight: "font-semibold text-foreground" },
-                      { text: "the", weight: "font-normal italic text-muted-foreground font-serif-accent" },
-                      { text: "Workspace.", weight: "font-semibold text-foreground" }
-                    ]
-                ).map((w, idx) => (
-                  <motion.span
-                    key={`${transitionStage}-${w.text}-${idx}`}
-                    initial={{ opacity: 0, y: 18, filter: "blur(12px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 120,
-                      damping: 18,
-                      delay: idx * 0.28,
-                    }}
-                    className={`font-display text-5xl tracking-tight sm:text-6xl md:text-8xl ${w.weight}`}
-                  >
-                    {w.text}
-                  </motion.span>
-                ))}
-              </div>
-
-              {/* Shiny-text status line */}
-              <div 
-                className="mt-8 min-h-[16px] select-none"
-                style={{
-                  animation: 'bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
-                  animationDelay: '0.2s'
-                }}
-              >
-                <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-subtle shiny-text">
-                  &gt; {statusText}
-                </p>
-              </div>
-
-              {/* Thin, premium progress bar */}
-              <div 
-                className="mt-14 flex flex-col items-center"
-                style={{
-                  animation: 'bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
-                  animationDelay: '0.4s'
-                }}
-              >
-                <div className="h-[1.5px] w-64 rounded-full overflow-hidden bg-white/10 relative">
-                  {details ? (
-                    <div 
-                      className={`h-full bg-gradient-to-r ${details.theme.primary} ${details.theme.secondary}`}
-                      style={{ 
-                        width: `${progressBarWidth}%`,
-                        boxShadow: `0 0 8px ${details.theme.glow}`,
-                        transition: transitionStage === 'exiting' ? 'width 1500ms linear' : 'width 400ms cubic-bezier(0.16, 1, 0.3, 1)'
+            {/* Loading stage */}
+            {(transitionStage === "entering" || transitionStage === "exiting") && (
+              <div className="relative z-10 flex flex-col items-center max-w-4xl px-6">
+                <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-center">
+                  {(transitionStage === "entering"
+                    ? [
+                        { text: "Opening.", weight: "font-semibold text-foreground" },
+                        {
+                          text: "the",
+                          weight: "font-normal italic text-muted-foreground font-serif-accent",
+                        },
+                        { text: `${activeProject.name}.`, weight: "font-semibold text-foreground" },
+                      ]
+                    : [
+                        { text: "Closing.", weight: "font-semibold text-foreground" },
+                        {
+                          text: "the",
+                          weight: "font-normal italic text-muted-foreground font-serif-accent",
+                        },
+                        { text: "Workspace.", weight: "font-semibold text-foreground" },
+                      ]
+                  ).map((w, idx) => (
+                    <motion.span
+                      key={`${transitionStage}-${w.text}-${idx}`}
+                      initial={{ opacity: 0, y: 18, filter: "blur(12px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 120,
+                        damping: 18,
+                        delay: idx * 0.28,
                       }}
-                    />
-                  ) : (
-                    <div 
-                      className="h-full bg-gradient-to-r from-primary to-secondary"
-                      style={{ 
-                        width: `${progressBarWidth}%`,
-                        boxShadow: '0 0 8px var(--color-secondary)',
-                        transition: transitionStage === 'exiting' ? 'width 1500ms linear' : 'width 400ms cubic-bezier(0.16, 1, 0.3, 1)'
-                      }}
-                    />
-                  )}
-                </div>
-                <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-subtle/85 flex items-center gap-1.5 select-none">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/60" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_4px_var(--color-secondary)]" />
-                  </span>
-                  <span>{transitionStage === 'entering' ? 'INITIALIZING_WORKSPACE' : 'CLOSING_SESSION'}</span>
-                  <span>·</span>
-                  <span className="tabular-nums font-bold text-foreground">{progressBarWidth}%</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Active Case Study Workspace Panel */}
-          {transitionStage === 'ready' && details && (
-            <div
-              ref={workspaceScrollRef}
-              onScroll={handleWorkspaceScroll}
-              className={`relative z-10 flex h-full w-full max-w-6xl flex-col gap-10 overflow-y-auto px-4 pb-16 pt-32 text-left select-text md:px-8 md:pb-24 scroll-smooth workspace-scroll-mask ${
-                showWorkspaceContent ? 'animate-workspace-in' : 'animate-workspace-out'
-              }`}
-            >
-              {/* Sticky header with documentation links and scroll progress */}
-              <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-6xl md:inset-x-8">
-                <div className="relative flex items-center justify-between rounded-2xl border border-white/15 bg-card/90 px-5 py-3.5 backdrop-blur-xl shadow-2xl overflow-hidden">
-                  <motion.div
-                    aria-hidden
-                    className="pointer-events-none absolute -inset-[1px] rounded-2xl opacity-40"
-                    style={{
-                      background: `conic-gradient(from 0deg, transparent, ${details.theme.glow}, transparent 30%)`,
-                      maskImage: "linear-gradient(#000, #000)",
-                      WebkitMaskImage: "linear-gradient(#000, #000)",
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                  />
-
-                  {/* Thin Scroll Progress Bar across the top of the header border */}
-                  <div className="absolute top-0 inset-x-0 h-[1.5px] rounded-t-2xl overflow-hidden bg-white/5 z-20">
-                    <div 
-                      className={`h-full bg-gradient-to-r ${details.theme.primary} ${details.theme.secondary}`}
-                      style={{ width: `${scrollProgress}%` }}
-                    />
-                  </div>
-
-                  <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 rounded-tl-md border-l border-t border-secondary/40 z-20" />
-                  <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 rounded-tr-md border-r border-t border-secondary/40 z-20" />
-                  
-                  {/* Left elements: Exit workspace link and title */}
-                  <div className="flex items-center gap-3 relative z-10">
-                    <button
-                      onClick={handleExitWorkspace}
-                      onMouseEnter={() => playTick(0)}
-                      className="group flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:text-red-400 transition-colors cursor-pointer"
+                      className={`font-display text-5xl tracking-tight sm:text-6xl md:text-8xl ${w.weight}`}
                     >
-                      <span className="transition-transform group-hover:-translate-x-0.5">←</span> Exit Workspace
-                    </button>
-                    <span className="hidden h-3 w-px bg-white/10 sm:block" />
-                    <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/80 sm:block">
-                      {activeProject.index}.{activeProject.name}
-                    </span>
-                  </div>
-
-                  {/* Document Navigation Tabs - Mobile dropdown, Desktop buttons */}
-                  <div className="relative z-10 workspace-nav-mobile flex-shrink-0">
-                    <select
-                      value={activeSection}
-                      onChange={(e) => {
-                        const idx = TABS.findIndex((t) => t.id === e.target.value);
-                        if (idx !== -1) {
-                          scrollToSection(e.target.value, idx);
-                        }
-                      }}
-                      className="bg-[#131020]/90 text-foreground font-mono text-[9px] uppercase tracking-wider rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-primary/50 cursor-pointer appearance-none pr-8 relative"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(250,250,250,0.6)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-                        backgroundPosition: "right 8px center",
-                        backgroundSize: "12px",
-                        backgroundRepeat: "no-repeat"
-                      }}
-                    >
-                      {TABS.map((tab) => (
-                        <option key={tab.id} value={tab.id} className="bg-[#07050f] text-foreground">
-                          {tab.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <nav className="workspace-nav-desktop items-center gap-1 relative z-10">
-                    {TABS.map((tab, idx) => (
-                      <button
-                        key={tab.id}
-                        onClick={() => scrollToSection(tab.id, idx)}
-                        className={`relative rounded-lg px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer transition-colors duration-200 flex-shrink-0 ${
-                          activeSection === tab.id ? "text-foreground font-semibold" : "text-muted-foreground/80 hover:text-foreground"
-                        }`}
-                      >
-                        {activeSection === tab.id && (
-                          <motion.span
-                            layoutId="ws-tab-pill"
-                            className="absolute inset-0 rounded-lg bg-white/5 border border-white/10 shadow-inner"
-                            transition={{ type: "spring", stiffness: 500, damping: 40 }}
-                          />
-                        )}
-                        <span className="relative z-10">{tab.label}</span>
-                      </button>
-                    ))}
-                  </nav>
-
-                  {/* Status Indicator & Copy Link */}
-                  <div className="flex items-center gap-4 relative z-10">
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.href.split('#')[0]}#ws-sec-${activeSection}`);
-                        toast.success("Section link copied");
-                        playTick(0);
-                      }}
-                      className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground/70 hover:text-foreground transition-colors cursor-pointer"
-                    >
-                      <Link2 className="h-3 w-3" /> <span className="hidden sm:inline">Copy Link</span>
-                    </button>
-                    <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-emerald-400/90">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/60" />
-                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                      </span>
-                      <span className="hidden sm:inline">Active Session</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Section 1: Overview */}
-              <section id="ws-sec-overview" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">01 . Project Overview</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">{activeProject.name}</h3>
-                  <p className="mt-2 text-xs text-subtle">
-                    {activeProject.name === "Vurlo" ? "Built in 10 Days • React 19 • TanStack Start" :
-                     activeProject.name === "Veltrix" ? "Autonomous Run • Python • Gemini API" :
-                     "Competitor Scan • FastAPI • Groq Fallbacks"}
-                  </p>
-                </div>
-                
-                <div className="grid gap-8 md:grid-cols-3">
-                  {/* Left Column: Hero screenshot */}
-                  <div className="md:col-span-2 space-y-6">
-                    <DeviceFrame label={`${activeProject.name.toLowerCase()}/hero.webp`} noPadding className="border-white/10 shadow-2xl overflow-hidden bg-black/40">
-                      {activeProject.image ? (
-                        <img src={`${activeProject.image}?v=1.2`} alt="Hero view" className="w-full object-cover object-top max-h-[360px]" />
-                      ) : (
-                        <div className="aspect-[16/10] bg-black/30 flex items-center justify-center font-mono text-xs text-subtle">
-                          Visual Screen Offline
-                        </div>
-                      )}
-                    </DeviceFrame>
-                  </div>
-
-                  {/* Right Column: Project stats card */}
-                  <div className="rounded-xl border border-white/10 bg-card p-6 flex flex-col justify-between gap-6 shadow-lg relative">
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Description</h4>
-                        <p className="mt-2 text-xs text-foreground/80 leading-relaxed font-medium">{activeProject.summary}</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-4">
-                        <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Timeline</h5>
-                          <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
-                            {activeProject.metrics.find((m) =>
-                              m.k.toLowerCase().includes("build") ||
-                              m.k.toLowerCase().includes("time")
-                            )?.v || "10 Days"}
-                          </p>
-                        </div>
-                        <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Role</h5>
-                          <p className="mt-0.5 text-xs text-foreground/90 font-semibold truncate">{activeProject.role}</p>
-                        </div>
-                        <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Status</h5>
-                          <p className="mt-0.5 text-xs text-foreground/90 font-semibold">Production</p>
-                        </div>
-                        <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Year</h5>
-                          <p className="mt-0.5 text-xs text-foreground/90 font-semibold">{activeProject.year}</p>
-                        </div>
-                        <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Deployment</h5>
-                          <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
-                            {activeProject.name === "Vurlo" ? "Production SaaS" :
-                             activeProject.name === "Veltrix" ? "2 posts / day (auto)" :
-                             "Daily scan @ 2AM UTC"}
-                          </p>
-                        </div>
-                        <div>
-                          <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">Core Stack</h5>
-                          <p className="mt-0.5 text-xs text-foreground/90 font-semibold truncate">
-                            {activeProject.name === "Vurlo" ? "React 19 / Firebase" :
-                             activeProject.name === "Veltrix" ? "Python / Playwright" :
-                             "FastAPI / SQLite"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
-                      {activeProject.href && activeProject.href !== "#" && (
-                        <a
-                          href={activeProject.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-1.5 rounded-lg bg-secondary/10 border border-secondary/20 py-2 font-mono text-xs text-secondary font-semibold hover:bg-secondary/15 transition-all"
-                        >
-                          Visit Live Site <ArrowUpRight className="h-3 w-3" />
-                        </a>
-                      )}
-                      {activeProject.name === "Vurlo" ? (
-                        <a
-                          href="https://github.com/theayushagarwal/vurlo-ecommerce"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/10 py-2 font-mono text-xs text-foreground hover:bg-white/10 transition-all"
-                        >
-                          View Source Code
-                        </a>
-                      ) : (
-                        <div
-                          className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/5 py-2 font-mono text-xs text-subtle/50 cursor-not-allowed select-none"
-                        >
-                          Private Repository
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Section 2: Why I Built It */}
-              <section id="ws-sec-why-built" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">02 . Core Rationale</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Why I Built It</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    Understanding the core problems, proposed solutions, and realized product achievements.
-                  </p>
-                </div>
-
-                {/* The problem, stated as one line — not a setup paragraph */}
-                <div className="max-w-3xl">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-red-400/80 font-bold">
-                    The problem
-                  </span>
-                  <p className="mt-3 font-display text-xl md:text-2xl font-medium text-foreground/95 leading-snug">
-                    {details.whyBuilt.problem}
-                  </p>
-                </div>
-
-                {/* Visual failure timeline, if this project has one */}
-                {details.whyBuilt.scenario && <ScenarioTimeline events={details.whyBuilt.scenario} />}
-
-                {/* The fix — numbered steps if available, plain paragraph fallback otherwise */}
-                <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-                  <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
-                    The fix, step by step
-                  </span>
-                  {details.whyBuilt.solutionSteps ? (
-                    <StepSequence steps={details.whyBuilt.solutionSteps} accent={details.theme.glow} />
-                  ) : (
-                    <p className="text-xs leading-relaxed text-subtle">{details.whyBuilt.solution}</p>
-                  )}
-                </div>
-
-                {/* Result — short line + stat row */}
-                <div>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-emerald-400/80 font-bold">
-                    Result
-                  </span>
-                  <p className="mt-2 max-w-2xl text-sm text-foreground/90">{details.whyBuilt.result}</p>
-                  {details.whyBuilt.resultStats && (
-                    <dl className="mt-5 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
-                      {details.whyBuilt.resultStats.map((s) => (
-                        <div key={s.label}>
-                          <dt className="font-mono text-[9px] uppercase tracking-widest text-subtle/80">{s.label}</dt>
-                          <dd className="mt-0.5 font-display text-lg font-semibold tabular-nums text-foreground">
-                            {s.value}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                  )}
-                </div>
-              </section>
-
-              {/* Section 3: Architecture */}
-              <section id="ws-sec-architecture" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">03 . System Pipeline</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Architecture Pipelines</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    Visual system flow diagrams representing data pipelines and structured checks.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-                  <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Pipeline Data flow nodes (Glows on Hover)</span>
-                  <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                    {details.architecture.map((node, idx) => (
-                      <ArchitectureNode key={node.id} node={node} idx={idx} glow={details.theme.glow} />
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* Section 4: Features */}
-              <section id="ws-sec-features" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">04 . Core Capabilities</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Features & Capabilities</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    Key features and built-in components implemented inside the codebase.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-                  <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Feature Checklist</span>
-                  <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {details.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-3 rounded-lg border border-white/5 bg-surface p-3 transition-colors hover:border-white/10">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">✓</span>
-                        <span className="text-foreground/90 font-medium">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </section>
-
-              {/* Section 5: Engineering Challenges */}
-              <section id="ws-sec-challenges" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">03 . Technical Barriers</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Solving Complex Bottlenecks</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    A deep dive into security rule architectures, race conditions, and verification solutions.
-                  </p>
-                </div>
-
-                <div className="space-y-4 max-w-4xl">
-                  {details.challenges.map((challenge, idx) => (
-                    <ChallengeCard
-                      key={challenge.title}
-                      index={idx}
-                      challenge={challenge}
-                      active={activeChallenge === idx}
-                      onClick={() => setActiveChallenge(activeChallenge === idx ? null : idx)}
-                      accentGlow={details.theme.glow}
-                    />
+                      {w.text}
+                    </motion.span>
                   ))}
                 </div>
-              </section>
 
-              {/* Section 6: Journey */}
-              <section id="ws-sec-journey" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">06 . Build Log Timeline</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Development Journey</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    A chronological day-by-day log detailing core milestones and features added.
+                {/* Shiny-text status line */}
+                <div
+                  className="mt-8 min-h-[16px] select-none"
+                  style={{
+                    animation: "bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+                    animationDelay: "0.2s",
+                  }}
+                >
+                  <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-subtle shiny-text">
+                    &gt; {statusText}
                   </p>
                 </div>
 
-                <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-                  <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Milestone timeline</span>
-                  <div className="relative pl-6 border-l border-white/10 space-y-8 py-2">
-                    {details.journey.map((step) => (
-                      <div key={step.day} className="relative group">
-                        <span className="absolute -left-[31px] top-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-card border border-white/15">
-                          <span className="h-1.5 w-1.5 rounded-full bg-secondary transition-transform group-hover:scale-150" />
-                        </span>
-                        <div>
-                          <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">{step.day}</span>
-                          <h4 className="font-display font-semibold text-foreground text-sm mt-0.5">{step.milestone}</h4>
-                          <p className="text-xs text-subtle mt-1">{step.details}</p>
-                        </div>
-                      </div>
-                    ))}
+                {/* Thin, premium progress bar */}
+                <div
+                  className="mt-14 flex flex-col items-center"
+                  style={{
+                    animation: "bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+                    animationDelay: "0.4s",
+                  }}
+                >
+                  <div className="h-[1.5px] w-64 rounded-full overflow-hidden bg-white/10 relative">
+                    {details ? (
+                      <div
+                        className={`h-full bg-gradient-to-r ${details.theme.primary} ${details.theme.secondary}`}
+                        style={{
+                          width: `${progressBarWidth}%`,
+                          boxShadow: `0 0 8px ${details.theme.glow}`,
+                          transition:
+                            transitionStage === "exiting"
+                              ? "width 1500ms linear"
+                              : "width 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="h-full bg-gradient-to-r from-primary to-secondary"
+                        style={{
+                          width: `${progressBarWidth}%`,
+                          boxShadow: "0 0 8px var(--color-secondary)",
+                          transition:
+                            transitionStage === "exiting"
+                              ? "width 1500ms linear"
+                              : "width 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-subtle/85 flex items-center gap-1.5 select-none">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/60" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_4px_var(--color-secondary)]" />
+                    </span>
+                    <span>
+                      {transitionStage === "entering"
+                        ? "INITIALIZING_WORKSPACE"
+                        : "CLOSING_SESSION"}
+                    </span>
+                    <span>·</span>
+                    <span className="tabular-nums font-bold text-foreground">
+                      {progressBarWidth}%
+                    </span>
                   </div>
                 </div>
-              </section>
+              </div>
+            )}
 
-              {/* Section 7: Performance — Lighthouse audit for websites, operational reliability for bots/pipelines */}
-              <section id="ws-sec-performance" className="scroll-mt-32 space-y-12">
-                {details.lighthouse ? (
-                  <>
-                    <div className="border-b border-white/5 pb-6">
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">07 . Technical Audits</span>
-                      <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Performance & Audits</h3>
-                      <p className="mt-2 text-sm text-subtle">
-                        Audited system lighthouse stats for performance, accessibility, best practices, and SEO.
-                      </p>
+            {/* Active Case Study Workspace Panel */}
+            {transitionStage === "ready" && details && (
+              <div
+                ref={workspaceScrollRef}
+                onScroll={handleWorkspaceScroll}
+                className={`relative z-10 flex h-full w-full max-w-6xl flex-col gap-10 overflow-y-auto px-4 pb-16 pt-32 text-left select-text md:px-8 md:pb-24 scroll-smooth workspace-scroll-mask ${
+                  showWorkspaceContent ? "animate-workspace-in" : "animate-workspace-out"
+                }`}
+              >
+                {/* Sticky header with documentation links and scroll progress */}
+                <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-6xl md:inset-x-8">
+                  <div className="relative flex items-center justify-between rounded-2xl border border-white/15 bg-card/90 px-5 py-3.5 backdrop-blur-xl shadow-2xl overflow-hidden">
+                    <motion.div
+                      aria-hidden
+                      className="pointer-events-none absolute -inset-[1px] rounded-2xl opacity-40"
+                      style={{
+                        background: `conic-gradient(from 0deg, transparent, ${details.theme.glow}, transparent 30%)`,
+                        maskImage: "linear-gradient(#000, #000)",
+                        WebkitMaskImage: "linear-gradient(#000, #000)",
+                      }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Thin Scroll Progress Bar across the top of the header border */}
+                    <div className="absolute top-0 inset-x-0 h-[1.5px] rounded-t-2xl overflow-hidden bg-white/5 z-20">
+                      <div
+                        className={`h-full bg-gradient-to-r ${details.theme.primary} ${details.theme.secondary}`}
+                        style={{ width: `${scrollProgress}%` }}
+                      />
                     </div>
 
-                    <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg flex flex-col justify-center">
-                      <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Lighthouse Audit (Active SVG Gauges)</span>
-                      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                        <LighthouseDial score={details.lighthouse.performance} label="Performance" />
-                        <LighthouseDial score={details.lighthouse.accessibility} label="Accessibility" />
-                        <LighthouseDial score={details.lighthouse.bestPractices} label="Best Practices" />
-                        <LighthouseDial score={details.lighthouse.seo} label="SEO" />
+                    <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 rounded-tl-md border-l border-t border-secondary/40 z-20" />
+                    <span className="pointer-events-none absolute right-0 top-0 h-3 w-3 rounded-tr-md border-r border-t border-secondary/40 z-20" />
+
+                    {/* Left elements: Exit workspace link and title */}
+                    <div className="flex items-center gap-3 relative z-10">
+                      <button
+                        onClick={handleExitWorkspace}
+                        onMouseEnter={() => playTick(0)}
+                        className="group flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:text-red-400 transition-colors cursor-pointer"
+                      >
+                        <span className="transition-transform group-hover:-translate-x-0.5">←</span>{" "}
+                        Exit Workspace
+                      </button>
+                      <span className="hidden h-3 w-px bg-white/10 sm:block" />
+                      <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/80 sm:block">
+                        {activeProject.index}.{activeProject.name}
+                      </span>
+                    </div>
+
+                    {/* Document Navigation Tabs - Mobile dropdown, Desktop buttons */}
+                    <div className="relative z-10 workspace-nav-mobile flex-shrink-0">
+                      <select
+                        value={activeSection}
+                        onChange={(e) => {
+                          const idx = TABS.findIndex((t) => t.id === e.target.value);
+                          if (idx !== -1) {
+                            scrollToSection(e.target.value, idx);
+                          }
+                        }}
+                        className="bg-[#131020]/90 text-foreground font-mono text-[9px] uppercase tracking-wider rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-primary/50 cursor-pointer appearance-none pr-8 relative"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(250,250,250,0.6)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                          backgroundPosition: "right 8px center",
+                          backgroundSize: "12px",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      >
+                        {TABS.map((tab) => (
+                          <option
+                            key={tab.id}
+                            value={tab.id}
+                            className="bg-[#07050f] text-foreground"
+                          >
+                            {tab.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <nav className="workspace-nav-desktop items-center gap-1 relative z-10">
+                      {TABS.map((tab, idx) => (
+                        <button
+                          key={tab.id}
+                          onClick={() => scrollToSection(tab.id, idx)}
+                          className={`relative rounded-lg px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer transition-colors duration-200 flex-shrink-0 ${
+                            activeSection === tab.id
+                              ? "text-foreground font-semibold"
+                              : "text-muted-foreground/80 hover:text-foreground"
+                          }`}
+                        >
+                          {activeSection === tab.id && (
+                            <motion.span
+                              layoutId="ws-tab-pill"
+                              className="absolute inset-0 rounded-lg bg-white/5 border border-white/10 shadow-inner"
+                              transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                            />
+                          )}
+                          <span className="relative z-10">{tab.label}</span>
+                        </button>
+                      ))}
+                    </nav>
+
+                    {/* Status Indicator & Copy Link */}
+                    <div className="flex items-center gap-4 relative z-10">
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `${window.location.href.split("#")[0]}#ws-sec-${activeSection}`,
+                          );
+                          toast.success("Section link copied");
+                          playTick(0);
+                        }}
+                        className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground/70 hover:text-foreground transition-colors cursor-pointer"
+                      >
+                        <Link2 className="h-3 w-3" />{" "}
+                        <span className="hidden sm:inline">Copy Link</span>
+                      </button>
+                      <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-emerald-400/90">
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/60" />
+                          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                        </span>
+                        <span className="hidden sm:inline">Active Session</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 1: Overview */}
+                <section id="ws-sec-overview" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      01 . Project Overview
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      {activeProject.name}
+                    </h3>
+                    <p className="mt-2 text-xs text-subtle">
+                      {activeProject.name === "Vurlo"
+                        ? "Built in 10 Days • React 19 • TanStack Start"
+                        : activeProject.name === "Veltrix"
+                          ? "Autonomous Run • Python • Gemini API"
+                          : "Competitor Scan • FastAPI • Groq Fallbacks"}
+                    </p>
+                  </div>
+
+                  <div className="grid gap-8 md:grid-cols-3">
+                    {/* Left Column: Hero screenshot */}
+                    <div className="md:col-span-2 space-y-6">
+                      <DeviceFrame
+                        label={`${activeProject.name.toLowerCase()}/hero.webp`}
+                        noPadding
+                        className="border-white/10 shadow-2xl overflow-hidden bg-black/40"
+                      >
+                        {activeProject.image ? (
+                          <img
+                            src={`${activeProject.image}?v=1.2`}
+                            alt="Hero view"
+                            className="w-full object-cover object-top max-h-[360px]"
+                          />
+                        ) : (
+                          <div className="aspect-[16/10] bg-black/30 flex items-center justify-center font-mono text-xs text-subtle">
+                            Visual Screen Offline
+                          </div>
+                        )}
+                      </DeviceFrame>
+                    </div>
+
+                    {/* Right Column: Project stats card */}
+                    <div className="rounded-xl border border-white/10 bg-card p-6 flex flex-col justify-between gap-6 shadow-lg relative">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                            Description
+                          </h4>
+                          <p className="mt-2 text-xs text-foreground/80 leading-relaxed font-medium">
+                            {activeProject.summary}
+                          </p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                          <div>
+                            <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              Timeline
+                            </h5>
+                            <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
+                              {activeProject.metrics.find(
+                                (m) =>
+                                  m.k.toLowerCase().includes("build") ||
+                                  m.k.toLowerCase().includes("time"),
+                              )?.v || "10 Days"}
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              Role
+                            </h5>
+                            <p className="mt-0.5 text-xs text-foreground/90 font-semibold truncate">
+                              {activeProject.role}
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              Status
+                            </h5>
+                            <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
+                              Production
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              Year
+                            </h5>
+                            <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
+                              {activeProject.year}
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              Deployment
+                            </h5>
+                            <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
+                              {activeProject.name === "Vurlo"
+                                ? "Production SaaS"
+                                : activeProject.name === "Veltrix"
+                                  ? "2 posts / day (auto)"
+                                  : "Daily scan @ 2AM UTC"}
+                            </p>
+                          </div>
+                          <div>
+                            <h5 className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              Core Stack
+                            </h5>
+                            <p className="mt-0.5 text-xs text-foreground/90 font-semibold truncate">
+                              {activeProject.name === "Vurlo"
+                                ? "React 19 / Firebase"
+                                : activeProject.name === "Veltrix"
+                                  ? "Python / Playwright"
+                                  : "FastAPI / SQLite"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+                        {activeProject.href && activeProject.href !== "#" && (
+                          <a
+                            href={activeProject.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-1.5 rounded-lg bg-secondary/10 border border-secondary/20 py-2 font-mono text-xs text-secondary font-semibold hover:bg-secondary/15 transition-all"
+                          >
+                            Visit Live Site <ArrowUpRight className="h-3 w-3" />
+                          </a>
+                        )}
+                        {activeProject.name === "Vurlo" ? (
+                          <a
+                            href="https://github.com/theayushagarwal/vurlo-ecommerce"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/10 py-2 font-mono text-xs text-foreground hover:bg-white/10 transition-all"
+                          >
+                            View Source Code
+                          </a>
+                        ) : (
+                          <div className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/5 py-2 font-mono text-xs text-subtle/50 cursor-not-allowed select-none">
+                            Private Repository
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </>
-                ) : details.reliability ? (
-                  <>
-                    <div className="border-b border-white/5 pb-6">
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">07 . System Reliability</span>
-                      <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Operational Metrics</h3>
-                      <p className="mt-2 text-sm text-subtle">
-                        No public-facing site to audit — these are the safeguards that keep an unattended pipeline honest.
-                      </p>
-                    </div>
+                  </div>
+                </section>
 
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      {details.reliability.map((stat) => (
-                        <div
-                          key={stat.label}
-                          className="rounded-xl border border-white/10 bg-card p-5 shadow-lg flex flex-col gap-2"
+                {/* Section 2: Why I Built It */}
+                <section id="ws-sec-why-built" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      02 . Core Rationale
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Why I Built It
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      Understanding the core problems, proposed solutions, and realized product
+                      achievements.
+                    </p>
+                  </div>
+
+                  {/* The problem, stated as one line — not a setup paragraph */}
+                  <div className="max-w-3xl">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-red-400/80 font-bold">
+                      The problem
+                    </span>
+                    <p className="mt-3 font-display text-xl md:text-2xl font-medium text-foreground/95 leading-snug">
+                      {details.whyBuilt.problem}
+                    </p>
+                  </div>
+
+                  {/* Visual failure timeline, if this project has one */}
+                  {details.whyBuilt.scenario && (
+                    <ScenarioTimeline events={details.whyBuilt.scenario} />
+                  )}
+
+                  {/* The fix — numbered steps if available, plain paragraph fallback otherwise */}
+                  <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+                    <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                      The fix, step by step
+                    </span>
+                    {details.whyBuilt.solutionSteps ? (
+                      <StepSequence
+                        steps={details.whyBuilt.solutionSteps}
+                        accent={details.theme.glow}
+                      />
+                    ) : (
+                      <p className="text-xs leading-relaxed text-subtle">
+                        {details.whyBuilt.solution}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Result — short line + stat row */}
+                  <div>
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-emerald-400/80 font-bold">
+                      Result
+                    </span>
+                    <p className="mt-2 max-w-2xl text-sm text-foreground/90">
+                      {details.whyBuilt.result}
+                    </p>
+                    {details.whyBuilt.resultStats && (
+                      <dl className="mt-5 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
+                        {details.whyBuilt.resultStats.map((s) => (
+                          <div key={s.label}>
+                            <dt className="font-mono text-[9px] uppercase tracking-widest text-subtle/80">
+                              {s.label}
+                            </dt>
+                            <dd className="mt-0.5 font-display text-lg font-semibold tabular-nums text-foreground">
+                              {s.value}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+                  </div>
+                </section>
+
+                {/* Section 3: Architecture */}
+                <section id="ws-sec-architecture" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      03 . System Pipeline
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Architecture Pipelines
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      Visual system flow diagrams representing data pipelines and structured checks.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+                    <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                      Pipeline Data flow nodes (Glows on Hover)
+                    </span>
+                    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                      {details.architecture.map((node, idx) => (
+                        <ArchitectureNode
+                          key={node.id}
+                          node={node}
+                          idx={idx}
+                          glow={details.theme.glow}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Section 4: Features */}
+                <section id="ws-sec-features" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      04 . Core Capabilities
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Features & Capabilities
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      Key features and built-in components implemented inside the codebase.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+                    <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                      Feature Checklist
+                    </span>
+                    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {details.features.map((feature) => (
+                        <li
+                          key={feature}
+                          className="flex items-center gap-3 rounded-lg border border-white/5 bg-surface p-3 transition-colors hover:border-white/10"
                         >
-                          <span className="font-mono text-[9px] uppercase tracking-widest text-subtle">{stat.label}</span>
-                          <span className="font-display text-3xl font-semibold text-foreground">{stat.value}</span>
-                          <p className="text-xs text-subtle leading-relaxed">{stat.detail}</p>
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">
+                            ✓
+                          </span>
+                          <span className="text-foreground/90 font-medium">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </section>
+
+                {/* Section 5: Engineering Challenges */}
+                <section id="ws-sec-challenges" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      03 . Technical Barriers
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Solving Complex Bottlenecks
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      A deep dive into security rule architectures, race conditions, and
+                      verification solutions.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 max-w-4xl">
+                    {details.challenges.map((challenge, idx) => (
+                      <ChallengeCard
+                        key={challenge.title}
+                        index={idx}
+                        challenge={challenge}
+                        active={activeChallenge === idx}
+                        onClick={() => setActiveChallenge(activeChallenge === idx ? null : idx)}
+                        accentGlow={details.theme.glow}
+                      />
+                    ))}
+                  </div>
+                </section>
+
+                {/* Section 6: Journey */}
+                <section id="ws-sec-journey" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      06 . Build Log Timeline
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Development Journey
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      A chronological day-by-day log detailing core milestones and features added.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+                    <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                      Milestone timeline
+                    </span>
+                    <div className="relative pl-6 border-l border-white/10 space-y-8 py-2">
+                      {details.journey.map((step) => (
+                        <div key={step.day} className="relative group">
+                          <span className="absolute -left-[31px] top-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-card border border-white/15">
+                            <span className="h-1.5 w-1.5 rounded-full bg-secondary transition-transform group-hover:scale-150" />
+                          </span>
+                          <div>
+                            <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                              {step.day}
+                            </span>
+                            <h4 className="font-display font-semibold text-foreground text-sm mt-0.5">
+                              {step.milestone}
+                            </h4>
+                            <p className="text-xs text-subtle mt-1">{step.details}</p>
+                          </div>
                         </div>
                       ))}
                     </div>
-                  </>
-                ) : null}
-              </section>
+                  </div>
+                </section>
 
-              {/* Section 8: Tech Decisions & Lessons */}
-              <section id="ws-sec-decisions" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">05 . Architecture Decisions</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Trade-off Explanations</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    Concise rationales for technology selections and future roadmaps.
-                  </p>
-                </div>
-
-                <div className="grid gap-8 md:grid-cols-2">
-                  {/* Stack Choices */}
-                  <div className="space-y-4">
-                    <span className="mb-2 block font-mono text-[9px] uppercase tracking-widest text-subtle">Design Choices</span>
-                    {details.decisions.map((dec) => (
-                      <div key={dec.tech} className="rounded-xl border border-white/10 bg-surface p-5 shadow-sm">
-                        <div className="flex items-center justify-between gap-4">
-                          <h4 className="font-display font-semibold text-foreground text-sm">{dec.title}</h4>
-                          <span className="rounded bg-white/5 px-2 py-0.5 font-mono text-[9px] text-secondary">{dec.tech}</span>
-                        </div>
-                        <p className="mt-2 text-xs leading-relaxed text-subtle">{dec.explanation}</p>
+                {/* Section 7: Performance — Lighthouse audit for websites, operational reliability for bots/pipelines */}
+                <section id="ws-sec-performance" className="scroll-mt-32 space-y-12">
+                  {details.lighthouse ? (
+                    <>
+                      <div className="border-b border-white/5 pb-6">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                          07 . Technical Audits
+                        </span>
+                        <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                          Performance & Audits
+                        </h3>
+                        <p className="mt-2 text-sm text-subtle">
+                          Audited system lighthouse stats for performance, accessibility, best
+                          practices, and SEO.
+                        </p>
                       </div>
-                    ))}
+
+                      <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg flex flex-col justify-center">
+                        <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                          Lighthouse Audit (Active SVG Gauges)
+                        </span>
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                          <LighthouseDial
+                            score={details.lighthouse.performance}
+                            label="Performance"
+                          />
+                          <LighthouseDial
+                            score={details.lighthouse.accessibility}
+                            label="Accessibility"
+                          />
+                          <LighthouseDial
+                            score={details.lighthouse.bestPractices}
+                            label="Best Practices"
+                          />
+                          <LighthouseDial score={details.lighthouse.seo} label="SEO" />
+                        </div>
+                      </div>
+                    </>
+                  ) : details.reliability ? (
+                    <>
+                      <div className="border-b border-white/5 pb-6">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                          07 . System Reliability
+                        </span>
+                        <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                          Operational Metrics
+                        </h3>
+                        <p className="mt-2 text-sm text-subtle">
+                          No public-facing site to audit — these are the safeguards that keep an
+                          unattended pipeline honest.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {details.reliability.map((stat) => (
+                          <div
+                            key={stat.label}
+                            className="rounded-xl border border-white/10 bg-card p-5 shadow-lg flex flex-col gap-2"
+                          >
+                            <span className="font-mono text-[9px] uppercase tracking-widest text-subtle">
+                              {stat.label}
+                            </span>
+                            <span className="font-display text-3xl font-semibold text-foreground">
+                              {stat.value}
+                            </span>
+                            <p className="text-xs text-subtle leading-relaxed">{stat.detail}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : null}
+                </section>
+
+                {/* Section 8: Tech Decisions & Lessons */}
+                <section id="ws-sec-decisions" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      05 . Architecture Decisions
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Trade-off Explanations
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      Concise rationales for technology selections and future roadmaps.
+                    </p>
                   </div>
 
-                  {/* V2 Checklist */}
-                  <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-                    <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">If I built V2...</span>
+                  <div className="grid gap-8 md:grid-cols-2">
+                    {/* Stack Choices */}
                     <div className="space-y-4">
-                      <p className="text-xs text-subtle leading-relaxed font-medium italic mb-4">
-                        "Evaluating scaling adjustments and cache controls shows true engineering maturity."
-                      </p>
-                      <ul className="grid gap-3 font-sans text-[13px] text-muted-foreground/90 leading-relaxed">
-                        {details.lessons.map((lesson) => (
-                          <li key={lesson} className="flex items-start gap-3 rounded-lg border border-white/5 bg-surface p-3 transition-colors hover:border-white/10">
-                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-indigo-500/10 text-indigo-400 font-bold border border-indigo-500/20 text-xs">✓</span>
-                            <span className="text-foreground/90 font-medium">{lesson}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <span className="mb-2 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                        Design Choices
+                      </span>
+                      {details.decisions.map((dec) => (
+                        <div
+                          key={dec.tech}
+                          className="rounded-xl border border-white/10 bg-surface p-5 shadow-sm"
+                        >
+                          <div className="flex items-center justify-between gap-4">
+                            <h4 className="font-display font-semibold text-foreground text-sm">
+                              {dec.title}
+                            </h4>
+                            <span className="rounded bg-white/5 px-2 py-0.5 font-mono text-[9px] text-secondary">
+                              {dec.tech}
+                            </span>
+                          </div>
+                          <p className="mt-2 text-xs leading-relaxed text-subtle">
+                            {dec.explanation}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* V2 Checklist */}
+                    <div className="rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+                      <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                        If I built V2...
+                      </span>
+                      <div className="space-y-4">
+                        <p className="text-xs text-subtle leading-relaxed font-medium italic mb-4">
+                          "Evaluating scaling adjustments and cache controls shows true engineering
+                          maturity."
+                        </p>
+                        <ul className="grid gap-3 font-sans text-[13px] text-muted-foreground/90 leading-relaxed">
+                          {details.lessons.map((lesson) => (
+                            <li
+                              key={lesson}
+                              className="flex items-start gap-3 rounded-lg border border-white/5 bg-surface p-3 transition-colors hover:border-white/10"
+                            >
+                              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-indigo-500/10 text-indigo-400 font-bold border border-indigo-500/20 text-xs">
+                                ✓
+                              </span>
+                              <span className="text-foreground/90 font-medium">{lesson}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </section>
+                </section>
 
-              {/* Section 10: Gallery */}
-              <section id="ws-sec-gallery" className="scroll-mt-32 space-y-12">
-                <div className="border-b border-white/5 pb-6">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">06 . Screenshots</span>
-                  <h3 className="font-display text-4xl font-semibold text-foreground mt-2">Visual Gallery</h3>
-                  <p className="mt-2 text-sm text-subtle">
-                    Scrollable preview tracks showcasing panel responsive structures.
-                  </p>
-                </div>
-
-                <div className="relative rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-                  <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">Horizontal Screenshot Scroll</span>
-                  <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin select-none">
-                    {details.gallery.map((item, idx) => (
-                      <div key={`${item.label}-${idx}`} className="flex-none w-[85vw] sm:w-[480px]">
-                        <DeviceFrame label={item.label} noPadding className="border-white/10 overflow-hidden shadow-md">
-                          <img src={`${item.img}?v=1.2`} alt={item.label} loading="lazy" className="w-full object-cover object-top max-h-[300px]" />
-                        </DeviceFrame>
-                      </div>
-                    ))}
-                    {activeProject.secondaryImage && (
-                      <div className="flex-none w-[85vw] sm:w-[480px]">
-                        <DeviceFrame label={activeProject.secondaryLabel || "Admin console"} noPadding className="border-white/10 overflow-hidden shadow-md">
-                          <img src={`${activeProject.secondaryImage}?v=1.3`} alt="Secondary screenshot" loading="lazy" className="w-full object-cover object-top max-h-[300px]" />
-                        </DeviceFrame>
-                      </div>
-                    )}
+                {/* Section 10: Gallery */}
+                <section id="ws-sec-gallery" className="scroll-mt-32 space-y-12">
+                  <div className="border-b border-white/5 pb-6">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                      06 . Screenshots
+                    </span>
+                    <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                      Visual Gallery
+                    </h3>
+                    <p className="mt-2 text-sm text-subtle">
+                      Scrollable preview tracks showcasing panel responsive structures.
+                    </p>
                   </div>
-                </div>
-              </section>
 
-              {/* Section 11: End Workspace CTA */}
-              <section className="border-t border-white/10 pt-16 pb-32 flex flex-col items-center text-center max-w-xl mx-auto space-y-6">
-                <h4 className="font-display text-2xl font-semibold text-foreground">Finished exploring this session?</h4>
-                <p className="text-xs text-subtle leading-relaxed">
-                  End the workspace session to release resources and return back to the primary portfolio index.
-                </p>
-                <button
-                  onClick={handleExitWorkspace}
-                  onMouseEnter={() => playTick(0)}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-amber-600 px-6 py-3 font-mono text-xs font-semibold text-white transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(239,68,68,0.25)] cursor-pointer"
-                >
-                  End Workspace Session 
-                  <span className="text-[14px] leading-none transition-transform group-hover:translate-x-1">→</span>
-                </button>
-              </section>
-            </div>
-          )}
-        </div>,
-        document.body
-      )}
+                  <div className="relative rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+                    <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                      Horizontal Screenshot Scroll
+                    </span>
+                    <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin select-none">
+                      {details.gallery.map((item, idx) => (
+                        <div
+                          key={`${item.label}-${idx}`}
+                          className="flex-none w-[85vw] sm:w-[480px]"
+                        >
+                          <DeviceFrame
+                            label={item.label}
+                            noPadding
+                            className="border-white/10 overflow-hidden shadow-md"
+                          >
+                            <img
+                              src={`${item.img}?v=1.2`}
+                              alt={item.label}
+                              loading="lazy"
+                              className="w-full object-cover object-top max-h-[300px]"
+                            />
+                          </DeviceFrame>
+                        </div>
+                      ))}
+                      {activeProject.secondaryImage && (
+                        <div className="flex-none w-[85vw] sm:w-[480px]">
+                          <DeviceFrame
+                            label={activeProject.secondaryLabel || "Admin console"}
+                            noPadding
+                            className="border-white/10 overflow-hidden shadow-md"
+                          >
+                            <img
+                              src={`${activeProject.secondaryImage}?v=1.3`}
+                              alt="Secondary screenshot"
+                              loading="lazy"
+                              className="w-full object-cover object-top max-h-[300px]"
+                            />
+                          </DeviceFrame>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </section>
+
+                {/* Section 11: End Workspace CTA */}
+                <section className="border-t border-white/10 pt-16 pb-32 flex flex-col items-center text-center max-w-xl mx-auto space-y-6">
+                  <h4 className="font-display text-2xl font-semibold text-foreground">
+                    Finished exploring this session?
+                  </h4>
+                  <p className="text-xs text-subtle leading-relaxed">
+                    End the workspace session to release resources and return back to the primary
+                    portfolio index.
+                  </p>
+                  <button
+                    onClick={handleExitWorkspace}
+                    onMouseEnter={() => playTick(0)}
+                    className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-amber-600 px-6 py-3 font-mono text-xs font-semibold text-white transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(239,68,68,0.25)] cursor-pointer"
+                  >
+                    End Workspace Session
+                    <span className="text-[14px] leading-none transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </button>
+                </section>
+              </div>
+            )}
+          </div>,
+          document.body,
+        )}
     </section>
   );
 }

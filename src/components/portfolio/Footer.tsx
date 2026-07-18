@@ -8,17 +8,38 @@ export function Footer() {
           <p className="text-foreground font-semibold">Ayush Agarwal</p>
           <p>© 2026 · Crafted in Vellore, India</p>
         </div>
-        
+
         <div className="flex flex-wrap items-center gap-4 text-[11px] uppercase tracking-wider">
-          <a href="https://github.com/theayushagarwal" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">GitHub</a>
+          <a
+            href="https://github.com/theayushagarwal"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-primary transition-colors"
+          >
+            GitHub
+          </a>
           <span>·</span>
-          <a href="https://linkedin.com/in/ayushagarwal17" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">LinkedIn</a>
+          <a
+            href="https://linkedin.com/in/ayushagarwal17"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-primary transition-colors"
+          >
+            LinkedIn
+          </a>
           <span>·</span>
-          <a href="mailto:theayush.codes@gmail.com" className="hover:text-primary transition-colors">Email</a>
+          <a
+            href="mailto:theayush.codes@gmail.com"
+            className="hover:text-primary transition-colors"
+          >
+            Email
+          </a>
         </div>
 
         <div className="flex items-center gap-4">
-          <p className="hidden md:block text-[10px] text-subtle/80">Built with TanStack Start · Motion</p>
+          <p className="hidden md:block text-[10px] text-subtle/80">
+            Built with TanStack Start · Motion
+          </p>
           <a
             href="#top"
             className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground border border-border/80 rounded-full px-3 py-1 bg-surface/30 hover:bg-surface/50"

@@ -8,12 +8,14 @@ export const Route = createFileRoute("/projects/vurlo")({
     meta: [
       {
         name: "description",
-        content: "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
+        content:
+          "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
       },
       { property: "og:title", content: "Vurlo Case Study | Ayush Agarwal" },
       {
         property: "og:description",
-        content: "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
+        content:
+          "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
       },
       { property: "og:type", content: "article" },
       { property: "og:url", content: "https://theayush.pages.dev/projects/vurlo" },
@@ -22,13 +24,12 @@ export const Route = createFileRoute("/projects/vurlo")({
       { name: "twitter:title", content: "Vurlo Case Study | Ayush Agarwal" },
       {
         name: "twitter:description",
-        content: "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
+        content:
+          "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
     ],
-    links: [
-      { rel: "canonical", href: "https://theayush.pages.dev/projects/vurlo" },
-    ]
+    links: [{ rel: "canonical", href: "https://theayush.pages.dev/projects/vurlo" }],
   }),
   component: VurloCaseStudy,
 });

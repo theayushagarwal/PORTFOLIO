@@ -8,12 +8,14 @@ export const Route = createFileRoute("/projects/veltrix")({
     meta: [
       {
         name: "description",
-        content: "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
+        content:
+          "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
       },
       { property: "og:title", content: "Veltrix Case Study | Ayush Agarwal" },
       {
         property: "og:description",
-        content: "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
+        content:
+          "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
       },
       { property: "og:type", content: "article" },
       { property: "og:url", content: "https://theayush.pages.dev/projects/veltrix" },
@@ -22,13 +24,12 @@ export const Route = createFileRoute("/projects/veltrix")({
       { name: "twitter:title", content: "Veltrix Case Study | Ayush Agarwal" },
       {
         name: "twitter:description",
-        content: "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
+        content:
+          "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/veltrix-preview.webp" },
     ],
-    links: [
-      { rel: "canonical", href: "https://theayush.pages.dev/projects/veltrix" },
-    ]
+    links: [{ rel: "canonical", href: "https://theayush.pages.dev/projects/veltrix" }],
   }),
   component: VeltrixCaseStudy,
 });

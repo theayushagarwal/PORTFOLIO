@@ -2,10 +2,26 @@ import { Reveal } from "./Reveal";
 import { PROFILE } from "@/lib/site-data";
 
 const MILESTONES = [
-  { date: "June 2026", title: "Shipped Veltrix Bot", desc: "Engineered multi-model LLM consensus engine auto-publishing twice daily." },
-  { date: "June 2026", title: "Initiated Vurlo SaaS", desc: "Designed full-stack e-commerce architecture, Firestore rules, and Razorpay routing." },
-  { date: "July 2026", title: "Launched Vcentre Scraper", desc: "Created 10-provider LLM scraping pipeline and feedback scoring loop." },
-  { date: "July 2026", title: "Crafted Portfolio Redesign", desc: "Developed glassmorphic 3D developer showcase with fluid animations." },
+  {
+    date: "June 2026",
+    title: "Shipped Veltrix Bot",
+    desc: "Engineered multi-model LLM consensus engine auto-publishing twice daily.",
+  },
+  {
+    date: "June 2026",
+    title: "Initiated Vurlo SaaS",
+    desc: "Designed full-stack e-commerce architecture, Firestore rules, and Razorpay routing.",
+  },
+  {
+    date: "July 2026",
+    title: "Launched Vcentre Scraper",
+    desc: "Created 10-provider LLM scraping pipeline and feedback scoring loop.",
+  },
+  {
+    date: "July 2026",
+    title: "Crafted Portfolio Redesign",
+    desc: "Developed glassmorphic 3D developer showcase with fluid animations.",
+  },
 ];
 
 export function About() {
@@ -41,8 +57,12 @@ export function About() {
                         <span className="h-1 w-1 rounded-full bg-primary" />
                       </span>
                       <div className="flex flex-col gap-1">
-                        <span className="font-mono text-[9px] uppercase tracking-widest text-primary font-semibold">{m.date}</span>
-                        <h4 className="font-display font-semibold text-foreground text-sm">{m.title}</h4>
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-primary font-semibold">
+                          {m.date}
+                        </span>
+                        <h4 className="font-display font-semibold text-foreground text-sm">
+                          {m.title}
+                        </h4>
                         <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
                       </div>
                     </div>

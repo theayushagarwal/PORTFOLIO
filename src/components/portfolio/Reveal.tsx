@@ -8,7 +8,13 @@ interface RevealProps {
   direction?: "up" | "left" | "right" | "light"; // Added light direction
 }
 
-export function Reveal({ children, className = "", delay = 0, as: Tag = "div", direction = "up" }: RevealProps) {
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  as: Tag = "div",
+  direction = "up",
+}: RevealProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -29,10 +35,10 @@ export function Reveal({ children, className = "", delay = 0, as: Tag = "div", d
           }
         });
       },
-      { 
-        threshold: 0.1, 
-        rootMargin: "0px 0px -10% 0px" 
-      }
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -10% 0px",
+      },
     );
 
     observer.observe(el);
@@ -40,17 +46,17 @@ export function Reveal({ children, className = "", delay = 0, as: Tag = "div", d
   }, [delay]);
 
   // Determine which CSS class to use based on direction
-  const revealClass = 
-    direction === "left" ? "reveal-3d-left" : 
-    direction === "right" ? "reveal-3d-right" : 
-    direction === "light" ? "reveal-light" :
-    "reveal-3d";
+  const revealClass =
+    direction === "left"
+      ? "reveal-3d-left"
+      : direction === "right"
+        ? "reveal-3d-right"
+        : direction === "light"
+          ? "reveal-light"
+          : "reveal-3d";
 
   return (
-    <Tag
-      ref={ref as any}
-      className={`${revealClass} ${className}`}
-    >
+    <Tag ref={ref as React.Ref<HTMLElement>} className={`${revealClass} ${className}`}>
       {children}
     </Tag>
   );

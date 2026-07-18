@@ -22,12 +22,14 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         name: "description",
-        content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+        content:
+          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { property: "og:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
       {
         property: "og:description",
-        content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+        content:
+          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { property: "og:url", content: "https://theayush.pages.dev/" },
       { property: "og:image", content: "https://theayush.pages.dev/portfolio-preview.webp" },
@@ -35,13 +37,12 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
       {
         name: "twitter:description",
-        content: "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+        content:
+          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/portfolio-preview.webp" },
     ],
-    links: [
-      { rel: "canonical", href: "https://theayush.pages.dev/" },
-    ]
+    links: [{ rel: "canonical", href: "https://theayush.pages.dev/" }],
   }),
   component: Portfolio,
 });
@@ -66,7 +67,10 @@ function Portfolio() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-background text-foreground overflow-hidden">
+    <div
+      ref={containerRef}
+      className="relative min-h-screen bg-background text-foreground overflow-hidden"
+    >
       <div className="global-spotlight" />
       <a href="#top" className="skip-link">
         Skip to content

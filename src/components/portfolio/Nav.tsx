@@ -24,11 +24,11 @@ export function Nav() {
   // High-performance IntersectionObserver Scrollspy
   useEffect(() => {
     const sections = ["top", "work", "about", "stack", "contact"];
-    
+
     // rootMargin offset simulates the previous 250px offset earlier detection beautifully
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -60% 0px", 
+      rootMargin: "-20% 0px -60% 0px",
       threshold: 0,
     };
 

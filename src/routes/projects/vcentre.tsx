@@ -8,12 +8,14 @@ export const Route = createFileRoute("/projects/vcentre")({
     meta: [
       {
         name: "description",
-        content: "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
+        content:
+          "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
       },
       { property: "og:title", content: "Vcentre Case Study | Ayush Agarwal" },
       {
         property: "og:description",
-        content: "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
+        content:
+          "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
       },
       { property: "og:type", content: "article" },
       { property: "og:url", content: "https://theayush.pages.dev/projects/vcentre" },
@@ -22,13 +24,12 @@ export const Route = createFileRoute("/projects/vcentre")({
       { name: "twitter:title", content: "Vcentre Case Study | Ayush Agarwal" },
       {
         name: "twitter:description",
-        content: "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
+        content:
+          "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/vcentre-preview.webp" },
     ],
-    links: [
-      { rel: "canonical", href: "https://theayush.pages.dev/projects/vcentre" },
-    ]
+    links: [{ rel: "canonical", href: "https://theayush.pages.dev/projects/vcentre" }],
   }),
   component: VcentreCaseStudy,
 });
