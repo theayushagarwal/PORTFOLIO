@@ -14,7 +14,7 @@ export function About() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid gap-16 md:grid-cols-12">
           <div className="md:col-span-4">
-            <Reveal>
+            <Reveal direction="light">
               <p className="eyebrow">About</p>
               <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">
                 Built to ship. <br />
@@ -25,12 +25,12 @@ export function About() {
 
           <div className="space-y-6 md:col-span-7 md:col-start-6">
             {PROFILE.bio.map((para, i) => (
-              <Reveal key={para.slice(0, 12)} delay={i}>
+              <Reveal key={para.slice(0, 12)} delay={i} direction="light">
                 <p className="text-lg leading-relaxed text-muted-foreground">{para}</p>
               </Reveal>
             ))}
 
-            <Reveal delay={2}>
+            <Reveal delay={2} direction="light">
               <div className="mt-12 space-y-6">
                 <p className="eyebrow">Milestones</p>
                 <div className="relative pl-6 border-l border-border space-y-8 mt-4">
@@ -51,7 +51,7 @@ export function About() {
               </div>
             </Reveal>
 
-            <Reveal delay={3}>
+            <Reveal delay={3} direction="light">
               <div className="mt-12 grid grid-cols-2 gap-8 border-t border-border pt-8">
                 <div>
                   <p className="eyebrow">Currently</p>

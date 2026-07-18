@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-18T10:30:00Z",
+  "title": "Design System: Cosmic Obsidian Developer Desk",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Cosmic Violet", "canonical": "#8b5cf6", "tonalRamp": ["#1b0e3b", "#3b1e77", "#5c33b2", "#7c4eed", "#8b5cf6", "#a78bfa", "#c4b5fd", "#ede9fe"] },
+      "secondary": { "role": "accent", "displayName": "Electric Cyan", "canonical": "#06b6d4", "tonalRamp": ["#02232b", "#044c5a", "#05778c", "#06a2bf", "#06b6d4", "#22d3ee", "#67e8f9", "#cffafe"] },
+      "neutral-bg": { "role": "background", "displayName": "Cosmic Void", "canonical": "#07050f", "tonalRamp": ["#020104", "#040308", "#07050f", "#0e0a1c", "#150e29", "#1b1236", "#221743", "#2c1e54"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display Title", "purpose": "Hero title typography." },
+      "body": { "displayName": "Body Paragraph", "purpose": "General biography text." },
+      "mono": { "displayName": "Technical Label", "purpose": "Technical metadata and eyebrows." }
+    },
+    "shadows": [
+      { "name": "ambient-glow", "value": "0 0 30px rgba(139, 92, 246, 0.09)", "purpose": "Diffuse monitor-glow ambient background field." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Standard timing easing for card reveals and entries." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Standard call-to-action button used across hero sections and contact panels.",
+      "html": "<button class=\"ds-btn-primary\">View Case Study</button>",
+      "css": ".ds-btn-primary { background: #8b5cf6; color: #ffffff; padding: 10px 20px; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; border: none; border-radius: 12px; transition: background 0.2s, transform 0.2s; cursor: pointer; } .ds-btn-primary:hover { background: #a78bfa; transform: translateY(-2px); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Cosmic Obsidian Developer Desk",
+    "overview": "A high-fidelity developer showcase aesthetic built on a dark, layered cosmic color space. The design combines an industrial layout structure with fluid, high-performance interactions, replicating the experience of sitting at an advanced developer dashboard console.",
+    "keyCharacteristics": [
+      "Deep dark background tinting (#07050f)",
+      "Glowing violet (#8b5cf6) and cyan (#06b6d4) interactive anchors",
+      "High-contrast typography pairing displaying tight sans-serif titles alongside monospace metadata labels",
+      "Responsive 3D parallax scroll reveals and mouse-movement reflections that feel physically tactical"
+    ],
+    "rules": [
+      { "name": "The Accent Economy Rule", "body": "Accent colors must occupy less than 10% of any viewport. Their scarcity is what makes them draw the user's focus during high-value interactions.", "section": "colors" },
+      { "name": "The Tinted Neutral Rule", "body": "Dark neutrals are never absolute black (#000000); they are tinted with deep purple hues to maintain the cosmic character.", "section": "colors" }
+    ],
+    "dos": [
+      "Do wrap project articles inside <Reveal> components to animate them using GPU-accelerated 3D scroll entrances.",
+      "Do restrict wide letter-spacing tracking strictly to labels using JetBrains Mono.",
+      "Do guard all browser-only globals (like window or document) with typeof window !== 'undefined' checks."
+    ],
+    "donts": [
+      "Don't use plain, flat layouts or generic template themes without micro-glows or cosmic neutral backgrounds.",
+      "Don't add side-stripe colored borders on cards as decorative highlights.",
+      "Don't include sketchy SVG illustrations or hand-drawn graphics.",
+      "Don't load heavy JS libraries for page scroll animations; use CSS Compositor properties."
+    ]
+  }
+}

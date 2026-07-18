@@ -100,123 +100,122 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
 
   return (
     <>
-      <TiltCard>
-        <motion.article
-          ref={ref}
-          onMouseMove={onMove}
-          variants={revealVariants}
-          initial="hidden"
-          whileInView="visible"
-          whileHover="hover"
-          viewport={{ once: true, margin: "-60px" }}
-          style={{ transformStyle: "preserve-3d" }}
-          className="surface-card group relative grid gap-8 overflow-hidden p-6 md:grid-cols-2 md:gap-10 md:p-8"
-        >
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-            style={{ background }}
-          />
+      <Reveal>
+        <TiltCard>
+          <motion.article
+            ref={ref}
+            onMouseMove={onMove}
+            variants={revealVariants}
+            whileHover="hover"
+            style={{ transformStyle: "preserve-3d" }}
+            className="surface-card group relative grid gap-8 overflow-hidden p-6 md:grid-cols-2 md:gap-10 md:p-8"
+          >
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={{ background }}
+            />
 
-          <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} className="flex flex-col gap-5 self-center w-full relative z-10">
-            <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
-              {p.image ? (
-                <div className="relative w-full h-auto">
-                  <img
-                    src={`${p.image}?v=1.2`}
-                    alt={p.name}
-                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
-                  />
-                  {p.secondaryImage && (
-                    <div className="absolute top-3 right-3 z-10 shrink-0 flex flex-col gap-1 items-center bg-black/60 backdrop-blur-md border border-white/10 p-1.5 rounded-lg shadow-lg select-none">
-                      <button
-                        onClick={() => setIsLightboxOpen(true)}
-                        aria-label={`View ${p.secondaryLabel || 'admin panel'} screenshot`}
-                        className="group/thumb relative block overflow-hidden rounded border border-border/80 bg-surface/50 p-0.5 transition-colors hover:border-secondary/40"
-                      >
-                        <img
-                          src={`${p.secondaryImage}?v=1.3`}
-                          alt="Admin screenshot thumbnail"
-                          loading="lazy"
-                          className="h-12 w-20 object-cover object-top transition-transform duration-300 group-hover/thumb:scale-105"
-                        />
-                      </button>
-                      <span className="font-mono text-[8px] uppercase tracking-wider text-white/70">
-                        {p.secondaryLabel || 'admin panel'}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Visual />
+            <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} className="flex flex-col gap-5 self-center w-full relative z-10">
+              <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+                {p.image ? (
+                  <div className="relative w-full h-auto">
+                    <img
+                      src={`${p.image}?v=1.2`}
+                      alt={p.name}
+                      className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
+                    />
+                    {p.secondaryImage && (
+                      <div className="absolute top-3 right-3 z-10 shrink-0 flex flex-col gap-1 items-center bg-black/60 backdrop-blur-md border border-white/10 p-1.5 rounded-lg shadow-lg select-none">
+                        <button
+                          onClick={() => setIsLightboxOpen(true)}
+                          aria-label={`View ${p.secondaryLabel || 'admin panel'} screenshot`}
+                          className="group/thumb relative block overflow-hidden rounded border border-border/80 bg-surface/50 p-0.5 transition-colors hover:border-secondary/40"
+                        >
+                          <img
+                            src={`${p.secondaryImage}?v=1.3`}
+                            alt="Admin screenshot thumbnail"
+                            loading="lazy"
+                            className="h-12 w-20 object-cover object-top transition-transform duration-300 group-hover/thumb:scale-105"
+                          />
+                        </button>
+                        <span className="font-mono text-[8px] uppercase tracking-wider text-white/70">
+                          {p.secondaryLabel || 'admin panel'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Visual />
+                )}
+              </DeviceFrame>
+
+              {p.name === "Vurlo" && (
+                <ul className="flex flex-col gap-2.5 pl-4 font-mono text-[11px] text-muted-foreground/80 leading-relaxed select-none">
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
+                    <span>Firebase Auth + real-time Firestore cart & orders</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
+                    <span>SEO-optimized — 100 Lighthouse score with schema.org structured data</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
+                    <span>Full admin console — products, orders, coupons, stock alerts</span>
+                  </li>
+                </ul>
               )}
-            </DeviceFrame>
+            </div>
 
-            {p.name === "Vurlo" && (
-              <ul className="flex flex-col gap-2.5 pl-4 font-mono text-[11px] text-muted-foreground/80 leading-relaxed select-none">
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                  <span>Firebase Auth + real-time Firestore cart & orders</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                  <span>SEO-optimized — 100 Lighthouse score with schema.org structured data</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-500/70 shrink-0 select-none">✓</span>
-                  <span>Full admin console — products, orders, coupons, stock alerts</span>
-                </li>
+            <div style={{ transform: "translateZ(15px)" }} className="relative flex flex-col justify-center">
+              <div className="flex items-center gap-3">
+                <span className="eyebrow">Featured</span>
+                <span className="h-px w-6 bg-border" />
+                <span className="font-mono text-xs text-subtle">
+                  {p.year} · {p.role}
+                </span>
+              </div>
+
+              <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight md:text-4xl text-foreground">
+                {p.name}
+              </h3>
+              
+              <p className="mt-1 text-[13px] text-subtle/85 font-normal tracking-wide leading-relaxed">
+                {p.tagline}
+              </p>
+              
+              <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-foreground/90 font-medium">
+                {p.summary}
+              </p>
+
+              <ul className="mt-5 flex flex-wrap gap-1.5">
+                {p.stack.map((s) => (
+                  <li
+                    key={s}
+                    className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-[11px] text-muted-foreground/80 font-mono"
+                  >
+                    {s}
+                  </li>
+                ))}
               </ul>
-            )}
-          </div>
 
-          <div style={{ transform: "translateZ(15px)" }} className="relative flex flex-col justify-center">
-            <div className="flex items-center gap-3">
-              <span className="eyebrow">Featured</span>
-              <span className="h-px w-6 bg-border" />
-              <span className="font-mono text-xs text-subtle">
-                {p.year} · {p.role}
-              </span>
+              <div className="mt-8 border-t border-border pt-7">
+                <Metrics metrics={p.metrics} />
+              </div>
+
+              <Link
+                to={`/projects/${p.name.toLowerCase()}`}
+                onMouseEnter={() => playTick(0)}
+                className="mt-8 inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
+              >
+                View Case Study
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
             </div>
-
-            <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight md:text-4xl text-foreground">
-              {p.name}
-            </h3>
-            
-            <p className="mt-1 text-[13px] text-subtle/85 font-normal tracking-wide leading-relaxed">
-              {p.tagline}
-            </p>
-            
-            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-foreground/90 font-medium">
-              {p.summary}
-            </p>
-
-            <ul className="mt-5 flex flex-wrap gap-1.5">
-              {p.stack.map((s) => (
-                <li
-                  key={s}
-                  className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-[11px] text-muted-foreground/80 font-mono"
-                >
-                  {s}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8 border-t border-border pt-7">
-              <Metrics metrics={p.metrics} />
-            </div>
-
-            <Link
-              to={`/projects/${p.name.toLowerCase()}`}
-              onMouseEnter={() => playTick(0)}
-              className="mt-8 inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
-            >
-              View Case Study
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
-        </motion.article>
-      </TiltCard>
+          </motion.article>
+        </TiltCard>
+      </Reveal>
 
       {isLightboxOpen && p.secondaryImage && (
         <div 
@@ -249,7 +248,17 @@ function FeaturedProject({ p, onViewCaseStudy }: { p: Project; onViewCaseStudy: 
 }
 
 /** Supporting projects — compact, visual on top, one line of proof below. */
-function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onViewCaseStudy: (p: Project) => void }) {
+function CompactProject({ 
+  p, 
+  i, 
+  onViewCaseStudy, 
+  direction = "up" 
+}: { 
+  p: Project; 
+  i: number; 
+  onViewCaseStudy: (p: Project) => void;
+  direction?: "up" | "left" | "right";
+}) {
   const details = PROJECT_DETAILS[p.name];
   const glowColor = details?.theme.glow ? details.theme.glow.replace("0.15", "0.09") : "rgba(6, 182, 212, 0.09)";
   const { ref, onMove, background } = useSpotlight(glowColor);
@@ -269,78 +278,77 @@ function CompactProject({ p, i, onViewCaseStudy }: { p: Project; i: number; onVi
 
   return (
     <>
-      <TiltCard>
-        <motion.article
-          ref={ref}
-          onMouseMove={onMove}
-          variants={revealVariants}
-          initial="hidden"
-          whileInView="visible"
-          whileHover="hover"
-          viewport={{ once: true, margin: "-60px" }}
-          custom={i}
-          style={{ transformStyle: "preserve-3d" }}
-          className="surface-card group relative flex flex-col overflow-hidden p-6"
-        >
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-            style={{ background }}
-          />
+      <Reveal delay={i * 0.5} direction={direction}>
+        <TiltCard>
+          <motion.article
+            ref={ref}
+            onMouseMove={onMove}
+            variants={revealVariants}
+            whileHover="hover"
+            custom={i}
+            style={{ transformStyle: "preserve-3d" }}
+            className="surface-card group relative flex flex-col overflow-hidden p-6 h-full"
+          >
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={{ background }}
+            />
 
-          <div style={{ transform: "translateZ(30px)" }}>
-            <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
-              {p.image ? (
-                <button
-                  onClick={() => setIsLightboxOpen(true)}
-                  aria-label={`View full ${p.name} screenshot`}
-                  className="w-full h-auto block text-left outline-none cursor-zoom-in"
-                >
-                  <img
-                    src={`${p.image}?v=1.2`}
-                    alt={p.name}
-                    loading="lazy"
-                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
-                  />
-                </button>
-              ) : (
-                <Visual />
-              )}
-            </DeviceFrame>
-          </div>
-
-          <div style={{ transform: "translateZ(15px)" }} className="relative mt-6 flex flex-1 flex-col">
-            <div className="flex items-center gap-3 font-mono text-xs text-subtle">
-              <span>{p.index}</span>
-              <span className="h-px w-5 bg-border" />
-              <span>{p.year}</span>
+            <div style={{ transform: "translateZ(30px)" }}>
+              <DeviceFrame label={p.visualLabel} className="relative overflow-hidden" noPadding={!!p.image} aspectClass={p.image ? "" : "aspect-[16/10]"}>
+                {p.image ? (
+                  <button
+                    onClick={() => setIsLightboxOpen(true)}
+                    aria-label={`View full ${p.name} screenshot`}
+                    className="w-full h-auto block text-left outline-none cursor-zoom-in"
+                  >
+                    <img
+                      src={`${p.image}?v=1.2`}
+                      alt={p.name}
+                      loading="lazy"
+                      className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
+                    />
+                  </button>
+                ) : (
+                  <Visual />
+                )}
+              </DeviceFrame>
             </div>
 
-            <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">{p.name}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
+            <div style={{ transform: "translateZ(15px)" }} className="relative mt-6 flex flex-1 flex-col">
+              <div className="flex items-center gap-3 font-mono text-xs text-subtle">
+                <span>{p.index}</span>
+                <span className="h-px w-5 bg-border" />
+                <span>{p.year}</span>
+              </div>
 
-            <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
+              <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">{p.name}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
 
-            <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-              <span className="font-display text-sm font-semibold tabular-nums text-foreground">
-                {p.metrics[0].v}
-                <span className="ml-1.5 font-mono text-[10px] font-normal uppercase tracking-widest text-subtle">
-                  {p.metrics[0].k}
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
+
+              <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+                <span className="font-display text-sm font-semibold tabular-nums text-foreground">
+                  {p.metrics[0].v}
+                  <span className="ml-1.5 font-mono text-[10px] font-normal uppercase tracking-widest text-subtle">
+                    {p.metrics[0].k}
+                  </span>
                 </span>
-              </span>
-              <Link
-                to={`/projects/${p.name.toLowerCase()}`}
-                onMouseEnter={() => playTick(0)}
-                aria-label={`View ${p.name} case study`}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
-              >
-                <span>Case Study</span>
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+                <Link
+                  to={`/projects/${p.name.toLowerCase()}`}
+                  onMouseEnter={() => playTick(0)}
+                  aria-label={`View ${p.name} case study`}
+                  className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-secondary cursor-pointer"
+                >
+                  <span>Case Study</span>
+                  <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              </div>
             </div>
-          </div>
-        </motion.article>
-      </TiltCard>
+          </motion.article>
+        </TiltCard>
+      </Reveal>
 
       {isLightboxOpen && p.image && (
         <div 
@@ -731,24 +739,24 @@ export function Projects() {
     setProgressBarWidth(0);
     playSwell(); // Synthesize ascending workspace portal hum
 
-    // Timeline steps (Total: 2000ms)
+    // Timeline steps (Total: 400ms)
     setStatusText("Opening Workspace...");
     setProgressBarWidth(30);
 
     setTimeout(() => {
       setStatusText("Loading Project...");
       setProgressBarWidth(60);
-    }, 400);
+    }, 80);
 
     setTimeout(() => {
       setStatusText("Preparing Architecture...");
       setProgressBarWidth(85);
-    }, 800);
+    }, 160);
 
     setTimeout(() => {
       setStatusText("Workspace Ready.");
       setProgressBarWidth(100);
-    }, 1500);
+    }, 300);
 
     setTimeout(() => {
       setTransitionStage('ready');
@@ -762,9 +770,9 @@ export function Projects() {
 
         setTimeout(() => {
           setIsTransitioning(false);
-        }, 620);
-      }, 30);
-    }, 2000);
+        }, 150);
+      }, 20);
+    }, 400);
   };
 
   const handleExitWorkspace = () => {
@@ -782,15 +790,15 @@ export function Projects() {
       
       setTimeout(() => {
         setStatusText("Returning to Portfolio...");
-      }, 750);
+      }, 150);
 
       setTimeout(() => {
         setTransitionStage('idle');
         setActiveProject(null);
         setIsTransitioning(false);
-      }, 1500);
+      }, 300);
       
-    }, 300);
+    }, 100);
   };
 
   const [mounted, setMounted] = useState(false);
@@ -849,7 +857,13 @@ export function Projects() {
               : "grid-cols-1 md:grid-cols-3"
         }`}>
           {rest.map((p, i) => (
-            <CompactProject key={p.index} p={p} i={i} onViewCaseStudy={handleViewCaseStudy} />
+            <CompactProject 
+              key={p.index} 
+              p={p} 
+              i={i} 
+              onViewCaseStudy={handleViewCaseStudy} 
+              direction={i % 2 === 0 ? "left" : "right"} 
+            />
           ))}
         </div>
       </div>
@@ -1019,8 +1033,33 @@ export function Projects() {
                     </span>
                   </div>
 
-                  {/* Document Navigation Tabs - scrollable on mobile, static on desktop */}
-                  <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none py-1 max-w-[40%] sm:max-w-[50%] md:max-w-[60%] lg:max-w-none lg:overflow-x-visible relative z-10 whitespace-nowrap [mask-image:linear-gradient(to_right,black_85%,transparent)] lg:[mask-image:none]">
+                  {/* Document Navigation Tabs - Mobile dropdown, Desktop buttons */}
+                  <div className="relative z-10 workspace-nav-mobile flex-shrink-0">
+                    <select
+                      value={activeSection}
+                      onChange={(e) => {
+                        const idx = TABS.findIndex((t) => t.id === e.target.value);
+                        if (idx !== -1) {
+                          scrollToSection(e.target.value, idx);
+                        }
+                      }}
+                      className="bg-[#131020]/90 text-foreground font-mono text-[9px] uppercase tracking-wider rounded-lg border border-white/10 px-3 py-1.5 focus:outline-none focus:border-primary/50 cursor-pointer appearance-none pr-8 relative"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(250,250,250,0.6)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+                        backgroundPosition: "right 8px center",
+                        backgroundSize: "12px",
+                        backgroundRepeat: "no-repeat"
+                      }}
+                    >
+                      {TABS.map((tab) => (
+                        <option key={tab.id} value={tab.id} className="bg-[#07050f] text-foreground">
+                          {tab.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <nav className="workspace-nav-desktop items-center gap-1 relative z-10">
                     {TABS.map((tab, idx) => (
                       <button
                         key={tab.id}

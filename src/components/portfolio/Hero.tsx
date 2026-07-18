@@ -5,7 +5,7 @@ import { Reveal } from "./Reveal";
 import { MagneticButton } from "./MagneticButton";
 import { TextScramble } from "./TextScramble";
 import { EASE } from "@/lib/motion";
-import { HERO_STATS, PROFILE } from "@/lib/site-data";
+import { PROFILE } from "@/lib/site-data";
 
 export function Hero({ revealed }: { revealed: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
   return (
     <section id="top" ref={ref} className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
       {/* Shifting Gradient Mesh */}
-      <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden mesh-container" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden mesh-container scroll-parallax-y" aria-hidden>
         <div className="mesh-blob mesh-blob-1" />
         <div className="mesh-blob mesh-blob-2" />
         <div className="mesh-blob mesh-blob-3" />
@@ -59,7 +59,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
           </p>
         </motion.div>
 
-        <Reveal delay={1} className="mt-5 block">
+        <Reveal delay={1} className="mt-5 block" direction="light">
           <div className="flex items-center gap-3">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-60" />
@@ -69,7 +69,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
           </div>
         </Reveal>
 
-        <Reveal delay={2}>
+        <Reveal delay={2} direction="light">
           <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-7xl lg:text-[5.25rem]">
             {PROFILE.headline.line1}
             <br />
@@ -78,13 +78,13 @@ export function Hero({ revealed }: { revealed: boolean }) {
           </h1>
         </Reveal>
 
-        <Reveal delay={3}>
+        <Reveal delay={3} direction="light">
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
             {PROFILE.pitch}
           </p>
         </Reveal>
 
-        <Reveal delay={4}>
+        <Reveal delay={4} direction="light">
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <MagneticButton href="#work" variant="primary">
               View selected work

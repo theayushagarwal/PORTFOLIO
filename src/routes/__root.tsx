@@ -267,7 +267,7 @@ const FAQ_JSON_LD = JSON.stringify({
       "name": "Is Ayush available for remote internships, freelance, or contract work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Contact theayush.codes@gmail.com or use the form below to get in touch."
+        "text": "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below."
       }
     },
     {
