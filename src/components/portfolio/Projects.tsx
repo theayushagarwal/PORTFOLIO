@@ -336,7 +336,12 @@ function CarouselProjectCard({
 
   return (
     <>
-      <div ref={cardRef} className="w-[280px] sm:w-[480px] md:w-[580px] flex-shrink-0 snap-center py-6">
+      <div
+        ref={cardRef}
+        className={`w-[280px] sm:w-[480px] md:w-[580px] flex-shrink-0 snap-center py-6 ${
+          isActive ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+      >
         <div style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
           <motion.div
           style={{
