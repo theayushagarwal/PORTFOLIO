@@ -192,6 +192,7 @@ const WEBSITE_JSON_LD = JSON.stringify({
   "@type": "WebSite",
   "@id": "https://theayush.pages.dev/#website",
   name: "Ayush Agarwal Portfolio",
+  alternateName: ["Ayush Agarwal", "Ayush Agarwal AI Engineer", "Ayush Agarwal Systems Engineer"],
   url: "https://theayush.pages.dev",
   description: "Portfolio of Ayush Agarwal, Systems & Agent Engineer.",
   inLanguage: "en-US",
