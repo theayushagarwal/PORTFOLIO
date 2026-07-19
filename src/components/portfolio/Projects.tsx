@@ -990,39 +990,7 @@ export function Projects() {
   const [featured, ...rest] = PROJECTS;
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [debugHit, setDebugHit] = useState("");
-  const [debugError, setDebugError] = useState("");
 
-  useEffect(() => {
-    const handler = (e: TouchEvent | PointerEvent) => {
-      const point = "changedTouches" in e ? e.changedTouches[0] : e;
-      if (!point) return;
-      const el = document.elementFromPoint(point.clientX, point.clientY);
-      if (!el) return;
-      const snippet = el.outerHTML.replace(/\s+/g, " ").slice(0, 160);
-      setDebugHit(`[[DEBUG-V2]] (${Math.round(point.clientX)}, ${Math.round(point.clientY)}) → ${snippet}`);
-    };
-    document.addEventListener("touchend", handler, { capture: true });
-
-    const origError = console.error;
-    console.error = (...args: unknown[]) => {
-      const msg = args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" ");
-      if (/hydrat/i.test(msg)) {
-        setDebugError((prev) => prev || `[[CONSOLE.ERROR]] ${msg.slice(0, 300)}`);
-      }
-      origError(...args);
-    };
-    const onWindowError = (e: ErrorEvent) => {
-      setDebugError((prev) => prev || `[[WINDOW ERROR]] ${e.message} @ ${e.filename}:${e.lineno}`);
-    };
-    window.addEventListener("error", onWindowError);
-
-    return () => {
-      document.removeEventListener("touchend", handler, { capture: true });
-      console.error = origError;
-      window.removeEventListener("error", onWindowError);
-    };
-  }, []);
   const [transitionStage, setTransitionStage] = useState<"idle" | "entering" | "ready" | "exiting">(
     "idle",
   );
@@ -1360,16 +1328,7 @@ export function Projects() {
 
   return (
     <section id="work" className="relative py-32 md:py-40">
-      {debugHit && (
-        <div className="fixed bottom-20 left-4 z-[99999] bg-black/85 text-[10px] text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/30 font-mono pointer-events-none">
-          Tapped: {debugHit}
-        </div>
-      )}
-      {debugError && (
-        <div className="fixed bottom-36 left-4 z-[99999] bg-red-950/85 text-[10px] text-red-400 px-3 py-1.5 rounded-lg border border-red-500/30 font-mono pointer-events-none max-w-[90vw] whitespace-normal break-all">
-          Error: {debugError}
-        </div>
-      )}
+
       {/* Ambient background glow bleed */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 transition-colors duration-1000 ease-out"
