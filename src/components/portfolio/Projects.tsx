@@ -342,7 +342,7 @@ function CarouselProjectCard({
           isActive ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
-        <div style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
+        <div style={{ perspective: "1200px", transformStyle: "preserve-3d" }} className="pointer-events-none">
           <motion.div
           style={{
             rotateX,
