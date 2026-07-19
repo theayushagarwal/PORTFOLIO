@@ -828,8 +828,11 @@
 /* ============================================================
  * Carousel Scroll Performance Optimizations
  * ============================================================ */
-.carousel-scrolling .snap-center {
-  pointer-events: none !important;
+/* Only disable pointer events on scroll for hover-capable devices (desktop/mouse) to prevent mobile tap blocking */
+@media (hover: hover) {
+  .carousel-scrolling .snap-center {
+    pointer-events: none !important;
+  }
 }
 
 /* Instantly hide spotlight glows during scroll to free browser repaint resource loops */

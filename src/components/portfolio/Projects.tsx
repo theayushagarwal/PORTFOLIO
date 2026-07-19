@@ -354,7 +354,11 @@ function CarouselProjectCard({
             ref={spotlightRef}
             onMouseMove={onMove}
             variants={revealVariants}
-            whileHover="hover"
+            whileHover={
+              typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches
+                ? "hover"
+                : undefined
+            }
             style={
               {
                 transformStyle: "preserve-3d",
