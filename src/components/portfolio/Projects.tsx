@@ -983,6 +983,24 @@ export function Projects() {
   const [featured, ...rest] = PROJECTS;
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [debugHit, setDebugHit] = useState("");
+
+  useEffect(() => {
+    const handler = (e: TouchEvent | PointerEvent) => {
+      const point = "changedTouches" in e ? e.changedTouches[0] : e;
+      if (!point) return;
+      const el = document.elementFromPoint(point.clientX, point.clientY);
+      if (!el) return;
+      const desc = `${el.tagName.toLowerCase()}${el.id ? "#" + el.id : ""}${
+        el.className && typeof el.className === "string"
+          ? "." + el.className.trim().split(/\s+/).slice(0, 3).join(".")
+          : ""
+      }`;
+      setDebugHit(`${desc} @ (${Math.round(point.clientX)}, ${Math.round(point.clientY)})`);
+    };
+    document.addEventListener("touchend", handler, { capture: true });
+    return () => document.removeEventListener("touchend", handler, { capture: true });
+  }, []);
   const [transitionStage, setTransitionStage] = useState<"idle" | "entering" | "ready" | "exiting">(
     "idle",
   );
@@ -1315,6 +1333,11 @@ export function Projects() {
 
   return (
     <section id="work" className="relative py-32 md:py-40">
+      {debugHit && (
+        <div className="fixed bottom-20 left-4 z-[99999] bg-black/85 text-[10px] text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/30 font-mono pointer-events-none">
+          Tapped: {debugHit}
+        </div>
+      )}
       {/* Ambient background glow bleed */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 transition-colors duration-1000 ease-out"
