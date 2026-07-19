@@ -445,7 +445,7 @@ function CarouselProjectCard({
                   onClick={() => onViewCaseStudy(p)}
                   onMouseEnter={() => playTick(0)}
                   aria-label={`View ${p.name} case study`}
-                  className="inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
+                  className="relative z-30 pointer-events-auto inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
                 >
                   <span>View Workspace</span>
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
