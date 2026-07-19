@@ -353,7 +353,7 @@ function CarouselProjectCard({
             transformStyle: "preserve-3d",
             willChange: "transform, opacity",
           }}
-          className="h-full"
+          className={`h-full ${isActive ? "pointer-events-auto" : "pointer-events-none"}`}
         >
           <motion.article
             ref={spotlightRef}
@@ -1257,18 +1257,23 @@ export function Projects() {
         cardShines[i].set(ratio * 150); // shine X percentage shift
       }
 
-      // Update active dots index
-      const maxScroll = maxScrollRef.current;
-      if (maxScroll > 0) {
-        const scrollPercent = scrollLeft / maxScroll;
-        const closestIndex = Math.round(scrollPercent * (PROJECTS.length - 1));
-        setActiveCarouselIndex((prev) => {
-          if (prev !== closestIndex && closestIndex >= 0 && closestIndex < PROJECTS.length) {
-            return closestIndex;
-          }
-          return prev;
-        });
+      // Update active dots index using robust closest-to-center element detection
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      for (let i = 0; i < centers.length; i++) {
+        const center = centers[i] || 0;
+        const distance = Math.abs(center - containerCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = i;
+        }
       }
+      setActiveCarouselIndex((prev) => {
+        if (prev !== closestIndex && closestIndex >= 0 && closestIndex < PROJECTS.length) {
+          return closestIndex;
+        }
+        return prev;
+      });
     };
 
     // Initial calculations
