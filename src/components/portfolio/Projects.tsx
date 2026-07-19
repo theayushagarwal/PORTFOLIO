@@ -336,12 +336,9 @@ function CarouselProjectCard({
 
   return (
     <>
-      <div
-        ref={cardRef}
-        className="w-[280px] sm:w-[480px] md:w-[580px] flex-shrink-0 snap-center py-6"
-        style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
-      >
-        <motion.div
+      <div ref={cardRef} className="w-[280px] sm:w-[480px] md:w-[580px] flex-shrink-0 snap-center py-6">
+        <div style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
+          <motion.div
           style={{
             rotateX,
             rotateY,
@@ -479,7 +476,8 @@ function CarouselProjectCard({
               </div>
             </div>
           </motion.article>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {isLightboxOpen && p.image && (
