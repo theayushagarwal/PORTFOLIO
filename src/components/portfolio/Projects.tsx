@@ -320,6 +320,9 @@ function CarouselProjectCard({
   const Visual = PROJECT_VISUALS[p.visual];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  const tapStartRef = useRef<{ x: number; y: number; t: number } | null>(null);
+  const suppressNextClickRef = useRef(false);
+
   useEffect(() => {
     if (!isLightboxOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -442,9 +445,32 @@ function CarouselProjectCard({
                   </span>
                 </span>
                 <button
-                  onClick={() => onViewCaseStudy(p)}
+                  onPointerDown={(e) => {
+                    if (e.pointerType === "touch") {
+                      tapStartRef.current = { x: e.clientX, y: e.clientY, t: Date.now() };
+                    }
+                  }}
+                  onPointerUp={(e) => {
+                    if (e.pointerType !== "touch" || !tapStartRef.current) return;
+                    const { x, y, t } = tapStartRef.current;
+                    tapStartRef.current = null;
+                    const movedTooFar = Math.hypot(e.clientX - x, e.clientY - y) > 10;
+                    const heldTooLong = Date.now() - t > 500;
+                    if (!movedTooFar && !heldTooLong) {
+                      suppressNextClickRef.current = true;
+                      onViewCaseStudy(p);
+                      window.setTimeout(() => {
+                        suppressNextClickRef.current = false;
+                      }, 400);
+                    }
+                  }}
+                  onClick={() => {
+                    if (suppressNextClickRef.current) return;
+                    onViewCaseStudy(p);
+                  }}
                   onMouseEnter={() => playTick(0)}
                   aria-label={`View ${p.name} case study`}
+                  style={{ touchAction: "manipulation" }}
                   className="relative z-30 pointer-events-auto inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
                 >
                   <span>View Workspace</span>
@@ -1342,7 +1368,7 @@ export function Projects() {
           <div
             ref={carouselContainerRef}
             className="flex gap-6 md:gap-12 overflow-x-auto snap-x snap-mandatory scrollbar-none py-8 px-[12vw] sm:px-[20vw] md:px-[25vw] lg:px-[26vw]"
-            style={{}}
+            style={{ touchAction: "pan-x pan-y" }}
           >
             {PROJECTS.map((p, i) => (
               <CarouselProjectCard
