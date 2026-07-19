@@ -473,7 +473,9 @@ function CarouselProjectCard({
                   onMouseEnter={() => playTick(0)}
                   aria-label={`View ${p.name} case study`}
                   style={{ touchAction: "manipulation" }}
-                  className="relative z-30 pointer-events-auto inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer"
+                  className={`relative z-30 inline-flex items-center gap-1.5 text-xs text-foreground font-mono uppercase tracking-wider transition-colors hover:text-secondary cursor-pointer ${
+                    isActive ? "pointer-events-auto" : "pointer-events-none"
+                  }`}
                 >
                   <span>View Workspace</span>
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
