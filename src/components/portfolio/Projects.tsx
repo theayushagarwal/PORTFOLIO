@@ -434,7 +434,7 @@ function CarouselProjectCard({
                 <p className="mt-4 text-xs leading-relaxed text-subtle/90">{p.summary}</p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
+              <div className="mt-6 pt-4 border-t border-border flex items-center justify-between pr-14 sm:pr-0">
                 <span className="font-display text-sm font-semibold tabular-nums text-foreground">
                   {p.metrics[0].v}
                   <span className="ml-1.5 font-mono text-[9px] font-normal uppercase tracking-widest text-subtle">
