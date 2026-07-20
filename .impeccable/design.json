@@ -4,9 +4,51 @@
   "title": "Design System: Cosmic Obsidian Developer Desk",
   "extensions": {
     "colorMeta": {
-      "primary": { "role": "primary", "displayName": "Cosmic Violet", "canonical": "#8b5cf6", "tonalRamp": ["#1b0e3b", "#3b1e77", "#5c33b2", "#7c4eed", "#8b5cf6", "#a78bfa", "#c4b5fd", "#ede9fe"] },
-      "secondary": { "role": "accent", "displayName": "Electric Cyan", "canonical": "#06b6d4", "tonalRamp": ["#02232b", "#044c5a", "#05778c", "#06a2bf", "#06b6d4", "#22d3ee", "#67e8f9", "#cffafe"] },
-      "neutral-bg": { "role": "background", "displayName": "Cosmic Void", "canonical": "#07050f", "tonalRamp": ["#020104", "#040308", "#07050f", "#0e0a1c", "#150e29", "#1b1236", "#221743", "#2c1e54"] }
+      "primary": {
+        "role": "primary",
+        "displayName": "Cosmic Violet",
+        "canonical": "#8b5cf6",
+        "tonalRamp": [
+          "#1b0e3b",
+          "#3b1e77",
+          "#5c33b2",
+          "#7c4eed",
+          "#8b5cf6",
+          "#a78bfa",
+          "#c4b5fd",
+          "#ede9fe"
+        ]
+      },
+      "secondary": {
+        "role": "accent",
+        "displayName": "Electric Cyan",
+        "canonical": "#06b6d4",
+        "tonalRamp": [
+          "#02232b",
+          "#044c5a",
+          "#05778c",
+          "#06a2bf",
+          "#06b6d4",
+          "#22d3ee",
+          "#67e8f9",
+          "#cffafe"
+        ]
+      },
+      "neutral-bg": {
+        "role": "background",
+        "displayName": "Cosmic Void",
+        "canonical": "#07050f",
+        "tonalRamp": [
+          "#020104",
+          "#040308",
+          "#07050f",
+          "#0e0a1c",
+          "#150e29",
+          "#1b1236",
+          "#221743",
+          "#2c1e54"
+        ]
+      }
     },
     "typographyMeta": {
       "display": { "displayName": "Display Title", "purpose": "Hero title typography." },
@@ -14,10 +56,18 @@
       "mono": { "displayName": "Technical Label", "purpose": "Technical metadata and eyebrows." }
     },
     "shadows": [
-      { "name": "ambient-glow", "value": "0 0 30px rgba(139, 92, 246, 0.09)", "purpose": "Diffuse monitor-glow ambient background field." }
+      {
+        "name": "ambient-glow",
+        "value": "0 0 30px rgba(139, 92, 246, 0.09)",
+        "purpose": "Diffuse monitor-glow ambient background field."
+      }
     ],
     "motion": [
-      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Standard timing easing for card reveals and entries." }
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Standard timing easing for card reveals and entries."
+      }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },
@@ -45,8 +95,16 @@
       "Responsive 3D parallax scroll reveals and mouse-movement reflections that feel physically tactical"
     ],
     "rules": [
-      { "name": "The Accent Economy Rule", "body": "Accent colors must occupy less than 10% of any viewport. Their scarcity is what makes them draw the user's focus during high-value interactions.", "section": "colors" },
-      { "name": "The Tinted Neutral Rule", "body": "Dark neutrals are never absolute black (#000000); they are tinted with deep purple hues to maintain the cosmic character.", "section": "colors" }
+      {
+        "name": "The Accent Economy Rule",
+        "body": "Accent colors must occupy less than 10% of any viewport. Their scarcity is what makes them draw the user's focus during high-value interactions.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinted Neutral Rule",
+        "body": "Dark neutrals are never absolute black (#000000); they are tinted with deep purple hues to maintain the cosmic character.",
+        "section": "colors"
+      }
     ],
     "dos": [
       "Do wrap project articles inside <Reveal> components to animate them using GPU-accelerated 3D scroll entrances.",
