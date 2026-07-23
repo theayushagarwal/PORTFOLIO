@@ -12,14 +12,14 @@ const SOCIAL_LINKS = [
 
 export function Contact() {
   return (
-    <section id="contact" className="relative py-32 md:py-48">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid gap-16 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-7">
+    <section id="contact" className="relative py-24 sm:py-32 md:py-48 overflow-hidden">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="grid gap-12 md:gap-16 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-7 min-w-0">
             <Reveal>
               <p className="eyebrow">Contact</p>
-              <h2 className="mt-6 font-display text-5xl font-semibold tracking-tight md:text-7xl">
-                Have something <br />
+              <h2 className="mt-4 sm:mt-6 font-display text-3xl sm:text-5xl font-semibold tracking-tight md:text-7xl leading-[1.1]">
+                Have something <br className="hidden sm:inline" />
                 <span className="font-serif-accent font-normal italic text-muted-foreground">
                   worth building?
                 </span>
@@ -29,10 +29,10 @@ export function Contact() {
             <Reveal delay={1}>
               <a
                 href={`mailto:${PROFILE.email}`}
-                className="link-underline mt-10 inline-flex items-center gap-2 font-display text-2xl text-foreground md:text-3xl"
+                className="link-underline mt-6 sm:mt-10 inline-flex max-w-full items-center gap-2 font-display text-base sm:text-2xl md:text-3xl text-foreground break-all"
               >
-                {PROFILE.email}
-                <ArrowUpRight className="h-6 w-6" />
+                <span>{PROFILE.email}</span>
+                <ArrowUpRight className="h-4 w-4 sm:h-6 sm:w-6 shrink-0" />
               </a>
             </Reveal>
           </div>
