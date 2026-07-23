@@ -34,8 +34,31 @@ export const Route = createFileRoute("/projects/vcentre")({
   component: VcentreCaseStudy,
 });
 
+const VCENTRE_PROJECT_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "Vcentre",
+  url: "https://theayush.pages.dev/projects/vcentre",
+  description:
+    "Competitor intelligence scraper that detects cohort-specific outliers (Reels vs. Photos medians) and uses a 10-provider LLM fallback chain to generate creative briefs.",
+  programmingLanguage: ["Python", "FastAPI"],
+  codeRepository: "https://github.com/theayushagarwal/PORTFOLIO",
+  author: {
+    "@type": "Person",
+    "@id": "https://theayush.pages.dev/#person",
+  },
+});
+
 function VcentreCaseStudy() {
   const project = PROJECTS.find((p) => p.name.toLowerCase() === "vcentre");
   if (!project) return null;
-  return <WorkspacePanel project={project} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: VCENTRE_PROJECT_JSON_LD }}
+      />
+      <WorkspacePanel project={project} />
+    </>
+  );
 }

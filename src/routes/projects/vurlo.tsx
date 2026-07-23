@@ -34,8 +34,31 @@ export const Route = createFileRoute("/projects/vurlo")({
   component: VurloCaseStudy,
 });
 
+const VURLO_PROJECT_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "Vurlo",
+  url: "https://theayush.pages.dev/projects/vurlo",
+  description:
+    "A production-grade e-commerce SaaS platform solo-built in 10 days. Features real-time stock-locking transactions, custom admin analytics panel, and sub-400ms load times.",
+  programmingLanguage: ["TypeScript", "React", "CSS"],
+  codeRepository: "https://github.com/theayushagarwal/vurlo-ecommerce",
+  author: {
+    "@type": "Person",
+    "@id": "https://theayush.pages.dev/#person",
+  },
+});
+
 function VurloCaseStudy() {
   const project = PROJECTS.find((p) => p.name.toLowerCase() === "vurlo");
   if (!project) return null;
-  return <WorkspacePanel project={project} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: VURLO_PROJECT_JSON_LD }}
+      />
+      <WorkspacePanel project={project} />
+    </>
+  );
 }

@@ -202,98 +202,6 @@ const WEBSITE_JSON_LD = JSON.stringify({
   inLanguage: "en-US",
 });
 
-const PROJECTS_JSON_LD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareSourceCode",
-      name: "Vurlo",
-      url: "https://theayush.pages.dev/projects/vurlo",
-      description:
-        "A production-grade e-commerce SaaS platform solo-built in 10 days. Features real-time stock-locking transactions, custom admin analytics panel, and sub-400ms load times.",
-      programmingLanguage: ["TypeScript", "React", "CSS"],
-      codeRepository: "https://github.com/theayushagarwal/vurlo-ecommerce",
-      author: {
-        "@type": "Person",
-        "@id": "https://theayush.pages.dev/#person",
-      },
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      name: "Veltrix",
-      url: "https://theayush.pages.dev/projects/veltrix",
-      description:
-        "An autonomous publishing engine orchestrating 18+ APIs. Employs a multi-model adversarial consensus group (Gemini, Groq, Cerebras) to audit captions, and schedules Playwright slide renders.",
-      programmingLanguage: ["Python"],
-      codeRepository: "https://github.com/theayushagarwal/PORTFOLIO",
-      author: {
-        "@type": "Person",
-        "@id": "https://theayush.pages.dev/#person",
-      },
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      name: "Vcentre",
-      url: "https://theayush.pages.dev/projects/vcentre",
-      description:
-        "Competitor intelligence scraper that detects cohort-specific outliers (Reels vs. Photos medians) and uses a 10-provider LLM fallback chain to generate creative briefs.",
-      programmingLanguage: ["Python", "FastAPI"],
-      codeRepository: "https://github.com/theayushagarwal/PORTFOLIO",
-      author: {
-        "@type": "Person",
-        "@id": "https://theayush.pages.dev/#person",
-      },
-    },
-  ],
-});
-
-const FAQ_JSON_LD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "How does Veltrix's adversarial AI consensus loop work?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Veltrix is an autonomous pipeline that orchestrates 18+ active APIs (content channels, competitor scrapers, database logs, alerting systems). Every social post drafts through a gated validation loop: Gemini is selectively invoked as the paid copywriting model only after free/low-cost Llama audits (Groq + Cerebras) approve the draft. A statistically-adaptive embedding check prevents duplicate topics.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is Vcentre and how does it analyze competitor engagement?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Vcentre scrapes competitor accounts nightly using isolated Reels and Photos baseline calculations (so a viral Reel doesn't skew photo expectations). It filters posts clearing a 3x-median engagement threshold, routes them through a 10-provider LLM fallback chain, and generates creative briefs directly into the publishing bots' database.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What technology stack does Ayush Agarwal specialize in?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "For AI and pipelines, the primary languages are Python and TypeScript, deploying models with Gemini API, Groq, Cerebras, and state machine routing via LangGraph. E-commerce systems are built on React 19, TanStack Start, and Firestore rules. Hosting and databases use Cloudflare, Supabase, and SQLite.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is Ayush available for remote internships, freelance, or contract work?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How was the Vurlo e-commerce SaaS platform optimized for performance?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Vurlo was built solo in 10 days and achieved a 100/100 Lighthouse SEO score. It integrates server-side rendering (SSR) via TanStack Start, strict database validation rules for inventory locking, and lazy-loading client components to keep initial page loading times under 400ms.",
-      },
-    },
-  ],
-});
-
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -302,8 +210,6 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PERSON_JSON_LD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_JSON_LD }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PROJECTS_JSON_LD }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
       </head>
       <body>
         <div className="noise-overlay" />
