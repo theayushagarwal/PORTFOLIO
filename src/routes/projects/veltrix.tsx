@@ -34,8 +34,31 @@ export const Route = createFileRoute("/projects/veltrix")({
   component: VeltrixCaseStudy,
 });
 
+const VELTRIX_PROJECT_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "Veltrix",
+  url: "https://theayush.pages.dev/projects/veltrix",
+  description:
+    "An autonomous publishing engine orchestrating 18+ APIs. Employs a multi-model adversarial consensus group (Gemini, Groq, Cerebras) to audit captions, and schedules Playwright slide renders.",
+  programmingLanguage: ["Python"],
+  codeRepository: "https://github.com/theayushagarwal/PORTFOLIO",
+  author: {
+    "@type": "Person",
+    "@id": "https://theayush.pages.dev/#person",
+  },
+});
+
 function VeltrixCaseStudy() {
   const project = PROJECTS.find((p) => p.name.toLowerCase() === "veltrix");
   if (!project) return null;
-  return <WorkspacePanel project={project} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: VELTRIX_PROJECT_JSON_LD }}
+      />
+      <WorkspacePanel project={project} />
+    </>
+  );
 }

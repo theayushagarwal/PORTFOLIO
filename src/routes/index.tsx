@@ -47,6 +47,53 @@ export const Route = createFileRoute("/")({
   component: Portfolio,
 });
 
+const FAQ_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How does Veltrix's adversarial AI consensus loop work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Veltrix is an autonomous pipeline that orchestrates 18+ active APIs (content channels, competitor scrapers, database logs, alerting systems). Every social post drafts through a gated validation loop: Gemini is selectively invoked as the paid copywriting model only after free/low-cost Llama audits (Groq + Cerebras) approve the draft. A statistically-adaptive embedding check prevents duplicate topics.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is Vcentre and how does it analyze competitor engagement?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Vcentre scrapes competitor accounts nightly using isolated Reels and Photos baseline calculations (so a viral Reel doesn't skew photo expectations). It filters posts clearing a 3x-median engagement threshold, routes them through a 10-provider LLM fallback chain, and generates creative briefs directly into the publishing bots' database.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What technology stack does Ayush Agarwal specialize in?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "For AI and pipelines, the primary languages are Python and TypeScript, deploying models with Gemini API, Groq, Cerebras, and state machine routing via LangGraph. E-commerce systems are built on React 19, TanStack Start, and Firestore rules. Hosting and databases use Cloudflare, Supabase, and SQLite.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is Ayush available for remote internships, freelance, or contract work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How was the Vurlo e-commerce SaaS platform optimized for performance?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Vurlo was built solo in 10 days and achieved a 100/100 Lighthouse SEO score. It integrates server-side rendering (SSR) via TanStack Start, strict database validation rules for inventory locking, and lazy-loading client components to keep initial page loading times under 400ms.",
+      },
+    },
+  ],
+});
+
 function Portfolio() {
   const [showIntro, setShowIntro] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +118,7 @@ function Portfolio() {
       ref={containerRef}
       className="relative min-h-screen bg-background text-foreground overflow-hidden"
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
       <div className="global-spotlight" />
       <a href="#top" className="skip-link">
         Skip to content
