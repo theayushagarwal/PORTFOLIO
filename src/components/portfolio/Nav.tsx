@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { EASE } from "@/lib/motion";
 import { NAV_ITEMS, PROFILE } from "@/lib/site-data";
 import { playTick } from "@/lib/sound";
+import { CommandPaletteTrigger } from "./CommandPalette";
 
 export function Nav() {
   const { scrollY } = useScroll();
@@ -95,6 +96,7 @@ export function Nav() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <CommandPaletteTrigger />
             <a
               href="#contact"
               onMouseEnter={playTick}

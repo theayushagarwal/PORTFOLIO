@@ -222,6 +222,8 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+import { CommandPalette } from "../components/portfolio/CommandPalette";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -232,6 +234,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <CommandPalette />
     </QueryClientProvider>
   );
 }
