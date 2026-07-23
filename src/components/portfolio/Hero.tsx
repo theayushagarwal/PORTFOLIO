@@ -131,7 +131,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
 
           {/* 3D Kinetic Headline */}
           <motion.div variants={headlineVariants} className="perspective-1000">
-            <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-7xl lg:text-[5.25rem]">
+            <h1 className="mt-5 max-w-4xl text-3xl sm:text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl lg:text-[5.25rem]">
               {PROFILE.headline.line1}
               <br />
               <span className="text-muted-foreground">{PROFILE.headline.line2}</span>{" "}
