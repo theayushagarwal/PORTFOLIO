@@ -85,6 +85,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Ayush Agarwal" },
       { name: "theme-color", content: "#09090B" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Ayush Portfolio" },
       {
         property: "og:title",
         content: "Ayush Agarwal | Systems & Agent Engineer",

@@ -240,7 +240,7 @@ export function Projects() {
           </div>
         </Reveal>
 
-        <div className="relative mt-12">
+        <Reveal delay={2} direction="up" className="relative mt-12">
           {/* Left/Right Fading Overlays */}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-[8vw] z-20 bg-gradient-to-r from-[#07050f] via-[#07050f]/80 to-transparent hidden md:block" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-[8vw] z-20 bg-gradient-to-l from-[#07050f] via-[#07050f]/80 to-transparent hidden md:block" />
@@ -267,7 +267,7 @@ export function Projects() {
               />
             ))}
           </div>
-        </div>
+        </Reveal>
 
         {/* Navigation Dots */}
         <div className="mt-6 flex justify-center gap-2 relative z-20">
