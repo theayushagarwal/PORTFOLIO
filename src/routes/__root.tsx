@@ -119,6 +119,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:locale", content: "en_US" },
       { property: "og:site_name", content: "Ayush Agarwal Portfolio" },
+      { name: "geo.region", content: "IN-TN" },
+      { name: "geo.placename", content: "Vellore" },
+      { name: "geo.position", content: "12.9692;79.1559" },
+      { name: "ICBM", content: "12.9692, 79.1559" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
