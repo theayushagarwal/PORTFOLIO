@@ -27,7 +27,7 @@ export const PROFILE = {
   socials: {
     github: "https://github.com/theayushagarwal",
     linkedin: "https://linkedin.com/in/ayushagarwal17",
-    twitter: "https://twitter.com/",
+    twitter: "https://x.com/theayushcodes",
     resume: "#",
   },
 } as const;
