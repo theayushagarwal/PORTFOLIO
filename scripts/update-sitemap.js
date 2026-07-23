@@ -18,7 +18,7 @@ const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
     </image:image>
     <image:image>
       <image:loc>https://theayush.pages.dev/veltrix-preview.webp</image:loc>
-      <image:title>Veltrix autonomous social engine control panel</image:title>
+      <image:title>Veltrix autonomous pipeline orchestrating 18+ active APIs</image:title>
     </image:image>
     <image:image>
       <image:loc>https://theayush.pages.dev/vcentre-preview.webp</image:loc>
@@ -42,7 +42,7 @@ const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://theayush.pages.dev/veltrix-preview.webp</image:loc>
-      <image:title>Veltrix AI Agent consensus workflow</image:title>
+      <image:title>Veltrix autonomous pipeline orchestrating 18+ active APIs</image:title>
     </image:image>
   </url>
   <url>

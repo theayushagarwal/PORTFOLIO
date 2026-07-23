@@ -9,13 +9,13 @@ export const Route = createFileRoute("/projects/veltrix")({
       {
         name: "description",
         content:
-          "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
+          "Deep dive into Veltrix: an autonomous Instagram publishing engine orchestrating 18+ active API keys and employing multi-model adversarial consensus (Gemini, Groq, Cerebras).",
       },
       { property: "og:title", content: "Veltrix Case Study | Ayush Agarwal" },
       {
         property: "og:description",
         content:
-          "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
+          "Deep dive into Veltrix: an autonomous Instagram publishing engine orchestrating 18+ active API keys and employing multi-model adversarial consensus (Gemini, Groq, Cerebras).",
       },
       { property: "og:type", content: "article" },
       { property: "og:url", content: "https://theayush.pages.dev/projects/veltrix" },
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/projects/veltrix")({
       {
         name: "twitter:description",
         content:
-          "Deep dive into Veltrix: an autonomous Instagram publishing engine employing multi-model adversarial consensus (Gemini, Groq, Cerebras) for auto-posting carousels.",
+          "Deep dive into Veltrix: an autonomous Instagram publishing engine orchestrating 18+ active API keys and employing multi-model adversarial consensus (Gemini, Groq, Cerebras).",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/veltrix-preview.webp" },
     ],
