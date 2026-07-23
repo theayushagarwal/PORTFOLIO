@@ -132,7 +132,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "canonical", href: "https://theayush.pages.dev/" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
-      { rel: "manifest", href: "/manifest.json" },
       { rel: "preload", href: "/vurlo-preview.webp?v=1.2", as: "image", type: "image/webp" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
