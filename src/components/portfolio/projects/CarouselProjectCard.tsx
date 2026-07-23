@@ -148,19 +148,20 @@ export function CarouselProjectCard({
                   label={p.visualLabel}
                   className="relative overflow-hidden"
                   noPadding={!!p.image}
-                  aspectClass={p.image ? "" : "aspect-[16/10]"}
+                  aspectClass="aspect-[16/10] bg-slate-900/60"
                 >
                   {p.image ? (
                     <button
                       onClick={() => setIsLightboxOpen(true)}
                       aria-label={`View full ${p.name} screenshot`}
-                      className="w-full h-auto block text-left outline-none cursor-zoom-in pointer-events-auto"
+                      className="w-full h-full block text-left outline-none cursor-zoom-in pointer-events-auto overflow-hidden"
                     >
                       <img
-                        src={`${p.image}?v=1.2`}
+                        src={p.image}
                         alt={p.name}
-                        loading="lazy"
-                        className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
+                        loading="eager"
+                        decoding="async"
+                        className="w-full h-full object-cover object-top block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
                       />
                     </button>
                   ) : (
