@@ -51,7 +51,7 @@ export function Contact() {
                       href={s.href}
                       aria-label={s.label}
                       {...(s.label !== "Email"
-                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        ? { target: "_blank", rel: "me noopener noreferrer" }
                         : {})}
                       className="flex items-center justify-between bg-background px-5 py-4 text-sm text-muted-foreground transition-colors hover:bg-card hover:text-secondary"
                     >

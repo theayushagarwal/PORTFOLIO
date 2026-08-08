@@ -190,7 +190,11 @@ const PERSON_JSON_LD = JSON.stringify({
     alternateName: "VIT",
   },
   url: "https://theayush.pages.dev",
-  sameAs: ["https://github.com/theayushagarwal", "https://linkedin.com/in/ayushagarwal17"],
+  sameAs: [
+    "https://github.com/theayushagarwal",
+    "https://linkedin.com/in/ayushagarwal17",
+    "https://x.com/theayushcodes"
+  ],
 });
 
 const WEBSITE_JSON_LD = JSON.stringify({

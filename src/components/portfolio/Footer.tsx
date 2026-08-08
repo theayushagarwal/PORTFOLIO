@@ -13,7 +13,7 @@ export function Footer() {
           <a
             href="https://github.com/theayushagarwal"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="me noopener noreferrer"
             className="hover:text-primary transition-colors"
           >
             GitHub
@@ -22,7 +22,7 @@ export function Footer() {
           <a
             href="https://linkedin.com/in/ayushagarwal17"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="me noopener noreferrer"
             className="hover:text-primary transition-colors"
           >
             LinkedIn
