@@ -189,11 +189,21 @@ const PERSON_JSON_LD = JSON.stringify({
     name: "Vellore Institute of Technology",
     alternateName: "VIT",
   },
+  homeLocation: {
+    "@type": "Place",
+    name: "Vellore, Tamil Nadu, India",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Vellore",
+      addressRegion: "Tamil Nadu",
+      addressCountry: "IN",
+    },
+  },
   url: "https://theayush.pages.dev",
   sameAs: [
     "https://github.com/theayushagarwal",
     "https://linkedin.com/in/ayushagarwal17",
-    "https://x.com/theayushcodes"
+    "https://x.com/theayushcodes",
   ],
 });
 
