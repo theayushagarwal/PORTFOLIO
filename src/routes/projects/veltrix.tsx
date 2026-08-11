@@ -28,6 +28,15 @@ export const Route = createFileRoute("/projects/veltrix")({
           "Deep dive into Veltrix: an autonomous Instagram publishing engine orchestrating 18+ active API keys and employing multi-model adversarial consensus (Gemini, Groq, Cerebras).",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/veltrix-preview.webp" },
+      {
+        name: "twitter:image:alt",
+        content: "Detailed case study preview of Veltrix AI consensus publishing engine by Ayush Agarwal.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Veltrix, Autonomous AI Agents, Gemini API, Groq, Cerebras, Multi-Model Consensus, Instagram Automation, Ayush Agarwal",
+      },
     ],
     links: [{ rel: "canonical", href: "https://theayush.pages.dev/projects/veltrix" }],
   }),

@@ -28,6 +28,15 @@ export const Route = createFileRoute("/projects/vurlo")({
           "Detailed case study of Vurlo, a full-stack e-commerce SaaS platform engineered in 10 days with secure stock transactions, coupon logic, and Lighthouse SEO 100/100.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
+      {
+        name: "twitter:image:alt",
+        content: "Detailed case study preview of Vurlo e-commerce platform by Ayush Agarwal.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Vurlo, E-Commerce SaaS, React 19, TanStack Start, Firebase, Razorpay, Stock Locking, Ayush Agarwal",
+      },
     ],
     links: [{ rel: "canonical", href: "https://theayush.pages.dev/projects/vurlo" }],
   }),

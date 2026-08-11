@@ -117,6 +117,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/vurlo-preview.webp" },
       {
+        name: "keywords",
+        content:
+          "Ayush Agarwal, AI Engineer, Systems Engineer, VIT, Vurlo, Veltrix, Vcentre, React 19, TanStack Start, Python, Groq, Cerebras, India, Autonomous Agents",
+      },
+      {
+        name: "twitter:image:alt",
+        content:
+          "Screenshot mockup of Vurlo e-commerce storefront dashboard featuring premium aesthetic room decor and lighting products in India.",
+      },
+      {
         name: "robots",
         content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
       },
@@ -280,6 +290,39 @@ const FAQ_PAGE_JSON_LD = JSON.stringify({
   ],
 });
 
+const ITEM_LIST_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://theayush.pages.dev/#projects-itemlist",
+  name: "Selected Work & Production Systems by Ayush Agarwal",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Vurlo",
+      url: "https://theayush.pages.dev/projects/vurlo",
+      description:
+        "A production-grade e-commerce SaaS platform solo-built in 10 days with atomic stock transaction locking and 100/100 Lighthouse SEO.",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Veltrix",
+      url: "https://theayush.pages.dev/projects/veltrix",
+      description:
+        "An autonomous Instagram publishing engine orchestrating 18 active API keys across 18 AI agents with multi-model adversarial consensus.",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Vcentre",
+      url: "https://theayush.pages.dev/projects/vcentre",
+      description:
+        "Nightly competitor intelligence scraper using a 10-provider LLM fallback chain and cohort baseline analytics.",
+    },
+  ],
+});
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
@@ -290,6 +333,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_JSON_LD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PROFILE_PAGE_JSON_LD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_PAGE_JSON_LD }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ITEM_LIST_JSON_LD }} />
       </head>
       <body>
         <div className="noise-overlay" />

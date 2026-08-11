@@ -28,6 +28,15 @@ export const Route = createFileRoute("/projects/vcentre")({
           "Detailed case study of Vcentre: a competitor intelligence crawler that flags viral outlier posts, routes them through a 10-provider LLM fallback chain, and outputs creative briefs.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/vcentre-preview.webp" },
+      {
+        name: "twitter:image:alt",
+        content: "Detailed case study preview of Vcentre competitor intelligence engine by Ayush Agarwal.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Vcentre, Competitor Scraper, Apify, LLM Fallback Chain, Python, FastAPI, SQLite, Analytics, Ayush Agarwal",
+      },
     ],
     links: [{ rel: "canonical", href: "https://theayush.pages.dev/projects/vcentre" }],
   }),
