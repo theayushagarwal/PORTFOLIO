@@ -62,7 +62,7 @@ export function Nav() {
         }`}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#top" onMouseEnter={playTick} className="group flex items-center gap-2">
+          <a href="#top" onMouseEnter={() => playTick()} className="group flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-primary transition-colors group-hover:bg-secondary" />
             <span className="font-display text-sm font-semibold tracking-tight">
               {PROFILE.name}
@@ -99,7 +99,7 @@ export function Nav() {
             <CommandPaletteTrigger />
             <a
               href="#contact"
-              onMouseEnter={playTick}
+              onMouseEnter={() => playTick()}
               className="btn-ghost hidden rounded-full px-4 py-1.5 text-xs font-medium md:inline-flex"
             >
               Get in touch
@@ -108,7 +108,7 @@ export function Nav() {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              onMouseEnter={playTick}
+              onMouseEnter={() => playTick()}
               aria-expanded={open}
               aria-label={open ? "Close menu" : "Open menu"}
               className="flex h-9 w-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-card md:hidden"
@@ -151,7 +151,7 @@ export function Nav() {
               })}
               <motion.a
                 href="#contact"
-                onMouseEnter={playTick}
+                onMouseEnter={() => playTick()}
                 onClick={() => setOpen(false)}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -5,8 +5,10 @@ import { playTick } from "@/lib/sound";
 import { motion, AnimatePresence } from "motion/react";
 
 // Server function calling the Groq API securely
-const askGroq = createServerFn({ method: "POST" }).handler(
-  async ({ data: prompt }: { data: string }) => {
+const askGroq = createServerFn({ method: "POST" })
+  .validator((data: string) => data)
+  .handler(async (ctx) => {
+    const prompt = ctx.data;
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return "__NO_API_KEY__";
@@ -105,8 +107,7 @@ Tone & Style:
       console.error("Groq API error:", err);
       return "__API_ERROR__";
     }
-  },
-);
+  });
 
 interface Message {
   sender: "user" | "bot";
