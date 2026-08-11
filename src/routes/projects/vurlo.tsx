@@ -49,6 +49,31 @@ const VURLO_PROJECT_JSON_LD = JSON.stringify({
   },
 });
 
+const VURLO_BREADCRUMB_JSON_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://theayush.pages.dev",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: "https://theayush.pages.dev/#projects",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Vurlo",
+      item: "https://theayush.pages.dev/projects/vurlo",
+    },
+  ],
+});
+
 function VurloCaseStudy() {
   const project = PROJECTS.find((p) => p.name.toLowerCase() === "vurlo");
   if (!project) return null;
@@ -57,6 +82,10 @@ function VurloCaseStudy() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: VURLO_PROJECT_JSON_LD }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: VURLO_BREADCRUMB_JSON_LD }}
       />
       <WorkspacePanel project={project} />
     </>
