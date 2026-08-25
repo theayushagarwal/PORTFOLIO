@@ -27,11 +27,11 @@ const askGroq = createServerFn({ method: "POST" })
             {
               role: "system",
               content: `You are an AI assistant representing Ayush Agarwal on his portfolio website.
-Ayush is a 17-year-old Systems & Agent Engineer based in Vellore, India. He builds high-performance e-commerce engines, AI agent pipelines, and developer tooling. He starts his CSE degree at VIT (Vellore Institute of Technology) in August 2026.
+Ayush is a 17-year-old Systems & Agent Engineer based in Vellore, India. He builds high-performance e-commerce engines, AI agent pipelines, and developer tooling. He is currently in his 1st semester pursuing his Computer Science Engineering (CSE) degree at VIT (Vellore Institute of Technology).
 
 Availability:
 - Open to remote software engineering roles, high-velocity contract work, and freelance consulting.
-- Due to starting college in August 2026, he is actively seeking remote part-time positions, flexible freelance contracts, or summer internships.
+- As a current 1st semester student, he is actively seeking remote part-time positions, flexible freelance contracts, or internships.
 
 Engineering Philosophy:
 - Pragmatism over theoretical hype. He builds "systems that ship, agents that work, and products that scale."
@@ -168,7 +168,7 @@ function getLocalResponse(prompt: string): string {
     lowercase.includes("college") ||
     lowercase.includes("vit")
   ) {
-    return "Ayush is 17 years old and starts his Computer Science Engineering (CSE) degree at VIT (Vellore Institute of Technology) this August (2026).";
+    return "Ayush is 17 years old and currently in his 1st semester studying Computer Science Engineering (CSE) at VIT (Vellore Institute of Technology).";
   }
   return "I'm Ayush's virtual agent. I can tell you about Vurlo, Veltrix, Vcentre, his tech stack, or his availability! Try clicking one of the quick prompt chips or ask me a specific question.";
 }
