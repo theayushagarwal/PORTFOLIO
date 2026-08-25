@@ -15,7 +15,7 @@ Specializes in production-grade LLM state machines, secure database schemas, hig
 - **AI & Automation**: LangGraph, Gemini API, Groq, Cerebras, Playwright, Jinja2, GitHub Actions.
 - **Backend & DB**: Python, Go, FastAPI, SQLite, Supabase, Firebase Admin SDK.
 - **Frontend & Systems**: TypeScript, React 19, TanStack Start / Router, Tailwind CSS, Framer Motion.
-- **Availability**: Actively seeking global remote software engineering roles, high-velocity contracts, and freelance projects (Starting VIT CSE in August 2026).
+- **Availability**: Actively seeking global remote software engineering roles, high-velocity contracts, and freelance projects (Currently pursuing CSE at VIT Vellore — 1st Sem).
 
 ---
 

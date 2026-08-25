@@ -194,6 +194,11 @@ const PERSON_JSON_LD = JSON.stringify({
       name: "Remote / Global",
     },
   },
+  affiliation: {
+    "@type": "EducationalOrganization",
+    name: "Vellore Institute of Technology",
+    alternateName: "VIT",
+  },
   alumniOf: {
     "@type": "EducationalOrganization",
     name: "Vellore Institute of Technology",
@@ -276,7 +281,7 @@ const FAQ_PAGE_JSON_LD = JSON.stringify({
       name: "Is Ayush available for remote internships, freelance, or contract work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Ayush starts his Computer Science Engineering (CSE) degree at VIT in August 2026 and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
+        text: "Yes. Ayush is currently pursuing his Computer Science Engineering (CSE) degree at VIT Vellore (1st Semester) and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
       },
     },
     {
