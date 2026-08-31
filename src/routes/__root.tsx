@@ -119,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "keywords",
         content:
-          "Ayush Agarwal, AI Engineer, Systems Engineer, VIT, Vurlo, Veltrix, Vcentre, React 19, TanStack Start, Python, Groq, Cerebras, India, Autonomous Agents",
+          "Ayush Agarwal, Ayush Agarwal VIT 2026, Ayush Agarwal Batch 2026-2030, AI Engineer, Systems Engineer, VIT Vellore, Vurlo, Veltrix, Vcentre, React 19, TanStack Start, Python, Groq, Cerebras, India, Autonomous Agents",
       },
       {
         name: "twitter:image:alt",
@@ -166,6 +166,8 @@ const PERSON_JSON_LD = JSON.stringify({
   "@type": "Person",
   "@id": "https://theayush.pages.dev/#person",
   name: "Ayush Agarwal",
+  disambiguatingDescription:
+    "17-year-old Systems & Agent Engineer (B.Tech CSE Batch 2026-2030) at VIT Vellore, creator of Vurlo, Veltrix, and Vcentre. Distinct from other individuals named Ayush Agarwal.",
   jobTitle: "Systems & Agent Engineer",
   contactPoint: {
     "@type": "ContactPoint",
@@ -197,12 +199,8 @@ const PERSON_JSON_LD = JSON.stringify({
   affiliation: {
     "@type": "EducationalOrganization",
     name: "Vellore Institute of Technology",
-    alternateName: "VIT",
-  },
-  alumniOf: {
-    "@type": "EducationalOrganization",
-    name: "Vellore Institute of Technology",
-    alternateName: "VIT",
+    alternateName: "VIT Vellore",
+    description: "B.Tech Computer Science & Engineering (Batch 2026-2030, 1st Semester)",
   },
   homeLocation: {
     "@type": "Place",
