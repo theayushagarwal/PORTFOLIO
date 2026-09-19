@@ -14,19 +14,17 @@ const askGroq = createServerFn({ method: "POST" })
       return "__NO_API_KEY__";
     }
 
-    try {
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          messages: [
-            {
-              role: "system",
-              content: `You are an AI assistant representing Ayush Agarwal on his portfolio website.
+    // Fallback chain of modern Groq models in case a model is decommissioned or rate-limited
+    const candidateModels = [
+      "openai/gpt-oss-20b", // Official replacement for decommissioned llama-3.1-8b-instant
+      "openai/gpt-oss-120b",
+      "qwen/qwen3.6-27b",
+      "llama-3.3-70b-specdec",
+    ];
+
+    const systemMessage = {
+      role: "system",
+      content: `You are an AI assistant representing Ayush Agarwal on his portfolio website.
 Ayush is a 17-year-old Systems & Agent Engineer based in Vellore, India. He builds high-performance e-commerce engines, AI agent pipelines, and developer tooling. He is currently in his 1st semester pursuing his Computer Science Engineering (CSE) degree at VIT (Vellore Institute of Technology).
 
 Availability:
@@ -86,27 +84,45 @@ Guardrails & Instructions:
 Tone & Style:
 - Engineering-focused, direct, and crisp.
 - Keep simple answers short (3-4 sentences). For deep technical/architectural queries, feel free to give comprehensive, detailed answers up to 400-500 tokens.`,
-            },
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          temperature: 0.5,
-          max_tokens: 500,
-        }),
-      });
+    };
 
-      if (!response.ok) {
-        throw new Error(`Groq API returned status ${response.status}`);
+    for (const model of candidateModels) {
+      try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              systemMessage,
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+            temperature: 0.5,
+            max_tokens: 500,
+          }),
+        });
+
+        if (response.ok) {
+          const resData = await response.json();
+          const content = resData.choices?.[0]?.message?.content;
+          if (content) {
+            return content;
+          }
+        } else {
+          console.warn(`Groq API model ${model} failed with status ${response.status}`);
+        }
+      } catch (err) {
+        console.warn(`Groq API error with model ${model}:`, err);
       }
-
-      const resData = await response.json();
-      return resData.choices[0].message.content || "";
-    } catch (err) {
-      console.error("Groq API error:", err);
-      return "__API_ERROR__";
     }
+
+    return "__API_ERROR__";
   });
 
 interface Message {
