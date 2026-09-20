@@ -6,6 +6,7 @@ export const Route = createFileRoute("/projects/vcentre")({
   head: () => ({
     title: "Vcentre Case Study | Ayush Agarwal",
     meta: [
+      { title: "Vcentre Case Study | Ayush Agarwal" },
       {
         name: "description",
         content:

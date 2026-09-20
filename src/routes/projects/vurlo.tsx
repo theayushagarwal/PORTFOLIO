@@ -6,6 +6,7 @@ export const Route = createFileRoute("/projects/vurlo")({
   head: () => ({
     title: "Vurlo Case Study | Ayush Agarwal",
     meta: [
+      { title: "Vurlo Case Study | Ayush Agarwal" },
       {
         name: "description",
         content:
