@@ -6,6 +6,7 @@ export const Route = createFileRoute("/projects/veltrix")({
   head: () => ({
     title: "Veltrix Case Study | Ayush Agarwal",
     meta: [
+      { title: "Veltrix Case Study | Ayush Agarwal" },
       {
         name: "description",
         content:
