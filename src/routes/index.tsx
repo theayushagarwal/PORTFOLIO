@@ -23,13 +23,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Ayush Agarwal is a 17-year-old Systems & Agent Engineer and B.Tech CSE student at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). Creator of Vurlo, Veltrix, and Vcentre.",
       },
       { property: "og:title", content: "Ayush Agarwal | Systems & Agent Engineer" },
       {
         property: "og:description",
         content:
-          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Ayush Agarwal is a 17-year-old Systems & Agent Engineer and B.Tech CSE student at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). Creator of Vurlo, Veltrix, and Vcentre.",
       },
       { property: "og:url", content: "https://theayush.pages.dev/" },
       { property: "og:image", content: "https://theayush.pages.dev/portfolio-preview.webp" },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Ayush Agarwal is a 17-year-old Systems & Agent Engineer and B.Tech CSE student at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). Creator of Vurlo, Veltrix, and Vcentre.",
       },
       { name: "twitter:image", content: "https://theayush.pages.dev/portfolio-preview.webp" },
     ],
@@ -80,7 +80,7 @@ const FAQ_JSON_LD = JSON.stringify({
       name: "Is Ayush available for remote internships, freelance, or contract work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Ayush is currently pursuing his Computer Science Engineering (CSE) degree at VIT Vellore (1st Semester) and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
+        text: "Yes. Ayush is a 17-year-old Systems & Agent Engineer currently in his 1st semester pursuing his B.Tech in Computer Science & Engineering (CSE) at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). He is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
       },
     },
     {

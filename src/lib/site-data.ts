@@ -8,7 +8,7 @@ export const PROFILE = {
   name: "Ayush Agarwal",
   role: "Systems & Agent Engineer",
   location: "Vellore, IN",
-  status: "17-year-old developer crafting high-fidelity products & interfaces",
+  status: "17-year-old developer · B.Tech CSE @ VIT Vellore (Batch 2026–2030, Class of 2030)",
   tagline: "Autonomous pipelines. Commerce engines. Interfaces that feel alive.",
   headline: {
     line1: "Building systems that ship.",
@@ -18,10 +18,10 @@ export const PROFILE = {
   pitch:
     "I'm a developer and designer specialized in high-performance e-commerce engines, multi-model AI agent pipelines, and interfaces polished enough to ship.",
   bio: [
-    "I'm 17, based in India, and I've spent the last year building things that were probably too ambitious for my age — a full ecommerce SaaS (vurlo.store) with Razorpay, Firebase security rules, an AI chatbot and full SEO, an autonomous Instagram pipeline with adversarial AI consensus, and a nightly competitor intelligence scraper. All three shipped in under a month, alongside this portfolio. I work in TypeScript and Python, design in Figma, and I'm currently studying Computer Science Engineering at VIT Vellore (1st Sem).",
+    "I'm 17, based in India, and I've spent the last year building things that were probably too ambitious for my age — a full ecommerce SaaS (vurlo.store) with Razorpay, Firebase security rules, an AI chatbot and full SEO, an autonomous Instagram pipeline with adversarial AI consensus, and a nightly competitor intelligence scraper. All three shipped in under a month, alongside this portfolio. I work in TypeScript and Python, design in Figma, and I'm currently studying Computer Science Engineering at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030).",
     "I care more about whether a system actually works than whether it looks impressive on a slide. Every project I've shipped has a failure mode I thought about — a circuit breaker, a fallback chain, a review gate. The polish matters, but only after the foundation doesn't break.",
   ],
-  currently: "Shipped 3 production AI/SaaS projects in 30 days. Currently studying CSE at VIT Vellore (1st Sem).",
+  currently: "Shipped 3 production AI/SaaS projects in 30 days. 17yo CSE undergrad at VIT Vellore (Batch 2026–2030, Class of 2030).",
   previously: "Freelance Designer · Two open-source teams.",
   email: "theayush.codes@gmail.com",
   socials: {

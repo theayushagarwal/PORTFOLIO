@@ -3,14 +3,14 @@ import { PROFILE } from "@/lib/site-data";
 
 const MILESTONES = [
   {
-    date: "June 2026",
-    title: "Shipped Veltrix Bot",
-    desc: "Engineered multi-model LLM consensus engine auto-publishing twice daily.",
+    date: "2026 – 2030",
+    title: "B.Tech CSE @ VIT Vellore",
+    desc: "Undergraduate student pursuing Computer Science & Engineering (Class of 2030, Batch 2026–2030).",
   },
   {
-    date: "June 2026",
-    title: "Initiated Vurlo SaaS",
-    desc: "Designed full-stack e-commerce architecture, Firestore rules, and Razorpay routing.",
+    date: "July 2026",
+    title: "Crafted Portfolio Redesign",
+    desc: "Developed glassmorphic 3D developer showcase with fluid animations.",
   },
   {
     date: "July 2026",
@@ -18,9 +18,14 @@ const MILESTONES = [
     desc: "Created 10-provider LLM scraping pipeline and feedback scoring loop.",
   },
   {
-    date: "July 2026",
-    title: "Crafted Portfolio Redesign",
-    desc: "Developed glassmorphic 3D developer showcase with fluid animations.",
+    date: "June 2026",
+    title: "Initiated Vurlo SaaS",
+    desc: "Designed full-stack e-commerce architecture, Firestore rules, and Razorpay routing.",
+  },
+  {
+    date: "June 2026",
+    title: "Shipped Veltrix Bot",
+    desc: "Engineered multi-model LLM consensus engine auto-publishing twice daily.",
   },
 ];
 
