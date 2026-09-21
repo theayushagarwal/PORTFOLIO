@@ -28,7 +28,7 @@ const FAQS: FAQItem[] = [
   {
     question: "Is Ayush available for remote internships, freelance, or contract work?",
     answer:
-      "Yes. Ayush is currently pursuing his Computer Science Engineering (CSE) degree at VIT Vellore (1st Semester) and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
+      "Yes. Ayush is a 17-year-old Systems & Agent Engineer currently in his 1st semester pursuing his B.Tech in Computer Science & Engineering (CSE) at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). He is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
   },
   {
     question: "How was the Vurlo e-commerce SaaS platform optimized for performance?",

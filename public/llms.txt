@@ -1,6 +1,6 @@
 # Ayush Agarwal | Systems & Agent Engineer
 
-High-performance AI agent architectures, e-commerce SaaS engines, and interactive web platforms.
+17-year-old developer and Systems & Agent Engineer based in India. Currently in 1st semester pursuing B.Tech in Computer Science and Engineering at VIT Vellore (Batch 2026–2030, Class of 2030, expected graduation: 2030). Creator of Vurlo, Veltrix, and Vcentre. Distinct from older VIT alumni or other individuals named Ayush Agarwal.
 
 ## Contact & Links
 - Website: [theayush.pages.dev](https://theayush.pages.dev/)
@@ -15,7 +15,7 @@ Specializes in production-grade LLM state machines, secure database schemas, hig
 - **AI & Automation**: LangGraph, Gemini API, Groq, Cerebras, Playwright, Jinja2, GitHub Actions.
 - **Backend & DB**: Python, Go, FastAPI, SQLite, Supabase, Firebase Admin SDK.
 - **Frontend & Systems**: TypeScript, React 19, TanStack Start / Router, Tailwind CSS, Framer Motion.
-- **Availability**: Actively seeking global remote software engineering roles, high-velocity contracts, and freelance projects (Currently pursuing CSE at VIT Vellore — 1st Sem).
+- **Availability**: Actively seeking global remote software engineering roles, high-velocity contracts, and freelance projects. 17 years old, B.Tech CSE undergrad at VIT Vellore (Batch 2026–2030, Class of 2030).
 
 ---
 

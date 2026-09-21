@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Ayush Agarwal is a 17-year-old Systems & Agent Engineer and B.Tech CSE student at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). Creator of Vurlo, Veltrix, and Vcentre.",
       },
       { name: "author", content: "Ayush Agarwal" },
       { name: "theme-color", content: "#09090B" },
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Ayush Agarwal is a 17-year-old Systems & Agent Engineer and B.Tech CSE student at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). Creator of Vurlo, Veltrix, and Vcentre.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Systems & Agent Engineer designing and shipping production LLM systems, agents, and inference infrastructure. Selected work, technical writing, and contact.",
+          "Ayush Agarwal is a 17-year-old Systems & Agent Engineer and B.Tech CSE student at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). Creator of Vurlo, Veltrix, and Vcentre.",
       },
       { name: "color-scheme", content: "dark" },
       { property: "og:url", content: "https://theayush.pages.dev/" },
@@ -120,7 +120,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "keywords",
         content:
-          "Ayush Agarwal, Ayush Agarwal VIT 2026, Ayush Agarwal Batch 2026-2030, AI Engineer, Systems Engineer, VIT Vellore, Vurlo, Veltrix, Vcentre, React 19, TanStack Start, Python, Groq, Cerebras, India, Autonomous Agents",
+          "Ayush Agarwal, 17 years old, 17yo developer, Ayush Agarwal VIT, VIT Vellore 2026, VIT Vellore 2030, Class of 2030, Batch 2026-2030, graduating 2030, B.Tech CSE VIT, AI Engineer, Systems Engineer, Vurlo, Veltrix, Vcentre, React 19, TanStack Start, Python, Groq, Cerebras, India, Autonomous Agents",
       },
       {
         name: "twitter:image:alt",
@@ -160,7 +160,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
-});
+  });
 
 const PERSON_JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
@@ -168,8 +168,9 @@ const PERSON_JSON_LD = JSON.stringify({
   "@id": "https://theayush.pages.dev/#person",
   name: "Ayush Agarwal",
   disambiguatingDescription:
-    "17-year-old Systems & Agent Engineer (B.Tech CSE Batch 2026-2030) at VIT Vellore, creator of Vurlo, Veltrix, and Vcentre. Distinct from other individuals named Ayush Agarwal.",
+    "17-year-old Systems & Agent Engineer and undergraduate student pursuing B.Tech in Computer Science & Engineering at VIT Vellore (Batch 2026–2030, Class of 2030, expected graduation year 2030). Creator of Vurlo, Veltrix, and Vcentre. Distinct from older VIT graduates or other individuals named Ayush Agarwal.",
   jobTitle: "Systems & Agent Engineer",
+  birthDate: "2008",
   contactPoint: {
     "@type": "ContactPoint",
     email: "theayush.codes@gmail.com",
@@ -200,8 +201,10 @@ const PERSON_JSON_LD = JSON.stringify({
   affiliation: {
     "@type": "EducationalOrganization",
     name: "Vellore Institute of Technology",
-    alternateName: "VIT Vellore",
-    description: "B.Tech Computer Science & Engineering (Batch 2026-2030, 1st Semester)",
+    alternateName: ["VIT", "VIT Vellore"],
+    description: "B.Tech in Computer Science & Engineering (Class of 2030, Batch 2026–2030, Expected Graduation: 2030)",
+    startDate: "2026",
+    endDate: "2030",
   },
   homeLocation: {
     "@type": "Place",
@@ -280,7 +283,7 @@ const FAQ_PAGE_JSON_LD = JSON.stringify({
       name: "Is Ayush available for remote internships, freelance, or contract work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Ayush is currently pursuing his Computer Science Engineering (CSE) degree at VIT Vellore (1st Semester) and is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
+        text: "Yes. Ayush is a 17-year-old Systems & Agent Engineer currently in his 1st semester pursuing his B.Tech in Computer Science & Engineering (CSE) at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030). He is actively seeking remote part-time software engineering roles, high-velocity contracts, and freelance projects. Get in touch via the email or social links below.",
       },
     },
     {
