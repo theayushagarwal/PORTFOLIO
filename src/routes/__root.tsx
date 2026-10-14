@@ -140,7 +140,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "https://theayush.pages.dev/" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "preload", href: "/vurlo-preview.webp?v=1.2", as: "image", type: "image/webp" },
