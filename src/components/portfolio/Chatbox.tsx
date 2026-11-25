@@ -36,7 +36,7 @@ Engineering Philosophy:
 - Prioritizes engineering integrity: implementing proper outlier baselines, multi-model consensus, fallback chains, and circuit breakers to prevent systemic failure.
 
 Key Stats & Outcomes:
-- Shipped 3 production AI/SaaS projects solo in 30 days total (June - July 2026).
+- Shipped 6 production & systems engineering projects (first 3 shipped solo in 30 days total in June - July 2026).
 - Portfolio infra cost: ₹0 (designed for maximum efficiency using free tiers).
 - Lighthouse performance & SEO score: 100.
 
@@ -44,16 +44,20 @@ Key Projects:
 1. Vurlo (Live at https://vurlo.store):
    - Tech: React 19, TanStack Start, Firebase Auth & Firestore Rules, Razorpay checkout, Gemini API, Tailwind CSS.
    - Built solo in 10 days. Features in-memory caching, atomic database transaction stock-locking to prevent overselling, and 100 Lighthouse SEO.
-2. Veltrix (Autonomous Instagram Growth Pipeline):
+2. Carrel (https://github.com/theayushagarwal/carrel):
+   - Tech: TypeScript monorepo, Fastify, Yjs CRDT, raw binary WebSocket multiplexing (frames 0/1/2), better-sqlite3 WAL, CodeMirror 6, Playwright E2E.
+   - Features single-use nonce HMAC tickets, concurrency-4 async scrypt throttling, 5000ms host grace succession, and 80ms lerped remote carets.
+3. AegisFlow (https://github.com/theayushagarwal/AegisFlow):
+   - Tech: Pure Python (zero external dependencies).
+   - Distributed cluster scheduler using an Exact Bayesian HMM (99.58% state accuracy, 0.13s-0.35s detection), mathematical triage gating (-87% deadline misses, 98.3% on-time rate), cold-restart EV barrier (0.00 churn), 0.64 ms/step latency, and 31/31 invariant tests passing.
+4. Chronosync (https://github.com/theayushagarwal/Chronosync):
+   - Tech: Python, FastAPI, Playwright, SQLite, Docker, Vanilla JS, Groq API.
+   - Web monitoring & Visual Regression Diff Studio with URL normalization (1 fetch for N watchers), ok/error/blocked classification, 4-layer noise suppression, swipe slider, pixel heatmap, SVG metric charts, and 29 automated tests.
+5. Veltrix (Autonomous Instagram Growth Pipeline — evolved into Vmatrix Social OS: https://github.com/theayushagarwal/vmatrix):
    - Tech: Python, Gemini, Groq, Cerebras, OpenRouter, SiliconFlow, Hugging Face, Unsplash, NVIDIA, Logo.dev, Brandfetch, Supabase, Cloudinary, Discord, Instagram/Threads Graph APIs, GitHub Actions.
    - Scale: Orchestrates 18+ active API keys with a gated paid API model. Gemini Pro is invoked for creative copywriting ONLY after drafts clear the low-cost Llama validation audits.
-   - Fallbacks:
-     - Audit Chain: Groq (Llama 3.3 70B) ➡️ Cerebras (gpt-oss-120b) ➡️ OpenRouter (Gemma 31B free) ➡️ Raw Gemini fallback.
-     - Image Gen: SiliconFlow (Flux/SD3) ➡️ Hugging Face ➡️ Gemini internal generator.
-     - Logo Assets: Logo.dev ➡️ Brandfetch API ➡️ Brandfetch CDN ➡️ Google Favicon API ➡️ text placeholder.
-     - Logs & DB: Supabase ➡️ local SQLite (veltrix.db) and JSON backup.
-     - Cost per post is only ~$0.0002. Runs 2 posts / day automatically.
-3. Vcentre (Competitor Intelligence Scraper):
+   - Cost per post is only ~$0.0002. Runs 2 posts / day automatically.
+6. Vcentre (Competitor Intelligence Scraper):
    - Tech: Python, Apify, SQLite, Supabase, Groq, Cerebras, FastAPI, GitHub Actions.
    - Scrapes competitor Instagram accounts nightly. Cohort-scores Reels/Photos separately, filters outliers (>3x-median engagement), analyzes content via a 10-provider LLM fallback chain, and outputs creative briefs. Cost is $0/month.
 
@@ -146,6 +150,30 @@ function getLocalResponse(prompt: string): string {
     lowercase.includes("instagram")
   ) {
     return "Veltrix is an autonomous Instagram account that designs slides and publishes posts twice a day. It uses an adversarial consensus loop: Gemini drafts content, and Groq + Cerebras act as independent auditors. Headless Playwright renders carousels at full resolution.";
+  }
+  if (
+    lowercase.includes("carrel") ||
+    lowercase.includes("crdt") ||
+    lowercase.includes("yjs") ||
+    lowercase.includes("collaborative")
+  ) {
+    return "Carrel is a real-time collaborative code & notes workspace built as a TypeScript monorepo (Fastify, Yjs CRDT, CodeMirror 6, SQLite WAL). It multiplexes binary WebSocket frames (sync, awareness, control) with single-use HMAC tickets, concurrency-4 scrypt throttling, and 80ms lerped remote carets.";
+  }
+  if (
+    lowercase.includes("aegis") ||
+    lowercase.includes("scheduler") ||
+    lowercase.includes("hmm") ||
+    lowercase.includes("cluster")
+  ) {
+    return "AegisFlow is a zero-dependency Python cluster scheduler powered by an Exact Bayesian Hidden Markov Model. It infers hidden node health in 0.13–0.35 steps with 99.58% accuracy, cuts deadline misses by 87% (98.3% on-time), runs at 0.64 ms/step, and passes 31/31 system invariants.";
+  }
+  if (
+    lowercase.includes("chrono") ||
+    lowercase.includes("diff") ||
+    lowercase.includes("monitor") ||
+    lowercase.includes("regression")
+  ) {
+    return "Chronosync is an autonomous FastAPI + Playwright web monitoring and visual regression Diff Studio. It deduplicates normalized URLs across watchers, suppresses dynamic clock/CSRF noise across 4 layers with 2-check persistence, and renders swipe sliders, pixel heatmaps, and SVG price charts.";
   }
   if (
     lowercase.includes("vurlo") ||

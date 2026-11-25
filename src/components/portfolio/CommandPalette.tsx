@@ -52,6 +52,36 @@ export function CommandPalette() {
       },
     },
     {
+      id: "proj-carrel",
+      title: "Carrel — Real-Time Collaborative Workspace",
+      category: "Projects",
+      icon: Code,
+      badge: "Yjs CRDT + WebSockets",
+      action: () => {
+        window.location.href = "/projects/carrel";
+      },
+    },
+    {
+      id: "proj-aegisflow",
+      title: "AegisFlow — Bayesian HMM Cluster Scheduler",
+      category: "Projects",
+      icon: Cpu,
+      badge: "-87% Misses · 0.64ms",
+      action: () => {
+        window.location.href = "/projects/aegisflow";
+      },
+    },
+    {
+      id: "proj-chronosync",
+      title: "Chronosync — Visual Diff & Web Monitor",
+      category: "Projects",
+      icon: Database,
+      badge: "Playwright + FastAPI",
+      action: () => {
+        window.location.href = "/projects/chronosync";
+      },
+    },
+    {
       id: "proj-veltrix",
       title: "Veltrix — Autonomous Instagram AI Pipeline",
       category: "Projects",

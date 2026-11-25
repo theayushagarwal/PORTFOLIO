@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsVurloRouteImport } from './routes/projects/vurlo'
 import { Route as ProjectsVeltrixRouteImport } from './routes/projects/veltrix'
 import { Route as ProjectsVcentreRouteImport } from './routes/projects/vcentre'
+import { Route as ProjectsChronosyncRouteImport } from './routes/projects/chronosync'
+import { Route as ProjectsCarrelRouteImport } from './routes/projects/carrel'
+import { Route as ProjectsAegisflowRouteImport } from './routes/projects/aegisflow'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,15 +37,36 @@ const ProjectsVcentreRoute = ProjectsVcentreRouteImport.update({
   path: '/projects/vcentre',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsChronosyncRoute = ProjectsChronosyncRouteImport.update({
+  id: '/projects/chronosync',
+  path: '/projects/chronosync',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsCarrelRoute = ProjectsCarrelRouteImport.update({
+  id: '/projects/carrel',
+  path: '/projects/carrel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsAegisflowRoute = ProjectsAegisflowRouteImport.update({
+  id: '/projects/aegisflow',
+  path: '/projects/aegisflow',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/projects/aegisflow': typeof ProjectsAegisflowRoute
+  '/projects/carrel': typeof ProjectsCarrelRoute
+  '/projects/chronosync': typeof ProjectsChronosyncRoute
   '/projects/vcentre': typeof ProjectsVcentreRoute
   '/projects/veltrix': typeof ProjectsVeltrixRoute
   '/projects/vurlo': typeof ProjectsVurloRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/projects/aegisflow': typeof ProjectsAegisflowRoute
+  '/projects/carrel': typeof ProjectsCarrelRoute
+  '/projects/chronosync': typeof ProjectsChronosyncRoute
   '/projects/vcentre': typeof ProjectsVcentreRoute
   '/projects/veltrix': typeof ProjectsVeltrixRoute
   '/projects/vurlo': typeof ProjectsVurloRoute
@@ -50,18 +74,38 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/projects/aegisflow': typeof ProjectsAegisflowRoute
+  '/projects/carrel': typeof ProjectsCarrelRoute
+  '/projects/chronosync': typeof ProjectsChronosyncRoute
   '/projects/vcentre': typeof ProjectsVcentreRoute
   '/projects/veltrix': typeof ProjectsVeltrixRoute
   '/projects/vurlo': typeof ProjectsVurloRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/projects/vcentre' | '/projects/veltrix' | '/projects/vurlo'
+  fullPaths:
+    | '/'
+    | '/projects/aegisflow'
+    | '/projects/carrel'
+    | '/projects/chronosync'
+    | '/projects/vcentre'
+    | '/projects/veltrix'
+    | '/projects/vurlo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/projects/vcentre' | '/projects/veltrix' | '/projects/vurlo'
+  to:
+    | '/'
+    | '/projects/aegisflow'
+    | '/projects/carrel'
+    | '/projects/chronosync'
+    | '/projects/vcentre'
+    | '/projects/veltrix'
+    | '/projects/vurlo'
   id:
     | '__root__'
     | '/'
+    | '/projects/aegisflow'
+    | '/projects/carrel'
+    | '/projects/chronosync'
     | '/projects/vcentre'
     | '/projects/veltrix'
     | '/projects/vurlo'
@@ -69,6 +113,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProjectsAegisflowRoute: typeof ProjectsAegisflowRoute
+  ProjectsCarrelRoute: typeof ProjectsCarrelRoute
+  ProjectsChronosyncRoute: typeof ProjectsChronosyncRoute
   ProjectsVcentreRoute: typeof ProjectsVcentreRoute
   ProjectsVeltrixRoute: typeof ProjectsVeltrixRoute
   ProjectsVurloRoute: typeof ProjectsVurloRoute
@@ -104,11 +151,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsVcentreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/chronosync': {
+      id: '/projects/chronosync'
+      path: '/projects/chronosync'
+      fullPath: '/projects/chronosync'
+      preLoaderRoute: typeof ProjectsChronosyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/carrel': {
+      id: '/projects/carrel'
+      path: '/projects/carrel'
+      fullPath: '/projects/carrel'
+      preLoaderRoute: typeof ProjectsCarrelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/aegisflow': {
+      id: '/projects/aegisflow'
+      path: '/projects/aegisflow'
+      fullPath: '/projects/aegisflow'
+      preLoaderRoute: typeof ProjectsAegisflowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProjectsAegisflowRoute: ProjectsAegisflowRoute,
+  ProjectsCarrelRoute: ProjectsCarrelRoute,
+  ProjectsChronosyncRoute: ProjectsChronosyncRoute,
   ProjectsVcentreRoute: ProjectsVcentreRoute,
   ProjectsVeltrixRoute: ProjectsVeltrixRoute,
   ProjectsVurloRoute: ProjectsVurloRoute,
