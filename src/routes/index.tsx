@@ -50,6 +50,7 @@ export const Route = createFileRoute("/")({
 const FAQ_JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": "https://theayush.pages.dev/#faq",
   mainEntity: [
     {
       "@type": "Question",
