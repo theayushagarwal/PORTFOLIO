@@ -42,8 +42,10 @@ export function Projects() {
 
   // Caching card centers to avoid reading layouts on scroll frames
   const cardCentersRef = useRef<number[]>([]);
+  const rafIdRef = useRef<number | null>(null);
+  const isScrollingRef = useRef(false);
 
-  // Scrollspy & scroll progress handler
+  // Scrollspy & scroll progress handler (batched to 1 rAF per frame, zero forced layout)
   useEffect(() => {
     const container = carouselContainerRef.current;
     if (!container) return;
@@ -59,19 +61,8 @@ export function Projects() {
       cardCentersRef.current = centers;
     };
 
-    const handleScroll = () => {
-      // Instantly kill all active spotlight glows by firing synthetic mouseleave on card articles.
-      const articles = container.querySelectorAll("article");
-      articles.forEach((el) => el.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false })));
-
-      // Toggle carousel-scrolling class to disable mouse events and fade out glows on scroll
-      container.classList.add("carousel-scrolling");
-      if (scrollTimeoutRef.current) {
-        window.clearTimeout(scrollTimeoutRef.current);
-      }
-      scrollTimeoutRef.current = window.setTimeout(() => {
-        container.classList.remove("carousel-scrolling");
-      }, 150);
+    const runScrollFrame = () => {
+      rafIdRef.current = null;
 
       // Recalculate on the fly if not set yet
       if (cardCentersRef.current.length === 0) {
@@ -84,31 +75,30 @@ export function Projects() {
       const centers = cardCentersRef.current;
 
       // Update each card's raw transforms locally relative to the viewport center
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      const maxDist = clientWidth * 0.65;
+
       for (let i = 0; i < cardRotations.length; i++) {
         const center = centers[i] || 0;
         const distance = center - containerCenter;
-        const maxDist = clientWidth * 0.65;
-        const ratio = Math.max(-1, Math.min(1, distance / maxDist)); // ranges -1 to 1
-
-        cardRotations[i].set(ratio * -25); // rotateY
-        cardRotateXs[i].set(Math.abs(ratio) * -8); // rotateX
-        cardScales[i].set(1 - Math.abs(ratio) * 0.15); // scale
-        cardOpacities[i].set(1 - Math.abs(ratio) * 0.45); // opacity
-        cardZs[i].set(Math.abs(ratio) * -120); // translateZ
-        cardShines[i].set(ratio * 150); // shine X percentage shift
-      }
-
-      // Update active dots index using robust closest-to-center element detection
-      let closestIndex = 0;
-      let minDistance = Infinity;
-      for (let i = 0; i < centers.length; i++) {
-        const center = centers[i] || 0;
-        const distance = Math.abs(center - containerCenter);
-        if (distance < minDistance) {
-          minDistance = distance;
+        const absDist = Math.abs(distance);
+        if (absDist < minDistance) {
+          minDistance = absDist;
           closestIndex = i;
         }
+
+        const ratio = Math.max(-1, Math.min(1, distance / maxDist));
+        const absRatio = Math.abs(ratio);
+
+        cardRotations[i].set(ratio * -25);
+        cardRotateXs[i].set(absRatio * -8);
+        cardScales[i].set(1 - absRatio * 0.15);
+        cardOpacities[i].set(1 - absRatio * 0.45);
+        cardZs[i].set(absRatio * -120);
+        cardShines[i].set(ratio * 150);
       }
+
       setActiveCarouselIndex((prev) => {
         if (prev !== closestIndex && closestIndex >= 0 && closestIndex < PROJECTS.length) {
           return closestIndex;
@@ -117,21 +107,39 @@ export function Projects() {
       });
     };
 
+    const handleScroll = () => {
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true;
+        container.classList.add("carousel-scrolling");
+      }
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        isScrollingRef.current = false;
+        container.classList.remove("carousel-scrolling");
+      }, 150);
+
+      if (rafIdRef.current === null) {
+        rafIdRef.current = window.requestAnimationFrame(runScrollFrame);
+      }
+    };
+
     // Initial calculations
     updateLayout();
-    handleScroll();
+    runScrollFrame();
 
     // Recalculate after mount tick intervals to ensure rendering positions resolve correctly
     const renderTimeouts = [150, 400, 1000].map((delay) =>
       window.setTimeout(() => {
         updateLayout();
-        handleScroll();
+        runScrollFrame();
       }, delay),
     );
 
     const handleResize = () => {
       updateLayout();
-      handleScroll();
+      runScrollFrame();
     };
 
     // Listen to scroll for card changes & motion values
@@ -146,6 +154,9 @@ export function Projects() {
       renderTimeouts.forEach((t) => window.clearTimeout(t));
       if (scrollTimeoutRef.current) {
         window.clearTimeout(scrollTimeoutRef.current);
+      }
+      if (rafIdRef.current !== null) {
+        window.cancelAnimationFrame(rafIdRef.current);
       }
     };
   }, []);

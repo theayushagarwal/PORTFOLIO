@@ -835,11 +835,9 @@
   }
 }
 
-/* Instantly hide spotlight glows during scroll to free browser repaint resource loops */
+/* Instantly hide spotlight glows during scroll without triggering layout reflow (`display: none`) */
 .carousel-scrolling .project-glow-element {
   opacity: 0 !important;
-  visibility: hidden !important;
-  display: none !important;
   transition: none !important;
 }
 
