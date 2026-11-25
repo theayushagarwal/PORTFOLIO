@@ -59,8 +59,8 @@ export function CarouselProjectCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Interpolate numerical shine percentage to absolute left positioning
-  const shineLeft = useTransform(shineX, (val) => `${val - 100}%`);
+  // GPU-composited specular sweep via translate3d (avoids non-composited `left` layout/paint)
+  const shineTransform = useTransform(shineX, (val) => `translate3d(${(val - 100) / 3}%, 0, 0)`);
 
   const details = PROJECT_DETAILS[p.name];
   const activeTheme = ACTIVE_THEMES[p.name] ?? DEFAULT_ACTIVE_THEME;
@@ -94,7 +94,7 @@ export function CarouselProjectCard({
         }`}
       >
         <div
-          style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
+          style={{ perspective: "1200px" }}
           className="pointer-events-none"
         >
           <motion.div
@@ -104,7 +104,6 @@ export function CarouselProjectCard({
               scale,
               opacity,
               z,
-              transformStyle: "preserve-3d",
               willChange: "transform, opacity",
             }}
             className={`h-full ${isActive ? "pointer-events-auto" : "pointer-events-none"}`}
@@ -120,22 +119,21 @@ export function CarouselProjectCard({
               }
               style={
                 {
-                  transformStyle: "preserve-3d",
                   "--glow-color": glowColor,
                   borderColor: isActive ? activeTheme.border : undefined,
-                  boxShadow: isActive ? `0 10px 30px -10px ${activeTheme.border}` : undefined,
                 } as React.CSSProperties
               }
-              className="surface-card group relative flex flex-col overflow-hidden p-6 md:p-8 h-full transition-all duration-500"
+              className="surface-card group relative flex flex-col overflow-hidden p-6 md:p-8 h-full transition-[border-color] duration-300"
             >
               {/* Metallic Specular Shine Overlay */}
               <motion.div
                 style={{
-                  left: shineLeft,
+                  transform: shineTransform,
+                  willChange: "transform",
                   background:
                     "linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.005) 30%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.005) 70%, transparent 100%)",
                 }}
-                className="pointer-events-none absolute inset-y-0 w-[300%] z-10"
+                className="pointer-events-none absolute inset-y-0 left-0 w-[300%] z-10"
               />
 
               <motion.div
@@ -148,7 +146,7 @@ export function CarouselProjectCard({
               />
 
               {/* Mockup visual area */}
-              <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}>
+              <div>
                 <DeviceFrame
                   label={p.visualLabel}
                   className="relative overflow-hidden"
@@ -176,10 +174,7 @@ export function CarouselProjectCard({
               </div>
 
               {/* Text metadata and specs */}
-              <div
-                style={{ transform: "translateZ(20px)" }}
-                className="relative mt-6 flex flex-1 flex-col justify-between"
-              >
+              <div className="relative mt-6 flex flex-1 flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 font-mono text-xs text-subtle">
                     <span>{p.index}</span>
