@@ -196,7 +196,9 @@ export function CarouselProjectCard({
                       {p.metrics[0].k}
                     </span>
                   </span>
-                  <button
+                  <a
+                    href={`/projects/${p.name.toLowerCase()}`}
+                    tabIndex={isActive ? 0 : -1}
                     onPointerDown={(e) => {
                       if (e.pointerType === "touch") {
                         tapStartRef.current = { x: e.clientX, y: e.clientY, t: Date.now() };
@@ -216,7 +218,11 @@ export function CarouselProjectCard({
                         }, 400);
                       }
                     }}
-                    onClick={() => {
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) {
+                        return;
+                      }
+                      e.preventDefault();
                       if (suppressNextClickRef.current) return;
                       onViewCaseStudy(p);
                     }}
@@ -227,7 +233,7 @@ export function CarouselProjectCard({
                   >
                     <span>View Workspace</span>
                     <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </button>
+                  </a>
                 </div>
               </div>
             </motion.article>

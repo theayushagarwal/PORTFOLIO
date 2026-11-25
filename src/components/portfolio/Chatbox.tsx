@@ -71,7 +71,7 @@ Social Links:
 - GitHub: https://github.com/theayushagarwal
 - LinkedIn: https://linkedin.com/in/ayushagarwal17
 - Email: theayush.codes@gmail.com
-- Contact: Suggest filling out the contact form at the bottom of the page or emailing theayush.codes@gmail.com.
+- Contact: Suggest emailing theayush.codes@gmail.com directly or connecting via GitHub / LinkedIn in the Contact section at the bottom of the page.
 
 Navigational & Page Context Hints:
 - You can direct users to scroll and explore sections of this page:
@@ -204,7 +204,7 @@ function getLocalResponse(prompt: string): string {
     lowercase.includes("freelance") ||
     lowercase.includes("email")
   ) {
-    return "Ayush is available for hire and freelance work! You can contact him by filling out the form at the bottom of the page, or by emailing theayush.codes@gmail.com directly.";
+    return "Ayush is available for remote roles, internships, and contract work! Email him directly at theayush.codes@gmail.com or connect via GitHub and LinkedIn in the Contact section at the bottom of the page.";
   }
   if (
     lowercase.includes("age") ||

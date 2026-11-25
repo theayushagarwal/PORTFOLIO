@@ -40,8 +40,8 @@ export function Contact() {
           <div className="md:col-span-5">
             <Reveal delay={2}>
               <p className="text-sm text-muted-foreground">
-                I take on a small number of engagements each quarter — usually founding-engineer
-                contracts, technical due diligence, or targeted six-week builds. Replies within 24h.
+                Open to remote part-time software engineering roles, internships, and high-velocity
+                freelance/contract builds alongside my B.Tech CSE at VIT Vellore. Replies within 24h.
               </p>
 
               <ul className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border">
