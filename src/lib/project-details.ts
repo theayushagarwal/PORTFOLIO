@@ -1079,4 +1079,642 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       { label: "AI Creative Briefs", img: "/vcentre-briefs-view.webp" },
     ],
   },
+  Carrel: {
+    theme: {
+      primary: "from-amber-400",
+      secondary: "to-orange-500",
+      glow: "rgba(245, 158, 11, 0.15)",
+    },
+    whyBuilt: {
+      problem:
+        "Most collaborative web editors either wrap WebSockets in heavy JSON polling or accept raw unauthenticated sockets that crumble under spoofed proxy headers, scrypt event-loop blocking, and host tab refreshes.",
+      solution:
+        "Built a 3-package TypeScript monorepo multiplexing Yjs CRDT binary sync, awareness, and JSON control messages over a single raw WebSocket—paired with single-use HMAC tickets, bounded async scrypt concurrency, and deterministic host succession.",
+      scenario: [
+        {
+          t: "T+0ms",
+          event: "Host opens room, sets optional scrypt-hashed passcode, and shares invite link.",
+        },
+        {
+          t: "T+2s",
+          event:
+            "Peer requests POST /api/rooms/:id/ticket — server verifies passcode inside a concurrency-4 scrypt limiter and issues a nonce-bound single-use HMAC ticket.",
+        },
+        {
+          t: "T+2.1s",
+          event:
+            "Browser upgrades /ws with the ticket; server consumes the nonce once so replay attacks fail immediately.",
+        },
+        {
+          t: "T+15s",
+          event:
+            "Host's Wi-Fi drops unexpectedly. Instead of instantly breaking room admin, server enters a 5000ms HOST_GRACE_MS window and marks hostPending.",
+          danger: true,
+        },
+        {
+          t: "T+18s",
+          event:
+            "Host reconnects inside the 5s grace window — socket re-attaches seamlessly with zero host_changed churn.",
+        },
+      ],
+      solutionSteps: [
+        {
+          step: "Multiplex 3 protocols over one WebSocket with a 1-byte header",
+          detail:
+            "Frame byte 0 carries raw y-protocols/sync binary updates, byte 1 carries awareness (selections/carets/line highlights), and byte 2 carries typed JSON control events.",
+          file: "shared/src/frames.ts",
+        },
+        {
+          step: "Isolate CPU-heavy scrypt hashing with a strict concurrency queue",
+          detail:
+            "Passcode checks use async scrypt with per-room random salts inside a concurrency-4 limiter so brute-force bursts can't starve Fastify's WebSocket event loop.",
+          file: "server/src/throttle.ts",
+        },
+        {
+          step: "Run deterministic seniority succession + 30s flicker grace",
+          detail:
+            "If grace expires, min(joinedAt) (tie-broken by clientId) promotes the next senior occupant; a 30s SENIORITY_WINDOW_MS map preserves standing across quick refreshes.",
+          file: "server/src/host.ts",
+        },
+        {
+          step: "Coalesce awareness frames & lerp remote carets at 80ms",
+          detail:
+            "CodeMirror 6 renders remote carets with an 80ms interpolation curve (automatically disabled under prefers-reduced-motion) while coalescing rapid awareness bursts.",
+          file: "client/src/collab/CarrelProvider.ts",
+        },
+      ],
+      result:
+        "Zero race-condition host splits, bounded memory/CPU under brute-force tests, and sub-frame collaborative editing verified across Playwright multi-peer E2E tests.",
+      resultStats: [
+        { label: "Binary frame types", value: "3 muxed" },
+        { label: "Scrypt concurrency cap", value: "4 ops" },
+        { label: "Caret interpolation", value: "80 ms lerp" },
+        { label: "Kick lockout window", value: "10 min" },
+      ],
+    },
+    architecture: [
+      {
+        id: "shared-proto",
+        label: "@carrel/shared",
+        desc: "Shared Zod schemas, binary frame constants, close codes (4000–4008), and syntax language definitions.",
+      },
+      {
+        id: "fastify-auth",
+        label: "Fastify + HMAC Tickets",
+        desc: "Single-use nonce-bound WS upgrade tickets, TRUST_PROXY anti-spoof rate limiting, and progressive passcode lockouts.",
+      },
+      {
+        id: "yjs-sqlite",
+        label: "Y.Doc + SQLite WAL",
+        desc: "In-memory Y.Doc per room with MAX_DOC_BYTES guard and debounced binary snapshot persistence in better-sqlite3.",
+      },
+      {
+        id: "host-fsm",
+        label: "Deterministic Host FSM",
+        desc: "5000ms grace timer, atomic make_host handover, vacant room promotion, and creator-key reclamation.",
+      },
+      {
+        id: "cm6-client",
+        label: "React + CodeMirror 6",
+        desc: "Dark & Paper editorial themes, 80ms lerp carets, double-click pinned gutter highlights, and 4-state presence.",
+      },
+    ],
+    features: [
+      "Yjs CRDT collaborative editing over 1-byte multiplexed binary WebSocket frames (sync, awareness, control)",
+      "Single-use nonce HMAC WebSocket upgrade tickets with TRUST_PROXY-aware rate limiting",
+      "Async scrypt passcode hashing capped at 4 concurrent operations to protect event-loop responsiveness",
+      "Deterministic host succession: 5000ms reconnect grace window, seniority election, and atomic make_host handover",
+      "CodeMirror 6 editor with custom Dark & Paper themes, 80ms lerp remote carets, and synchronized gutter line highlights",
+      "4-state presence tracking (Typing -> Active -> Idle at 60s -> Away on hidden tab) with frame coalescing",
+      "Duplicate client replacement (close code 4000), 10-minute kick lockout (4003), and MAX_DOC_BYTES size guards",
+    ],
+    challenges: [
+      {
+        title: "Preventing Passcode Brute-Force From Freezing Live WebSockets",
+        problem:
+          "Password verification needs slow key derivation (scrypt), but running dozens of concurrent scrypt checks on the Node server would block WebSocket keystrokes for everyone else.",
+        difficulty:
+          "Synchronous hashing stalls the single-threaded event loop, while unbounded async libuv calls exhaust the threadpool and starve I/O.",
+        solution:
+          "Wrapped async scrypt (with per-room random salts) inside a strict concurrency-4 limiter paired with progressive exponential passcode lockouts and TRUST_PROXY IP resolution.",
+        fixSteps: [
+          { step: "Bind non-blocking scrypt to a 4-slot semaphore queue", file: "server/src/throttle.ts" },
+          { step: "Apply progressive lockout backoff per normalized client IP", file: "server/src/throttle.ts" },
+          { step: "Disable naive X-Forwarded-For trust unless TRUST_PROXY is explicitly set", file: "server/src/index.ts" },
+        ],
+        learned:
+          "Auth security isn't just picking scrypt over SHA-256 — unthrottled expensive cryptography is itself a denial-of-service vector against real-time sockets.",
+      },
+      {
+        title: "Split-Brain Room Leadership When a Host's Tab Flickers",
+        problem:
+          "Treating every WebSocket disconnect as a permanent leave causes instant, jarring host handovers whenever a host refreshes or drops Wi-Fi for two seconds.",
+        difficulty:
+          "If an occupied room promotes a new host too eagerly, the original host comes back demoted; if it waits forever, an abandoned room is locked without an admin.",
+        solution:
+          "Built a dual-timer state machine: HOST_GRACE_MS (5000ms) holds the host seat as hostPending, while SENIORITY_WINDOW_MS (30s) restores joinedAt timestamps and colors across quick reconnects.",
+        fixSteps: [
+          { step: "Hold room in hostPending for 5000ms before running seniority election", file: "server/src/host.ts" },
+          { step: "Break identical joinedAt timestamps deterministically via min(clientId)", file: "server/src/host.ts" },
+          { step: "Verify multi-tab promotion and creator key reclaim with Playwright E2E specs", file: "server/src/phase5.test.ts" },
+        ],
+        learned:
+          "Collaborative role management has to treat brief disconnects as normal noise and make tie-breakers deterministic across every peer.",
+      },
+    ],
+    journey: [
+      {
+        day: "Phase 1–2",
+        milestone: "Shared Binary Protocol & Fastify Core",
+        details:
+          "Defined 1-byte framed multiplexing in @carrel/shared and wired Yjs + SQLite WAL snapshot persistence in @carrel/server.",
+      },
+      {
+        day: "Phase 3–4",
+        milestone: "HMAC Tickets, Scrypt Limiter & CodeMirror 6",
+        details:
+          "Implemented nonce tickets, concurrency-4 scrypt throttling, custom Dark/Paper syntax tokens, and 80ms lerped remote carets.",
+      },
+      {
+        day: "Phase 5",
+        milestone: "Host Succession FSM, Gutter Highlights & E2E Suite",
+        details:
+          "Shipped 5000ms host grace, atomic handover, synchronized gutter pins, and full Playwright multi-user verification.",
+      },
+    ],
+    reliability: [
+      {
+        label: "Auth ticket model",
+        value: "1-use HMAC",
+        detail: "nonce-bound upgrade tickets expire after TICKET_TTL_MS and cannot be replayed across sockets",
+      },
+      {
+        label: "Crypto isolation",
+        value: "4 max scrypt",
+        detail: "concurrency semaphore ensures password checks never starve real-time Yjs sync frames",
+      },
+      {
+        label: "Host grace window",
+        value: "5000 ms",
+        detail: "absorbs brief Wi-Fi drops before running deterministic min(joinedAt) succession",
+      },
+      {
+        label: "Document guard",
+        value: "MAX_DOC_BYTES",
+        detail: "oversized binary payloads are rejected cleanly without tearing down valid peer connections",
+      },
+    ],
+    decisions: [
+      {
+        tech: "Raw WebSockets + Yjs",
+        title: "1-Byte Multiplexed Frames Over Socket.IO",
+        explanation:
+          "Instead of pulling in Socket.IO overhead and extra polling layers, a single WebSocket prefixes binary Yjs sync/awareness frames and JSON control events with 1 byte—keeping latency tight and protocol code inspectable.",
+      },
+      {
+        tech: "better-sqlite3 (WAL)",
+        title: "Zero-Infra Persistence With Debounced Snapshots",
+        explanation:
+          "Keeping active Y.Doc state in memory and flushing debounced binary snapshots into SQLite WAL mode gives crash durability in one Docker container without Redis or Postgres.",
+      },
+      {
+        tech: "CodeMirror 6",
+        title: "Modular Editor State Over Heavy Monaco Bundles",
+        explanation:
+          "CodeMirror 6 ships dramatically smaller client JS than Monaco while giving clean extension hooks for custom Dark/Paper syntax tokens and lerped remote caret decorations.",
+      },
+    ],
+    lessons: [
+      "Add end-to-end encrypted room payloads (client-side key derivation) so even the server only stores opaque CRDT blobs.",
+      "Support multi-file tabs inside a single Carrel room backed by nested Y.Map document namespaces.",
+      "Stream compressed incremental update logs between debounced full snapshots to shrink disk writes under heavy paste bursts.",
+    ],
+    gallery: [
+      { label: "Dark Workspace & Remote Carets", img: "/carrel-preview.webp" },
+      { label: "Host Handover & Activity Feed", img: "/carrel-roles.webp" },
+    ],
+  },
+  AegisFlow: {
+    theme: {
+      primary: "from-sky-400",
+      secondary: "to-cyan-500",
+      glow: "rgba(56, 189, 248, 0.15)",
+    },
+    whyBuilt: {
+      problem:
+        "When cluster nodes silently degrade or crash mid-workload, naive round-robin and greedy schedulers keep dispatching tasks into dead queues—causing cascading deadline misses and wasteful cold-restart thrashing.",
+      solution:
+        "Engineered a zero-dependency pure Python scheduler combining an Exact Bayesian Hidden Markov Model (HMM) with analytical triage gating, a cold-restart expected-value barrier, and a defensive recovery probation ramp.",
+      scenario: [
+        {
+          t: "Step T",
+          event:
+            "Node 2 enters silent degradation (elevated latency_ms and error_rate, heartbeat_ok still noisy).",
+        },
+        {
+          t: "T+0.13",
+          event:
+            "Exact HMM forward filter updates posterior belief over {Healthy, Degraded, Down} and detects degradation in 0.13 steps.",
+        },
+        {
+          t: "T+0.35",
+          event:
+            "Task progress stalls; HMM confirms node is Down with 99.58% state accuracy and 0.000% false condemnations.",
+        },
+        {
+          t: "EV Gate",
+          event:
+            "Triage gate drops doomed tasks (-0.01/step pending vs -1.00 miss penalty) while EV barrier blocks useless migrations (0.00 churn).",
+        },
+        {
+          t: "End",
+          event:
+            "Deadline misses drop 87% (98.2 -> 13.2) and on-time completion climbs to 98.3% at 0.64 ms/step.",
+        },
+      ],
+      solutionSteps: [
+        {
+          step: "Replace heuristic z-scores with an Exact Bayesian HMM filter",
+          detail:
+            "Forward-filters emission likelihoods across heartbeat_ok, latency_ms, error_rate, and per-task duration_remaining while discarding zero-signal queue_len.",
+          file: "agent.py",
+        },
+        {
+          step: "Enforce hard capacity and mathematical triage gating",
+          detail:
+            "Computes analytical completion probability before allocating a slot; leaving a doomed task pending costs ~100x less than letting it poison a healthy slot (+714 pt ablation swing).",
+          file: "agent.py",
+        },
+        {
+          step: "Guard reroutes with a Cold-Restart Expected-Value Barrier",
+          detail:
+            "Because rerouting resets elapsed progress to zero, tasks only migrate when target completion gain exceeds the restart penalty — yielding exact 0.00 unnecessary migrations.",
+          file: "agent.py",
+        },
+        {
+          step: "Verify 31 strict behavioral invariants and crash containment",
+          detail:
+            "Dual try/except safety wrapper falls back in <0.1ms to capacity-respecting actions (+338.0 reward even under injected internal faults).",
+          file: "test_invariants.py",
+        },
+      ],
+      result:
+        "Captures 96% of the theoretical Oracle ceiling (745.00 vs 750.94 pts) with 100% head-to-head seed wins against baseline on held-out perturbed clusters.",
+      resultStats: [
+        { label: "Deadline miss drop", value: "-87%" },
+        { label: "On-time completion", value: "98.3%" },
+        { label: "Oracle ceiling captured", value: "96%" },
+        { label: "Decision speed", value: "0.64 ms/step" },
+      ],
+    },
+    architecture: [
+      {
+        id: "hmm-filter",
+        label: "Exact Bayesian HMM",
+        desc: "Tracks 3-state hidden Markov posterior per node from noisy latency, heartbeat, error rate, and task progress.",
+      },
+      {
+        id: "triage-gate",
+        label: "Analytical Triage Gate",
+        desc: "Slack-ordered urgency planner that suppresses mathematically uncompletable tasks rather than starving viable jobs.",
+      },
+      {
+        id: "ev-barrier",
+        label: "Cold-Restart EV Barrier",
+        desc: "Weighs lost progress against target node survival probability to eliminate thrashing (0.00 spurious churn).",
+      },
+      {
+        id: "probation",
+        label: "Recovery Probation Ramp",
+        desc: "Throttles initial capacity on recovering nodes so flaky Markov transitions don't cause stampeding herds.",
+      },
+      {
+        id: "failsafe",
+        label: "31 Invariants & Fallback",
+        desc: "Zero-dependency stdlib implementation with <0.1ms exception fallback and full ablation benchmark harness.",
+      },
+    ],
+    features: [
+      "Exact Bayesian Hidden Markov Model forward filter (0.13s degraded detection, 0.35s down detection, 99.58% accuracy)",
+      "87% reduction in deadline misses (98.2 -> 13.2) and 98.3% on-time rate across paired 400-step benchmarks",
+      "Cold-restart expected-value barrier guaranteeing 0.00 unnecessary task migrations",
+      "Defensive probation ramp dampening post-recovery Markov oscillations",
+      "Zero external dependencies (pure Python stdlib) executing at 0.64 ms/step (39x faster than 25.0 ms budget)",
+      "31/31 deterministic system invariant tests passing + 100% win rate across held-out perturbed Markov chains",
+    ],
+    challenges: [
+      {
+        title: "Discovering That queue_len Carried Zero Failure Signal",
+        problem:
+          "Early blueprint heuristics treated high queue_len as node distress evidence alongside latency and error rates.",
+        difficulty:
+          "In the real cluster simulator, queue_len simply mirrors the scheduler's own past dispatches with zero noise or health dependence—feeding it into inference caused circular self-reinforcing bias.",
+        solution:
+          "Audited every telemetry emission distribution in cluster_env.py, stripped queue_len out of the likelihood model completely, and folded per-task duration_remaining progress into the HMM update instead.",
+        fixSteps: [
+          { step: "Audit true emission distributions per hidden state in cluster_env.py", file: "env/cluster_env.py" },
+          { step: "Drop queue_len from Bayesian likelihood updates entirely", file: "agent.py" },
+          { step: "Use task stall progress (duration_remaining delta) as direct state evidence", file: "agent.py" },
+        ],
+        learned:
+          "Feature intuition has to bow to the real generative model—feeding a deterministic echo of your own actions into a Bayesian filter creates confirmation bias.",
+      },
+      {
+        title: "Eliminating Cascading Migration Thrashing Under Noise",
+        problem:
+          "Because reassigning an active task resets duration_remaining back to duration_total, naive rerouting on transient latency spikes caused endless restart loops.",
+        difficulty:
+          "You need fast evacuation from genuinely dead nodes without abandoning 80%-complete tasks over a single noisy ping.",
+        solution:
+          "Tracked initial duration_total on first sight while pending, then required the target node's expected completion probability gain to strictly clear the lost-progress penalty before firing a reroute.",
+        fixSteps: [
+          { step: "Cache duration_total when tasks first enter the pending queue", file: "agent.py" },
+          { step: "Gate reroutes behind expected-value surplus over cold-restart cost", file: "agent.py" },
+          { step: "Confirm 0.00 unnecessary migrations across 8 paired seeds", file: "eval_local.py" },
+        ],
+        learned:
+          "Rerouting isn't free in stateful workloads; modeling restart cost explicitly inside the decision barrier completely kills oscillation.",
+      },
+    ],
+    journey: [
+      {
+        day: "Phase 1",
+        milestone: "Emission Audit & Exact HMM Filter",
+        details:
+          "Replaced initial CUSUM draft with an exact 3-state HMM forward filter once true emission profiles and pre-step act() order were verified.",
+      },
+      {
+        day: "Phase 2",
+        milestone: "Triage Gating & Cold-Restart Barrier",
+        details:
+          "Added hard-capacity enforcement, slack urgency ordering, and EV migration barrier—capturing 96% of the Oracle ceiling.",
+      },
+      {
+        day: "Phase 3",
+        milestone: "Ablations, 31 Invariants & Scale Verification",
+        details:
+          "Ran held-out perturbed Markov generalization benchmarks, verified 31/31 invariants, and scaled to 32 nodes / 256 slots at 4.42 ms/step.",
+      },
+    ],
+    reliability: [
+      {
+        label: "State inference accuracy",
+        value: "99.58%",
+        detail: "infers node degradation in 0.13 steps and crashes in 0.35 steps with 0.000% false condemnations",
+      },
+      {
+        label: "Unnecessary migrations",
+        value: "0.00",
+        detail: "cold-restart expected-value barrier eliminates thrashing across all paired benchmark seeds",
+      },
+      {
+        label: "Invariant test suite",
+        value: "31 / 31",
+        detail: "capacity limits, crash containment, and monotonicity properties verified in test_invariants.py",
+      },
+      {
+        label: "Step budget headroom",
+        value: "39x faster",
+        detail: "0.64 ms/step measured vs 25.0 ms wall-clock budget (4.42 ms/step at 32 nodes / 256 slots)",
+      },
+    ],
+    decisions: [
+      {
+        tech: "Exact 3-State HMM",
+        title: "Analytical Posterior Over Black-Box RL",
+        explanation:
+          "With known emission noise characteristics and a 400-step episode budget, exact forward filtering converges in sub-millisecond time without training instability or opaque failure modes.",
+      },
+      {
+        tech: "Pure Python Stdlib",
+        title: "Zero External Dependencies for 0.64ms Latency",
+        explanation:
+          "Avoiding NumPy/PyTorch array dispatch overhead keeps per-step scheduling under 1ms on small clusters and guarantees deterministic portability in any sandbox.",
+      },
+      {
+        tech: "Triage Suppression",
+        title: "Refusing Doomed Work Beats Best-Effort Queuing",
+        explanation:
+          "Scoring +1 completion vs -1 miss vs -0.01/step pending makes leaving an uncompletable task unassigned ~100x cheaper than burning a healthy slot on it.",
+      },
+    ],
+    lessons: [
+      "Add online Baum-Welch / Dirichlet transition adaptation so the HMM self-calibrates if cluster failure rates shift mid-episode beyond fixed priors.",
+      "Extend task urgency planning with batch-aware bin packing when heterogeneous task durations arrive in synchronized bursts.",
+      "Export real-time Prometheus/OpenTelemetry metrics from the decision log stream for live cluster operator visibility.",
+    ],
+    gallery: [],
+  },
+  Chronosync: {
+    theme: {
+      primary: "from-rose-400",
+      secondary: "to-amber-500",
+      glow: "rgba(244, 63, 94, 0.15)",
+    },
+    whyBuilt: {
+      problem:
+        "Naively polling websites for changes breaks on every real site: 200 watchers hammer the same URL 200 times, live clocks and CSRF tokens trigger fake alerts, and HTTP 500 outages overwrite valid price history.",
+      solution:
+        "Built a FastAPI + Playwright + SQLite monitoring engine that deduplicates normalized URLs, classifies outages/CAPTCHAs before diffing, suppresses dynamic noise across 4 layers, and visualizes real changes in a built-in Diff Studio.",
+      scenario: [
+        {
+          t: "Add",
+          event:
+            "User submits a URL; normalizer.py strips tracking params, fragments, and case differences to map 200 watches onto 1 pages row.",
+        },
+        {
+          t: "Fetch",
+          event:
+            "Scheduler checks robots.txt and domain jitter gap, then launches a fresh Playwright context.",
+        },
+        {
+          t: "Gate",
+          event:
+            "classifier.py tags 5xx/timeouts as error and 401/403/429/CAPTCHA as blocked — preventing fake outage diffs.",
+        },
+        {
+          t: "Confirm",
+          event:
+            "differ.clean_text strips clocks & CSRF tokens; a new hash sits in pending_hash until confirmed on a second consecutive check.",
+          danger: true,
+        },
+        {
+          t: "Alert",
+          event:
+            "UNIQUE(watch_id, snapshot_id, kind) dispatches one deduped alert (Discord/Telegram/Email/RSS) with a deep link into Diff Studio.",
+        },
+      ],
+      solutionSteps: [
+        {
+          step: "Separate shared pages from user watches via URL normalization",
+          detail:
+            "Canonicalizes scheme, ports, query order, tracking params, and trailing slashes so fetch cost scales with distinct URLs rather than watcher count.",
+          file: "app/normalizer.py",
+        },
+        {
+          step: "Classify HTTP & bot challenges before touching snapshots",
+          detail:
+            "Distinguishes ok vs error (5xx) vs blocked (403/429/CAPTCHA) — outages never pollute snapshots and blocked domains back off up to 24h without hammering.",
+          file: "app/classifier.py",
+        },
+        {
+          step: "Suppress dynamic noise + enforce 2-check persistence",
+          detail:
+            "Strips timestamps, relative dates, counters, and random tokens, then holds pending_hash until a second consecutive check confirms the change isn't transient.",
+          file: "app/differ.py",
+        },
+        {
+          step: "Ship an accessible visual Diff Studio with zero framework bloat",
+          detail:
+            "Built Overview, Monitors, Diff Studio (swipe slider, pixel heatmap, unified diff, SVG price chart), and sandboxed Element Picker in vanilla JS + semantic CSS tokens.",
+          file: "app/static/app.js",
+        },
+      ],
+      result:
+        "Zero false alerts on flaky/clock-heavy demo targets, verified across 29 fast unit & flow tests (~1.5s runtime) with Docker and CI ready.",
+      resultStats: [
+        { label: "Unit & flow tests", value: "29 / 29" },
+        { label: "Noise filters", value: "4 layers" },
+        { label: "Test suite speed", value: "~1.5s" },
+        { label: "Diff Studio views", value: "4 modes" },
+      ],
+    },
+    architecture: [
+      {
+        id: "normalizer-db",
+        label: "URL Normalizer & SQLite",
+        desc: "Maps multiple user watches onto single deduplicated pages rows with durable DB-backed queue scheduling.",
+      },
+      {
+        id: "playwright-poller",
+        label: "Respectful Playwright Fetcher",
+        desc: "Fresh browser contexts gated by robots.txt rules, per-domain gap + jitter, and bounded concurrency.",
+      },
+      {
+        id: "classifier-noise",
+        label: "Classifier & 4-Layer Differ",
+        desc: "Separates ok/error/blocked states, strips volatile clocks/tokens, and requires 2-check hash persistence.",
+      },
+      {
+        id: "alerts-ai",
+        label: "Deduped Alerts & Groq Summaries",
+        desc: "UNIQUE constraint alert dispatch across Discord, Telegram, Email, RSS feeds, and optional 1-line AI summaries.",
+      },
+      {
+        id: "diff-studio",
+        label: "Visual Diff Studio UI",
+        desc: "Draggable split swipe slider, pixel heatmap diff, unified text diff, SVG price chart, and sandboxed Element Picker.",
+      },
+    ],
+    features: [
+      "URL normalization & pages-vs-watches separation so N users monitoring 1 page only trigger 1 scheduled fetch",
+      "Outage & CAPTCHA classification (ok / error / blocked) preventing server errors from creating fake change diffs",
+      "4-layer noise suppression: regex clock/CSRF scrubber, pending_hash persistence check, sensitivity thresholds, and CSS selector watch/ignore rules",
+      "Visual Diff Studio: interactive swipe slider, pixel heatmap overlay, unified line diff, and SVG numerical price history chart",
+      "Sandboxed Visual Element Picker + Chrome browser extension + keyboard-navigable WCAG AA dashboard",
+      "Docker Compose deployment, GitHub Actions CI, and 29 deterministic unit & flow tests running in ~1.5s",
+    ],
+    challenges: [
+      {
+        title: "Eliminating False Positives on Clock, Ad & Flaky Pages",
+        problem:
+          "Modern pages change bytes on almost every reload due to relative timestamps ('2 mins ago'), CSRF nonces, A/B banners, and rotating ads.",
+        difficulty:
+          "Simple string/DOM hashing fires noisy alerts every 15 minutes, while overly aggressive stripping risks hiding genuine price or inventory drops.",
+        solution:
+          "Combined targeted noise scrubbing (differ.clean_text) with a two-phase pending_hash persistence gate: transient flips never confirm, while real changes become snapshots on the next scheduled check without double-fetching.",
+        fixSteps: [
+          { step: "Strip relative timestamps, CSRF tokens, and counters prior to hashing", file: "app/differ.py" },
+          { step: "Store unconfirmed diffs in pending_hash rather than overwriting snapshots", file: "app/scheduler.py" },
+          { step: "Verify against /flaky, /captcha, and /down test targets in CI", file: "app/main.py" },
+        ],
+        learned:
+          "Confirmation across two consecutive scheduled runs gives most of the noise immunity of double-fetching at zero extra load on the target site.",
+      },
+      {
+        title: "Isolating Visual Element Selection Safely Inside a Dashboard",
+        problem:
+          "Letting users point-and-click CSS selectors on arbitrary fetched third-party HTML creates XSS risks and broken relative asset paths.",
+        difficulty:
+          "If third-party scripts or styles leak into the main dashboard DOM, they can break layout styles or execute untrusted JS.",
+        solution:
+          "Served the Visual Element Picker preview inside a restricted sandboxed iframe container (/api/picker), capturing clean watch/ignore CSS selectors via controlled postMessage events.",
+        fixSteps: [
+          { step: "Render proxied page snapshots inside a sandboxed picker dialog", file: "app/main.py" },
+          { step: "Support both 'watch only' and 'ignore' CSS selector rules per watch", file: "app/models.py" },
+          { step: "Reconcile live dashboard rows via keyed DOM updates without wiping scroll/focus", file: "app/static/app.js" },
+        ],
+        learned:
+          "Sandboxing untrusted HTML previews early makes visual selector tooling safe without forcing users to hand-write CSS selectors in DevTools.",
+      },
+    ],
+    journey: [
+      {
+        day: "Stage 1",
+        milestone: "Schema, Normalizer & Respectful Fetcher",
+        details:
+          "Designed pages/watches/snapshots/alerts SQLite model, URL canonicalization, robots.txt parser, and per-domain jittered rate limits.",
+      },
+      {
+        day: "Stage 2",
+        milestone: "Classifier, Noise Scrubber & Persistence Check",
+        details:
+          "Implemented ok/error/blocked gating, dynamic noise cleaning, pending_hash confirmation, and alert deduplication.",
+      },
+      {
+        day: "Stage 3",
+        milestone: "Visual Diff Studio, Demo Target & 29 Tests",
+        details:
+          "Built split swipe slider, pixel heatmap, SVG metric charts, /bump-/flaky-/captcha demo harness, Chrome extension, Docker, and CI.",
+      },
+    ],
+    reliability: [
+      {
+        label: "Automated test suite",
+        value: "29 / 29",
+        detail: "unit & end-to-end flow tests execute in ~1.5s without requiring live network or browser launches",
+      },
+      {
+        label: "Alert deduplication",
+        value: "UNIQUE key",
+        detail: "UNIQUE(watch_id, snapshot_id, kind) guarantees exactly one alert per confirmed version change",
+      },
+      {
+        label: "Bot safety backoff",
+        value: "Up to 24h",
+        detail: "401/403/429 and CAPTCHA responses halt retries immediately and back off exponentially",
+      },
+      {
+        label: "Fetch deduplication",
+        value: "1 / URL",
+        detail: "normalized pages table ensures 200 subscribers on the same URL share one Playwright fetch",
+      },
+    ],
+    decisions: [
+      {
+        tech: "Pages vs. Watches Split",
+        title: "Deduplicate Polling by Canonical URL, Not Subscription",
+        explanation:
+          "Splitting pages (one row per normalized URL) from watches (per-user selectors/thresholds) means fetch cost scales with distinct targets instead of active subscribers.",
+      },
+      {
+        tech: "SQLite Job Queue",
+        title: "Inspectable Single-Process Queue Over Redis/Celery",
+        explanation:
+          "Using next_check timestamps inside SQLite keeps deployment down to one Docker container with atomic job claiming and zero broker ops overhead.",
+      },
+      {
+        tech: "Vanilla JS Diff Studio",
+        title: "Zero-Build Dashboard With Keyed DOM Reconciliation",
+        explanation:
+          "No frontend build step is needed inside FastAPI—tabular numerals, native <dialog> modals, keyboard shortcuts, and keyed row updates deliver crisp UI speed without SPA bundle weight.",
+      },
+    ],
+    lessons: [
+      "Move Playwright workers to a dedicated worker pool queue if scaling beyond a single FastAPI container's concurrency ceiling.",
+      "Add visual region-masking directly on screenshots (bounding-box ignore zones) alongside DOM CSS ignore selectors for canvas/ad blocks.",
+      "Support webhook signature verification and Slack Block Kit payloads alongside Discord/Telegram/Email.",
+    ],
+    gallery: [],
+  },
 };

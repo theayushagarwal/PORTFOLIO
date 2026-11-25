@@ -9,11 +9,15 @@ import { playTick } from "@/lib/sound";
 import { PROJECT_DETAILS } from "@/lib/project-details";
 import { useSpotlight } from "./widgets/useSpotlight";
 
-const ACTIVE_THEMES = [
-  { glow: "rgba(34, 211, 238, 0.025)", border: "rgba(34, 211, 238, 0.35)" }, // Vurlo (Cyan)
-  { glow: "rgba(16, 185, 129, 0.025)", border: "rgba(16, 185, 129, 0.35)" }, // Veltrix (Emerald)
-  { glow: "rgba(99, 102, 241, 0.025)", border: "rgba(99, 102, 241, 0.35)" }, // Vcentre (Indigo)
-];
+const ACTIVE_THEMES: Record<string, { glow: string; border: string }> = {
+  Vurlo: { glow: "rgba(34, 211, 238, 0.025)", border: "rgba(34, 211, 238, 0.35)" },
+  Carrel: { glow: "rgba(245, 158, 11, 0.025)", border: "rgba(245, 158, 11, 0.35)" },
+  AegisFlow: { glow: "rgba(56, 189, 248, 0.025)", border: "rgba(56, 189, 248, 0.35)" },
+  Chronosync: { glow: "rgba(244, 63, 94, 0.025)", border: "rgba(244, 63, 94, 0.35)" },
+  Veltrix: { glow: "rgba(16, 185, 129, 0.025)", border: "rgba(16, 185, 129, 0.35)" },
+  Vcentre: { glow: "rgba(99, 102, 241, 0.025)", border: "rgba(99, 102, 241, 0.35)" },
+};
+const DEFAULT_ACTIVE_THEME = { glow: "rgba(34, 211, 238, 0.025)", border: "rgba(34, 211, 238, 0.35)" };
 
 function Metrics({ metrics }: { metrics: Project["metrics"] }) {
   return (
@@ -59,6 +63,7 @@ export function CarouselProjectCard({
   const shineLeft = useTransform(shineX, (val) => `${val - 100}%`);
 
   const details = PROJECT_DETAILS[p.name];
+  const activeTheme = ACTIVE_THEMES[p.name] ?? DEFAULT_ACTIVE_THEME;
   const glowColor = details?.theme.glow
     ? details.theme.glow.replace("0.15", "0.09")
     : "rgba(6, 182, 212, 0.09)";
@@ -117,8 +122,8 @@ export function CarouselProjectCard({
                 {
                   transformStyle: "preserve-3d",
                   "--glow-color": glowColor,
-                  borderColor: isActive ? ACTIVE_THEMES[i].border : undefined,
-                  boxShadow: isActive ? `0 10px 30px -10px ${ACTIVE_THEMES[i].border}` : undefined,
+                  borderColor: isActive ? activeTheme.border : undefined,
+                  boxShadow: isActive ? `0 10px 30px -10px ${activeTheme.border}` : undefined,
                 } as React.CSSProperties
               }
               className="surface-card group relative flex flex-col overflow-hidden p-6 md:p-8 h-full transition-all duration-500"
@@ -159,7 +164,7 @@ export function CarouselProjectCard({
                       <img
                         src={p.image}
                         alt={p.name}
-                        loading="eager"
+                        loading={i < 2 ? "eager" : "lazy"}
                         decoding="async"
                         className="w-full h-full object-cover object-top block transition-transform duration-500 group-hover:scale-[1.04] group-hover:-translate-y-1.5"
                       />

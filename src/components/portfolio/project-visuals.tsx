@@ -455,9 +455,192 @@ export function GraphNetworkVisual() {
   );
 }
 
+/** AegisFlow — Bayesian HMM node health inference & triage gate schematic. */
+export function HmmSchedulerVisual() {
+  const nodes = [
+    { label: "N0", state: "HEALTHY", y: 28, color: "fill-emerald-400", stroke: "stroke-emerald-400/40", w: 185 },
+    { label: "N1", state: "DEGRADED · 0.13s", y: 68, color: "fill-amber-400", stroke: "stroke-amber-400/45", w: 130 },
+    { label: "N2", state: "DOWN · EV BARRIER", y: 108, color: "fill-rose-400", stroke: "stroke-rose-400/45", w: 56 },
+  ];
+
+  return (
+    <svg {...svgBase} aria-hidden="true">
+      {/* Vertical telemetry bus */}
+      <motion.line
+        x1="28"
+        y1="20"
+        x2="28"
+        y2="132"
+        className="stroke-border"
+        strokeWidth={1}
+        variants={{
+          hidden: { pathLength: 0 },
+          visible: { pathLength: 1, transition: { duration: 0.7, ease: "easeOut" } },
+        }}
+      />
+
+      {nodes.map((n, i) => (
+        <g key={n.label}>
+          <motion.circle
+            cx="28"
+            cy={n.y}
+            r="4.5"
+            className={n.color}
+            variants={{
+              hidden: { scale: 0, opacity: 0 },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: { delay: i * 0.12, type: "spring", stiffness: 220, damping: 18 },
+              },
+            }}
+          />
+          <text x="42" y={n.y + 3} className="fill-subtle font-mono text-[8.5px]">
+            {n.label}
+          </text>
+          <rect
+            x="64"
+            y={n.y - 7}
+            width="232"
+            height="14"
+            rx="3"
+            className="fill-white/[0.03] stroke-white/[0.08]"
+            strokeWidth={0.8}
+          />
+          <motion.rect
+            x="66"
+            y={n.y - 5}
+            width={n.w}
+            height="10"
+            rx="2"
+            className={`${n.color} opacity-25`}
+            variants={{
+              hidden: { scaleX: 0, originX: 0 },
+              visible: {
+                scaleX: 1,
+                transition: { duration: 0.55, delay: i * 0.12 + 0.15, ease: "easeOut" },
+              },
+              hover: {
+                opacity: 0.45,
+                transition: { duration: 0.25 },
+              },
+            }}
+          />
+          <text x="72" y={n.y + 2.5} className="fill-foreground/75 font-mono text-[7.5px]">
+            {n.state}
+          </text>
+        </g>
+      ))}
+
+      {/* Bottom invariant / latency bar */}
+      <line x1="20" y1="144" x2="300" y2="144" className="stroke-border" strokeWidth={1} />
+      <text x="20" y="164" className="fill-subtle font-mono text-[8.5px]">
+        HMM 99.58% acc · 0.64 ms/step · 31/31 invariants
+      </text>
+    </svg>
+  );
+}
+
+/** Chronosync — Split snapshot diff + noise suppression schematic. */
+export function DiffStudioVisual() {
+  return (
+    <svg {...svgBase} aria-hidden="true">
+      {/* Left baseline pane */}
+      <rect
+        x="18"
+        y="16"
+        width="134"
+        height="114"
+        rx="6"
+        className="fill-white/[0.02] stroke-white/10"
+        strokeWidth={1}
+      />
+      <text x="28" y="32" className="fill-subtle font-mono text-[8px]">
+        BASELINE · T-1
+      </text>
+      <rect x="28" y="42" width="110" height="5" rx="2" className="fill-white/15" />
+      <rect x="28" y="54" width="84" height="5" rx="2" className="fill-white/10" />
+      <rect x="28" y="70" width="96" height="12" rx="3" className="fill-white/[0.06]" />
+      <text x="34" y="79" className="fill-subtle font-mono text-[7.5px]">
+        $149.00 · stable
+      </text>
+      <rect x="28" y="92" width="70" height="4" rx="2" className="fill-white/[0.06]" />
+      <rect x="28" y="104" width="100" height="4" rx="2" className="fill-white/[0.06]" />
+
+      {/* Right snapshot pane */}
+      <rect
+        x="168"
+        y="16"
+        width="134"
+        height="114"
+        rx="6"
+        className="fill-white/[0.02] stroke-white/10"
+        strokeWidth={1}
+      />
+      <text x="178" y="32" className="fill-subtle font-mono text-[8px]">
+        CONFIRMED · 2x HASH
+      </text>
+      <rect x="178" y="42" width="110" height="5" rx="2" className="fill-white/15" />
+      <rect x="178" y="54" width="84" height="5" rx="2" className="fill-white/10" />
+      <motion.rect
+        x="178"
+        y="70"
+        width="96"
+        height="12"
+        rx="3"
+        className="fill-rose-500/20 stroke-rose-400/50"
+        strokeWidth={0.8}
+        variants={{
+          hidden: { opacity: 0.3 },
+          visible: { opacity: 1, transition: { duration: 0.4, delay: 0.2 } },
+          hover: { scale: 1.03, transition: { duration: 0.2 } },
+        }}
+      />
+      <text x="184" y="79" className="fill-rose-300 font-mono text-[7.5px]">
+        $119.00 (-20.1%)
+      </text>
+      {/* Masked timestamp noise pill */}
+      <rect
+        x="178"
+        y="92"
+        width="88"
+        height="10"
+        rx="2"
+        className="fill-white/[0.04] stroke-white/10"
+        strokeDasharray="2 2"
+        strokeWidth={0.8}
+      />
+      <text x="183" y="99.5" className="fill-subtle/70 font-mono text-[7px]">
+        [clock noise ignored]
+      </text>
+
+      {/* Center wipe divider */}
+      <motion.line
+        x1="160"
+        y1="12"
+        x2="160"
+        y2="134"
+        className="stroke-secondary/60"
+        strokeWidth={1.2}
+        variants={{
+          hidden: { pathLength: 0 },
+          visible: { pathLength: 1, transition: { duration: 0.6, ease: "easeOut" } },
+          hover: { x: 4, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+        }}
+      />
+
+      <text x="18" y="158" className="fill-subtle font-mono text-[8.5px]">
+        Playwright · 2-check persistence · 29/29 tests
+      </text>
+    </svg>
+  );
+}
+
 export const PROJECT_VISUALS = {
   "agent-trace": AgentTraceVisual,
   "terminal-evals": TerminalEvalsVisual,
   waveform: WaveformVisual,
   "graph-network": GraphNetworkVisual,
+  "hmm-scheduler": HmmSchedulerVisual,
+  "diff-studio": DiffStudioVisual,
 } as const;

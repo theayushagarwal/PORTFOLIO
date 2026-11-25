@@ -28,6 +28,25 @@ Specializes in production-grade LLM state machines, secure database schemas, hig
 - **Key Metrics**: 100/100 Lighthouse SEO, 0 inventory oversells, under 400ms loading latency.
 - **Architecture**: Atomic inventory check-and-decrement transactions in Firestore preventing race conditions. Multi-point rollback handlers for aborted payment SDK exits. Server-side payment verification via HMAC-SHA256. Resend mail queues and Gemini recommendation slots.
 
+### [Carrel](https://theayush.pages.dev/projects/carrel) (Real-Time Collaborative Workspace)
+- **Case Study URL**: [theayush.pages.dev/projects/carrel](https://theayush.pages.dev/projects/carrel)
+- **Repository**: [github.com/theayushagarwal/carrel](https://github.com/theayushagarwal/carrel)
+- **Stack**: TypeScript monorepo (`@carrel/shared`, `@carrel/server`, `@carrel/client`), Fastify, Yjs CRDT, WebSockets, better-sqlite3 (WAL), CodeMirror 6, Playwright.
+- **Architecture**: Multiplexes Yjs sync (`0`), awareness (`1`), and JSON control (`2`) frames over a single raw WebSocket. Hardened with single-use nonce HMAC tickets, concurrency-4 async scrypt rate limiting, 5000ms host grace succession, and 80ms lerped remote carets.
+
+### [AegisFlow](https://theayush.pages.dev/projects/aegisflow) (Autonomous Cluster Telemetry & Bayesian Scheduler)
+- **Case Study URL**: [theayush.pages.dev/projects/aegisflow](https://theayush.pages.dev/projects/aegisflow)
+- **Repository**: [github.com/theayushagarwal/AegisFlow](https://github.com/theayushagarwal/AegisFlow)
+- **Stack**: Pure Python (zero external dependencies).
+- **Key Metrics**: 99.58% HMM state accuracy, -87% deadline misses, 98.3% on-time completion, 0.00 unnecessary migrations, 0.64 ms/step latency, 96% Oracle ceiling, 31/31 invariants passing.
+- **Architecture**: Exact 3-state Bayesian Hidden Markov Model inferring hidden node health (`0.13s–0.35s` detection), paired with analytical triage gating, cold-restart expected-value barrier, and defensive recovery probation ramp.
+
+### [Chronosync](https://theayush.pages.dev/projects/chronosync) (Autonomous Web Monitor & Visual Regression Studio)
+- **Case Study URL**: [theayush.pages.dev/projects/chronosync](https://theayush.pages.dev/projects/chronosync)
+- **Repository**: [github.com/theayushagarwal/Chronosync](https://github.com/theayushagarwal/Chronosync)
+- **Stack**: Python, FastAPI, Playwright, SQLite, Docker, Vanilla JS, Groq API.
+- **Architecture**: Deduplicates normalized URLs across watchers (`pages` vs `watches`), classifies outages/CAPTCHAs before diffing, suppresses dynamic clocks/CSRF noise across 4 layers with 2-check persistence, and ships a Visual Diff Studio (swipe slider, pixel heatmap, unified diff, SVG charts) backed by 29 tests.
+
 ### [Veltrix](https://theayush.pages.dev/projects/veltrix) (Autonomous Social Engine)
 - **Case Study URL**: [theayush.pages.dev/projects/veltrix](https://theayush.pages.dev/projects/veltrix)
 - **Role**: Solo Developer

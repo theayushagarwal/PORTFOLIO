@@ -120,7 +120,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "keywords",
         content:
-          "Ayush Agarwal, 17 years old, 17yo developer, Ayush Agarwal VIT, VIT Vellore 2026, VIT Vellore 2030, Class of 2030, Batch 2026-2030, graduating 2030, B.Tech CSE VIT, AI Engineer, Systems Engineer, Vurlo, Veltrix, Vcentre, React 19, TanStack Start, Python, Groq, Cerebras, India, Autonomous Agents",
+          "Ayush Agarwal, 17 years old, 17yo developer, Ayush Agarwal VIT, VIT Vellore 2026, VIT Vellore 2030, Class of 2030, Batch 2026-2030, graduating 2030, B.Tech CSE VIT, AI Engineer, Systems Engineer, Vurlo, Carrel, AegisFlow, Chronosync, Veltrix, Vcentre, React 19, TanStack Start, Python, Fastify, Yjs, Bayesian HMM, Playwright, India",
       },
       {
         name: "twitter:image:alt",
@@ -313,6 +313,30 @@ const ITEM_LIST_JSON_LD = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
+      name: "Carrel",
+      url: "https://theayush.pages.dev/projects/carrel",
+      description:
+        "Real-time collaborative code workspace built with Yjs CRDTs, binary WebSocket multiplexing, Fastify, SQLite WAL, HMAC tickets, and CodeMirror 6.",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "AegisFlow",
+      url: "https://theayush.pages.dev/projects/aegisflow",
+      description:
+        "Zero-dependency pure Python Bayesian HMM cluster scheduler achieving 99.58% node health accuracy, 87% fewer deadline misses, and 0.64 ms/step latency.",
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      name: "Chronosync",
+      url: "https://theayush.pages.dev/projects/chronosync",
+      description:
+        "Autonomous FastAPI and Playwright web monitor and visual regression Diff Studio with URL deduplication and 4-layer noise suppression.",
+    },
+    {
+      "@type": "ListItem",
+      position: 5,
       name: "Veltrix",
       url: "https://theayush.pages.dev/projects/veltrix",
       description:
@@ -320,7 +344,7 @@ const ITEM_LIST_JSON_LD = JSON.stringify({
     },
     {
       "@type": "ListItem",
-      position: 3,
+      position: 6,
       name: "Vcentre",
       url: "https://theayush.pages.dev/projects/vcentre",
       description:

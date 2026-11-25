@@ -18,10 +18,10 @@ export const PROFILE = {
   pitch:
     "I'm a developer and designer specialized in high-performance e-commerce engines, multi-model AI agent pipelines, and interfaces polished enough to ship.",
   bio: [
-    "I'm 17, based in India, and I've spent the last year building things that were probably too ambitious for my age — a full ecommerce SaaS (vurlo.store) with Razorpay, Firebase security rules, an AI chatbot and full SEO, an autonomous Instagram pipeline with adversarial AI consensus, and a nightly competitor intelligence scraper. All three shipped in under a month, alongside this portfolio. I work in TypeScript and Python, design in Figma, and I'm currently studying Computer Science Engineering at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030).",
-    "I care more about whether a system actually works than whether it looks impressive on a slide. Every project I've shipped has a failure mode I thought about — a circuit breaker, a fallback chain, a review gate. The polish matters, but only after the foundation doesn't break.",
+    "I'm 17, based in India, and I've spent the last year building systems that were probably too ambitious for my age — a full ecommerce SaaS (vurlo.store) with Razorpay and atomic Firestore locks, a Yjs CRDT collaborative code workspace (Carrel), a Bayesian HMM cluster scheduler (AegisFlow), a Playwright visual regression studio (Chronosync), and autonomous multi-model AI pipelines (Veltrix & Vcentre). I work in TypeScript and Python, design in Figma, and I'm currently studying Computer Science Engineering at VIT Vellore (Batch 2026–2030, Class of 2030, graduating in 2030).",
+    "I care more about whether a system actually works than whether it looks impressive on a slide. Every project I've shipped has a failure mode I thought about — a circuit breaker, an EV restart barrier, a fallback chain, a review gate. The polish matters, but only after the foundation doesn't break.",
   ],
-  currently: "Shipped 3 production AI/SaaS projects in 30 days. 17yo CSE undergrad at VIT Vellore (Batch 2026–2030, Class of 2030).",
+  currently: "6 shipped systems across distributed TS & Python AI. 17yo CSE undergrad at VIT Vellore (Batch 2026–2030, Class of 2030).",
   previously: "Freelance Designer · Two open-source teams.",
   email: "theayush.codes@gmail.com",
   socials: {
@@ -35,8 +35,8 @@ export const PROFILE = {
 export const HERO_STATS = [
   { k: "Infra cost", v: "₹0" },
   { k: "Lighthouse Score", v: "100" },
-  { k: "Shipped products", v: "3" },
-  { k: "Build time", v: "30 days" },
+  { k: "Shipped systems", v: "6" },
+  { k: "Initial 3 build", v: "30 days" },
 ] as const;
 
 export type Project = {
@@ -49,7 +49,17 @@ export type Project = {
   stack: string[];
   metrics: { k: string; v: string }[];
   href: string;
-  visual: "agent-trace" | "terminal-evals" | "waveform" | "graph-network";
+  repoUrl?: string;
+  deployment?: string;
+  coreStack?: string;
+  subtitle?: string;
+  visual:
+    | "agent-trace"
+    | "terminal-evals"
+    | "waveform"
+    | "graph-network"
+    | "hmm-scheduler"
+    | "diff-studio";
   visualLabel: string;
   image?: string;
   secondaryImage?: string;
@@ -81,6 +91,10 @@ export const PROJECTS: Project[] = [
       { k: "Accessibility", v: "86" },
     ],
     href: "https://vurlo.store",
+    repoUrl: "https://github.com/theayushagarwal/vurlo-ecommerce",
+    deployment: "Production SaaS",
+    coreStack: "React 19 / Firebase",
+    subtitle: "Built in 10 Days • React 19 • TanStack Start",
     visual: "agent-trace",
     visualLabel: "vurlo.store",
     image: "/vurlo-preview.webp",
@@ -89,6 +103,105 @@ export const PROJECTS: Project[] = [
   },
   {
     index: "02",
+    name: "Carrel",
+    tagline:
+      "Real-time collaborative code & notes workspace with Yjs CRDTs and binary WebSocket multiplexing",
+    summary:
+      "A hardened TypeScript monorepo workspace built around raw WebSocket binary frame multiplexing (sync, awareness, and control) over Yjs CRDTs, Fastify, and SQLite WAL snapshots. Features deterministic host-succession state machines, single-use nonce HMAC tickets, scrypt concurrency limiting, and a CodeMirror 6 editor with 80ms lerp remote carets.",
+    role: "Systems & Full-Stack Engineer",
+    year: "2026",
+    stack: [
+      "TypeScript",
+      "Fastify",
+      "Yjs CRDT",
+      "WebSockets",
+      "better-sqlite3",
+      "React",
+      "CodeMirror 6",
+      "Playwright",
+    ],
+    metrics: [
+      { k: "Caret Lerp", v: "80 ms" },
+      { k: "WS Frames", v: "3 muxed" },
+      { k: "Scrypt Limit", v: "4 concurrent" },
+      { k: "Host Grace", v: "5000 ms" },
+    ],
+    href: "",
+    repoUrl: "https://github.com/theayushagarwal/carrel",
+    deployment: "Monorepo / Docker",
+    coreStack: "Fastify / Yjs / CodeMirror 6",
+    subtitle: "CRDT Workspace • Binary WebSockets • Fastify + SQLite",
+    visual: "terminal-evals",
+    visualLabel: "carrel.ws",
+    image: "/carrel-preview.webp",
+    secondaryImage: "/carrel-roles.webp",
+    secondaryLabel: "host handover & presence",
+  },
+  {
+    index: "03",
+    name: "AegisFlow",
+    tagline:
+      "Autonomous cluster telemetry and Bayesian HMM scheduler that cuts deadline misses by 87%",
+    summary:
+      "Zero-dependency Python distributed cluster scheduler designed for latent node degradation and sudden crashes. An exact Bayesian Hidden Markov Model infers hidden node health in 0.13–0.35 steps with 99.58% accuracy, while mathematical triage gating and a cold-restart expected-value barrier hold unnecessary migrations at 0.00 and capture 96% of the Oracle ceiling.",
+    role: "AI Systems Engineer",
+    year: "2026",
+    stack: [
+      "Python",
+      "Bayesian HMM",
+      "Telemetry Inference",
+      "Invariant Testing",
+      "HTML Dashboard",
+    ],
+    metrics: [
+      { k: "Miss Reduction", v: "-87%" },
+      { k: "On-Time Rate", v: "98.3%" },
+      { k: "Step Latency", v: "0.64 ms" },
+      { k: "Invariants", v: "31 / 31" },
+    ],
+    href: "",
+    repoUrl: "https://github.com/theayushagarwal/AegisFlow",
+    deployment: "0.64 ms/step Engine",
+    coreStack: "Pure Python / Bayesian HMM",
+    subtitle: "Bayesian HMM • 99.58% State Accuracy • Zero Dependencies",
+    visual: "hmm-scheduler",
+    visualLabel: "aegis.hmm",
+  },
+  {
+    index: "04",
+    name: "Chronosync",
+    tagline:
+      "Autonomous Playwright web monitor and visual regression studio with 4-layer noise suppression",
+    summary:
+      "Full-stack change detection platform built on FastAPI, Playwright, and SQLite. Normalizes URLs across multi-user watches, filters dynamic clock/CSRF noise, requires two consecutive checks before alerting, and renders an interactive Diff Studio with a draggable split-screen slider, pixel heatmap, unified text diff, and SVG price tracking.",
+    role: "Solo Developer",
+    year: "2026",
+    stack: [
+      "Python",
+      "FastAPI",
+      "Playwright",
+      "SQLite",
+      "Docker",
+      "Vanilla JS",
+      "Groq API",
+      "GitHub Actions",
+    ],
+    metrics: [
+      { k: "Unit & Flow Tests", v: "29 / 29" },
+      { k: "Noise Layers", v: "4 gates" },
+      { k: "URL Dedup", v: "1 fetch / N" },
+      { k: "Test Runtime", v: "~1.5s" },
+    ],
+    href: "",
+    repoUrl: "https://github.com/theayushagarwal/Chronosync",
+    deployment: "Docker + FastAPI",
+    coreStack: "FastAPI / Playwright / SQLite",
+    subtitle: "Visual Regression Studio • Noise Suppression • 29 Tests",
+    visual: "diff-studio",
+    visualLabel: "chronosync.diff",
+  },
+  {
+    index: "05",
     name: "Veltrix",
     tagline:
       "An Instagram growth account that writes, fact-checks, and publishes itself twice a day",
@@ -114,6 +227,10 @@ export const PROJECTS: Project[] = [
       { k: "cost/post", v: "~$0.0002" },
     ],
     href: "",
+    repoUrl: "https://github.com/theayushagarwal/vmatrix",
+    deployment: "2 posts / day (auto)",
+    coreStack: "Python / Playwright",
+    subtitle: "Autonomous Run • Python • Multi-Model Consensus",
     visual: "agent-trace",
     visualLabel: "pipeline.run",
     image: "/veltrix-preview.webp",
@@ -121,7 +238,7 @@ export const PROJECTS: Project[] = [
     secondaryLabel: "credentials board",
   },
   {
-    index: "03",
+    index: "06",
     name: "Vcentre",
     tagline: "Competitor intelligence pipeline that turns viral outliers into creative briefs",
     summary:
@@ -145,6 +262,10 @@ export const PROJECTS: Project[] = [
       { k: "cron cadence", v: "daily @ 2AM UTC" },
     ],
     href: "",
+    repoUrl: "https://github.com/theayushagarwal/vmatrix",
+    deployment: "Daily scan @ 2AM UTC",
+    coreStack: "FastAPI / SQLite",
+    subtitle: "Competitor Scan • FastAPI • Groq Fallbacks",
     visual: "graph-network",
     visualLabel: "outlier.scan",
     image: "/vcentre-preview.webp",

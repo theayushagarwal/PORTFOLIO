@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
-import { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, animate } from "motion/react";
+import { useRef, useState, useEffect, useMemo } from "react";
+import { motion, motionValue, animate } from "motion/react";
 import { Reveal } from "./Reveal";
 import { PROJECTS, type Project } from "@/lib/site-data";
 import { playTick } from "@/lib/sound";
@@ -8,6 +8,9 @@ import { CarouselProjectCard } from "./projects/CarouselProjectCard";
 
 const ACTIVE_THEMES = [
   { glow: "rgba(34, 211, 238, 0.025)", border: "rgba(34, 211, 238, 0.35)" }, // Vurlo (Cyan)
+  { glow: "rgba(245, 158, 11, 0.025)", border: "rgba(245, 158, 11, 0.35)" }, // Carrel (Amber)
+  { glow: "rgba(56, 189, 248, 0.025)", border: "rgba(56, 189, 248, 0.35)" }, // AegisFlow (Sky)
+  { glow: "rgba(244, 63, 94, 0.025)", border: "rgba(244, 63, 94, 0.35)" }, // Chronosync (Rose)
   { glow: "rgba(16, 185, 129, 0.025)", border: "rgba(16, 185, 129, 0.35)" }, // Veltrix (Emerald)
   { glow: "rgba(99, 102, 241, 0.025)", border: "rgba(99, 102, 241, 0.35)" }, // Vcentre (Indigo)
 ];
@@ -24,13 +27,18 @@ export function Projects() {
   const [activeCarouselIndex, setActiveCarouselIndex] = useState(0);
   const scrollTimeoutRef = useRef<number | null>(null);
 
-  // 3D Carousel Motion values for smooth compositor animations per card
-  const cardRotations = [useMotionValue(0), useMotionValue(-25), useMotionValue(-25)];
-  const cardRotateXs = [useMotionValue(0), useMotionValue(-8), useMotionValue(-8)];
-  const cardScales = [useMotionValue(1), useMotionValue(0.85), useMotionValue(0.85)];
-  const cardOpacities = [useMotionValue(1), useMotionValue(0.55), useMotionValue(0.55)];
-  const cardZs = [useMotionValue(0), useMotionValue(-120), useMotionValue(-120)];
-  const cardShines = [useMotionValue(0), useMotionValue(-150), useMotionValue(-150)];
+  // 3D Carousel Motion values for smooth compositor animations per card (zero scroll re-renders)
+  const { cardRotations, cardRotateXs, cardScales, cardOpacities, cardZs, cardShines } = useMemo(
+    () => ({
+      cardRotations: PROJECTS.map((_, i) => motionValue(i === 0 ? 0 : -25)),
+      cardRotateXs: PROJECTS.map((_, i) => motionValue(i === 0 ? 0 : -8)),
+      cardScales: PROJECTS.map((_, i) => motionValue(i === 0 ? 1 : 0.85)),
+      cardOpacities: PROJECTS.map((_, i) => motionValue(i === 0 ? 1 : 0.55)),
+      cardZs: PROJECTS.map((_, i) => motionValue(i === 0 ? 0 : -120)),
+      cardShines: PROJECTS.map((_, i) => motionValue(i === 0 ? 0 : -150)),
+    }),
+    [],
+  );
 
   // Caching card centers to avoid reading layouts on scroll frames
   const cardCentersRef = useRef<number[]>([]);
@@ -228,13 +236,17 @@ export function Projects() {
                     className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col"
                     style={{ transform: `translateY(-${activeCarouselIndex * 48}px)` }}
                   >
-                    <span className="h-[48px] flex items-center justify-end leading-none">01</span>
-                    <span className="h-[48px] flex items-center justify-end leading-none">02</span>
-                    <span className="h-[48px] flex items-center justify-end leading-none">03</span>
+                    {PROJECTS.map((p) => (
+                      <span key={p.index} className="h-[48px] flex items-center justify-end leading-none">
+                        {p.index}
+                      </span>
+                    ))}
                   </div>
                 </div>
                 <span className="text-muted-foreground/20 text-2xl font-light">/</span>
-                <span className="text-muted-foreground/50 text-xl font-medium">03</span>
+                <span className="text-muted-foreground/50 text-xl font-medium">
+                  {String(PROJECTS.length).padStart(2, "0")}
+                </span>
               </div>
             </div>
           </div>

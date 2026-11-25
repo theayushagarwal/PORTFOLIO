@@ -52,7 +52,7 @@ const VELTRIX_PROJECT_JSON_LD = JSON.stringify({
   description:
     "An autonomous publishing engine orchestrating 18+ APIs. Employs a multi-model adversarial consensus group (Gemini, Groq, Cerebras) to audit captions, and schedules Playwright slide renders.",
   programmingLanguage: ["Python"],
-  codeRepository: "https://github.com/theayushagarwal/PORTFOLIO",
+  codeRepository: "https://github.com/theayushagarwal/vmatrix",
   author: {
     "@type": "Person",
     "@id": "https://theayush.pages.dev/#person",

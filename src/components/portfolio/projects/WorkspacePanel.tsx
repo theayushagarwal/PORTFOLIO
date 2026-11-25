@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-import { DeviceFrame } from "../project-visuals";
+import { DeviceFrame, PROJECT_VISUALS } from "../project-visuals";
 import { PROJECT_DETAILS } from "@/lib/project-details";
 import { playTick, playSwell, playExit, resumeAudio } from "@/lib/sound";
 import { type Project } from "@/lib/site-data";
@@ -29,6 +29,10 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
   const [activeChallenge, setActiveChallenge] = useState<number | null>(0); // Default open the first challenge card
   const workspaceScrollRef = useRef<HTMLDivElement>(null);
 
+  const details = PROJECT_DETAILS[project.name];
+  const hasGallery = (details?.gallery?.length ?? 0) > 0 || Boolean(project.secondaryImage);
+  const Visual = PROJECT_VISUALS[project.visual];
+
   const TABS = [
     { id: "overview", label: "Overview" },
     { id: "why-built", label: "Why Built" },
@@ -38,10 +42,8 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
     { id: "journey", label: "Journey" },
     { id: "performance", label: "Performance" },
     { id: "decisions", label: "Decisions" },
-    { id: "gallery", label: "Gallery" },
+    ...(hasGallery ? [{ id: "gallery", label: "Gallery" }] : []),
   ];
-
-  const details = PROJECT_DETAILS[project.name];
 
   // Scrollspy & scroll progress handler
   const handleWorkspaceScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -375,20 +377,16 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
               {project.name}
             </h3>
             <p className="mt-2 text-xs text-subtle">
-              {project.name === "Vurlo"
-                ? "Built in 10 Days • React 19 • TanStack Start"
-                : project.name === "Veltrix"
-                  ? "Autonomous Run • Python • Gemini API"
-                  : "Competitor Scan • FastAPI • Groq Fallbacks"}
+              {project.subtitle || project.stack.slice(0, 3).join(" • ")}
             </p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
-            {/* Left Column: Hero screenshot */}
+            {/* Left Column: Hero screenshot or bespoke schematic */}
             <div className="md:col-span-2 space-y-6">
               <DeviceFrame
-                label={`${project.name.toLowerCase()}/hero.webp`}
-                noPadding
+                label={project.image ? `${project.name.toLowerCase()}/hero.webp` : project.visualLabel}
+                noPadding={Boolean(project.image)}
                 className="border-white/10 shadow-2xl overflow-hidden bg-black/40"
               >
                 {project.image ? (
@@ -398,8 +396,8 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
                     className="w-full object-cover object-top max-h-[360px]"
                   />
                 ) : (
-                  <div className="aspect-[16/10] bg-black/30 flex items-center justify-center font-mono text-xs text-subtle">
-                    Visual Screen Offline
+                  <div className="w-full max-w-[520px] py-2">
+                    <Visual />
                   </div>
                 )}
               </DeviceFrame>
@@ -455,11 +453,7 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
                       Deployment
                     </h5>
                     <p className="mt-0.5 text-xs text-foreground/90 font-semibold">
-                      {project.name === "Vurlo"
-                        ? "Production SaaS"
-                        : project.name === "Veltrix"
-                          ? "2 posts / day (auto)"
-                          : "Daily scan @ 2AM UTC"}
+                      {project.deployment || "Production System"}
                     </p>
                   </div>
                   <div>
@@ -467,11 +461,7 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
                       Core Stack
                     </h5>
                     <p className="mt-0.5 text-xs text-foreground/90 font-semibold truncate">
-                      {project.name === "Vurlo"
-                        ? "React 19 / Firebase"
-                        : project.name === "Veltrix"
-                          ? "Python / Playwright"
-                          : "FastAPI / SQLite"}
+                      {project.coreStack || project.stack.slice(0, 2).join(" / ")}
                     </p>
                   </div>
                 </div>
@@ -487,14 +477,14 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
                     Visit Live Site <ArrowUpRight className="h-3 w-3" />
                   </a>
                 )}
-                {project.name === "Vurlo" ? (
+                {project.repoUrl ? (
                   <a
-                    href="https://github.com/theayushagarwal/vurlo-ecommerce"
+                    href={project.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/10 py-2 font-mono text-xs text-foreground hover:bg-white/10 transition-all"
                   >
-                    View Source Code
+                    View Source Code <ArrowUpRight className="h-3 w-3" />
                   </a>
                 ) : (
                   <div className="flex items-center justify-center gap-1.5 rounded-lg bg-white/5 border border-white/5 py-2 font-mono text-xs text-subtle/50 cursor-not-allowed select-none">
@@ -822,59 +812,61 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
         </section>
 
         {/* Section 10: Gallery */}
-        <section id="ws-sec-gallery" className="scroll-mt-32 space-y-12">
-          <div className="border-b border-white/5 pb-6">
-            <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
-              06 . Screenshots
-            </span>
-            <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
-              Visual Gallery
-            </h3>
-            <p className="mt-2 text-sm text-subtle">
-              Scrollable preview tracks showcasing panel responsive structures.
-            </p>
-          </div>
-
-          <div className="relative rounded-xl border border-white/10 bg-card p-6 shadow-lg">
-            <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
-              Horizontal Screenshot Scroll
-            </span>
-            <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin select-none">
-              {details.gallery.map((item, idx) => (
-                <div key={`${item.label}-${idx}`} className="flex-none w-[85vw] sm:w-[480px]">
-                  <DeviceFrame
-                    label={item.label}
-                    noPadding
-                    className="border-white/10 overflow-hidden shadow-md"
-                  >
-                    <img
-                      src={`${item.img}?v=1.2`}
-                      alt={item.label}
-                      loading="lazy"
-                      className="w-full object-cover object-top max-h-[300px]"
-                    />
-                  </DeviceFrame>
-                </div>
-              ))}
-              {project.secondaryImage && (
-                <div className="flex-none w-[85vw] sm:w-[480px]">
-                  <DeviceFrame
-                    label={project.secondaryLabel || "Admin console"}
-                    noPadding
-                    className="border-white/10 overflow-hidden shadow-md"
-                  >
-                    <img
-                      src={`${project.secondaryImage}?v=1.3`}
-                      alt="Secondary screenshot"
-                      loading="lazy"
-                      className="w-full object-cover object-top max-h-[300px]"
-                    />
-                  </DeviceFrame>
-                </div>
-              )}
+        {hasGallery && (
+          <section id="ws-sec-gallery" className="scroll-mt-32 space-y-12">
+            <div className="border-b border-white/5 pb-6">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
+                06 . Screenshots
+              </span>
+              <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+                Visual Gallery
+              </h3>
+              <p className="mt-2 text-sm text-subtle">
+                Scrollable preview tracks showcasing panel responsive structures.
+              </p>
             </div>
-          </div>
-        </section>
+
+            <div className="relative rounded-xl border border-white/10 bg-card p-6 shadow-lg">
+              <span className="mb-6 block font-mono text-[9px] uppercase tracking-widest text-subtle">
+                Horizontal Screenshot Scroll
+              </span>
+              <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin select-none">
+                {details.gallery.map((item, idx) => (
+                  <div key={`${item.label}-${idx}`} className="flex-none w-[85vw] sm:w-[480px]">
+                    <DeviceFrame
+                      label={item.label}
+                      noPadding
+                      className="border-white/10 overflow-hidden shadow-md"
+                    >
+                      <img
+                        src={`${item.img}?v=1.2`}
+                        alt={item.label}
+                        loading="lazy"
+                        className="w-full object-cover object-top max-h-[300px]"
+                      />
+                    </DeviceFrame>
+                  </div>
+                ))}
+                {project.secondaryImage && (
+                  <div className="flex-none w-[85vw] sm:w-[480px]">
+                    <DeviceFrame
+                      label={project.secondaryLabel || "Admin console"}
+                      noPadding
+                      className="border-white/10 overflow-hidden shadow-md"
+                    >
+                      <img
+                        src={`${project.secondaryImage}?v=1.3`}
+                        alt="Secondary screenshot"
+                        loading="lazy"
+                        className="w-full object-cover object-top max-h-[300px]"
+                      />
+                    </DeviceFrame>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Section 11: End Workspace CTA */}
         <section className="border-t border-white/10 pt-16 pb-32 flex flex-col items-center text-center max-w-xl mx-auto space-y-6">
