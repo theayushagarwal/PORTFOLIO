@@ -445,25 +445,38 @@ async function main() {
     entryState.devtoId = devRes.id;
     entryState.devtoUrl = devRes.url;
     entryState.devtoStatus = live ? "live" : "draft";
+    entryState.updatedAt = new Date().toISOString();
+    state[post.slug] = entryState;
+    saveState(state);
     console.log(`[DEV.to] ${devRes.action}: ${devRes.url} (id=${devRes.id})`);
   } else {
     console.log("\n[DEV.to] Skipped (DEVTO_API_KEY not set in .env)");
   }
 
   if (env.HASHNODE_TOKEN) {
-    const hnIdentity = await fetchHashnodeIdentity(env.HASHNODE_TOKEN);
-    const pub = resolveHashnodePublication(hnIdentity, env.HASHNODE_PUB_ID);
-    console.log(`\n[Hashnode Account] @${hnIdentity.username} -> ${pub.title}${pub.url ? ` (${pub.url})` : ""}`);
-    if (!live && entryState.hashnodeDraftId && !entryState.hashnodePostId) {
-      console.log(
-        `[Hashnode] Draft already recorded (${entryState.hashnodeDraftId}) — skipping duplicate draft creation. Run --live to publish.`,
-      );
-    } else {
-      const hnRes = await syncHashnode(post, env.HASHNODE_TOKEN, pub.id, live, entryState);
-      if (hnRes.postId) entryState.hashnodePostId = hnRes.postId;
-      if (hnRes.draftId) entryState.hashnodeDraftId = hnRes.draftId;
-      entryState.hashnodeUrl = hnRes.url;
-      console.log(`[Hashnode] ${hnRes.action}: ${hnRes.url}`);
+    try {
+      const hnIdentity = await fetchHashnodeIdentity(env.HASHNODE_TOKEN);
+      const pub = resolveHashnodePublication(hnIdentity, env.HASHNODE_PUB_ID);
+      console.log(`\n[Hashnode Account] @${hnIdentity.username} -> ${pub.title}${pub.url ? ` (${pub.url})` : ""}`);
+      if (!live && entryState.hashnodeDraftId && !entryState.hashnodePostId) {
+        console.log(
+          `[Hashnode] Draft already recorded (${entryState.hashnodeDraftId}) — skipping duplicate draft creation. Run --live to publish.`,
+        );
+      } else {
+        const hnRes = await syncHashnode(post, env.HASHNODE_TOKEN, pub.id, live, entryState);
+        if (hnRes.postId) entryState.hashnodePostId = hnRes.postId;
+        if (hnRes.draftId) entryState.hashnodeDraftId = hnRes.draftId;
+        entryState.hashnodeUrl = hnRes.url;
+        console.log(`[Hashnode] ${hnRes.action}: ${hnRes.url}`);
+      }
+    } catch (err) {
+      if (err.message.includes("Pro plan") || err.message.includes("FORBIDDEN")) {
+        console.log(
+          `[Hashnode] Skipped (API write mutations require Hashnode Pro). Publish manually from posts/${post.slug}.md (<!-- SECTION: ARTICLE -->) with Canonical URL: ${post.canonicalUrl}`,
+        );
+      } else {
+        throw err;
+      }
     }
   } else {
     console.log("[Hashnode] Skipped (HASHNODE_TOKEN not set in .env)");
