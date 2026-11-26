@@ -27,7 +27,8 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
   const [activeSection, setActiveSection] = useState("overview");
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeChallenge, setActiveChallenge] = useState<number | null>(0); // Default open the first challenge card
-  const workspaceScrollRef = useRef<HTMLDivElement>(null);
+  const workspaceScrollRef = useRef<HTMLElement>(null);
+  const HeadingTag = onClose ? "h2" : "h1";
 
   const details = PROJECT_DETAILS[project.name];
   const hasGallery = (details?.gallery?.length ?? 0) > 0 || Boolean(project.secondaryImage);
@@ -46,7 +47,7 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
   ];
 
   // Scrollspy & scroll progress handler
-  const handleWorkspaceScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  const handleWorkspaceScroll = (e: React.UIEvent<HTMLElement>) => {
     const target = e.currentTarget;
     const progress = (target.scrollTop / (target.scrollHeight - target.clientHeight)) * 100;
     setScrollProgress(progress);
@@ -176,96 +177,8 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
         className="pointer-events-none absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full opacity-40"
       />
 
-      {/* Loading stage - rendered as absolute overlay when entering/exiting */}
-      {(transitionStage === "entering" || transitionStage === "exiting") && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#09090b] px-6 select-none">
-          <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-center">
-            {(transitionStage === "entering"
-              ? [
-                  { text: "Opening.", weight: "font-semibold text-foreground" },
-                  {
-                    text: "the",
-                    weight: "font-normal italic text-muted-foreground font-serif-accent",
-                  },
-                  { text: `${project.name}.`, weight: "font-semibold text-foreground" },
-                ]
-              : [
-                  { text: "Closing.", weight: "font-semibold text-foreground" },
-                  {
-                    text: "the",
-                    weight: "font-normal italic text-muted-foreground font-serif-accent",
-                  },
-                  { text: "Workspace.", weight: "font-semibold text-foreground" },
-                ]
-            ).map((w, idx) => (
-              <motion.span
-                key={`${transitionStage}-${w.text}-${idx}`}
-                initial={{ opacity: 0, y: 18, filter: "blur(12px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 18,
-                  delay: idx * 0.28,
-                }}
-                className={`font-display text-5xl tracking-tight sm:text-6xl md:text-8xl ${w.weight}`}
-              >
-                {w.text}
-              </motion.span>
-            ))}
-          </div>
-
-          {/* Shiny-text status line */}
-          <div
-            className="mt-8 min-h-[16px] select-none"
-            style={{
-              animation: "bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
-              animationDelay: "0.2s",
-            }}
-          >
-            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-subtle shiny-text">
-              &gt; {statusText}
-            </p>
-          </div>
-
-          {/* Thin, premium progress bar */}
-          <div
-            className="mt-14 flex flex-col items-center"
-            style={{
-              animation: "bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
-              animationDelay: "0.4s",
-            }}
-          >
-            <div className="h-[1.5px] w-64 rounded-full overflow-hidden bg-white/10 relative">
-              <div
-                className={`h-full bg-gradient-to-r ${details.theme.primary} ${details.theme.secondary}`}
-                style={{
-                  width: `${progressBarWidth}%`,
-                  boxShadow: `0 0 8px ${details.theme.glow}`,
-                  transition:
-                    transitionStage === "exiting"
-                      ? "width 1500ms linear"
-                      : "width 400ms cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
-              />
-            </div>
-            <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-subtle/85 flex items-center gap-1.5 select-none">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_4px_var(--color-secondary)]" />
-              </span>
-              <span>
-                {transitionStage === "entering" ? "INITIALIZING_WORKSPACE" : "CLOSING_SESSION"}
-              </span>
-              <span>·</span>
-              <span className="tabular-nums font-bold text-foreground">{progressBarWidth}%</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Active Case Study Workspace Content - Rendered always for SSR indexing */}
-      <div
+      {/* Active Case Study Workspace Content - Rendered first in DOM for SSR/Medium/crawler semantics */}
+      <article
         ref={workspaceScrollRef}
         onScroll={handleWorkspaceScroll}
         style={{
@@ -373,10 +286,11 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
             <span className="font-mono text-[9px] uppercase tracking-widest text-secondary font-bold">
               01 . Project Overview
             </span>
-            <h3 className="font-display text-4xl font-semibold text-foreground mt-2">
+            <HeadingTag className="font-display text-4xl font-semibold text-foreground mt-2">
               {project.name}
-            </h3>
-            <p className="mt-2 text-xs text-subtle">
+            </HeadingTag>
+            <p className="mt-2 text-sm text-muted-foreground max-w-2xl">{project.tagline}</p>
+            <p className="mt-1.5 text-xs text-subtle">
               {project.subtitle || project.stack.slice(0, 3).join(" • ")}
             </p>
           </div>
@@ -888,7 +802,96 @@ export function WorkspacePanel({ project, onClose }: { project: Project; onClose
             </span>
           </button>
         </section>
-      </div>
+      </article>
+
+      {/* Loading stage - rendered after <article> in DOM so crawlers/importers extract content first */}
+      {(transitionStage === "entering" || transitionStage === "exiting") && (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#09090b] px-6 select-none"
+        >
+          <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-center">
+            {(transitionStage === "entering"
+              ? [
+                  { text: "Opening.", weight: "font-semibold text-foreground" },
+                  {
+                    text: "the",
+                    weight: "font-normal italic text-muted-foreground font-serif-accent",
+                  },
+                  { text: `${project.name}.`, weight: "font-semibold text-foreground" },
+                ]
+              : [
+                  { text: "Closing.", weight: "font-semibold text-foreground" },
+                  {
+                    text: "the",
+                    weight: "font-normal italic text-muted-foreground font-serif-accent",
+                  },
+                  { text: "Workspace.", weight: "font-semibold text-foreground" },
+                ]
+            ).map((w, idx) => (
+              <motion.span
+                key={`${transitionStage}-${w.text}-${idx}`}
+                initial={{ opacity: 0, y: 18, filter: "blur(12px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 18,
+                  delay: idx * 0.28,
+                }}
+                className={`font-display text-5xl tracking-tight sm:text-6xl md:text-8xl ${w.weight}`}
+              >
+                {w.text}
+              </motion.span>
+            ))}
+          </div>
+
+          <div
+            className="mt-8 min-h-[16px] select-none"
+            style={{
+              animation: "bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+              animationDelay: "0.2s",
+            }}
+          >
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-subtle shiny-text">
+              &gt; {statusText}
+            </p>
+          </div>
+
+          <div
+            className="mt-14 flex flex-col items-center"
+            style={{
+              animation: "bootCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+              animationDelay: "0.4s",
+            }}
+          >
+            <div className="h-[1.5px] w-64 rounded-full overflow-hidden bg-white/10 relative">
+              <div
+                className={`h-full bg-gradient-to-r ${details.theme.primary} ${details.theme.secondary}`}
+                style={{
+                  width: `${progressBarWidth}%`,
+                  boxShadow: `0 0 8px ${details.theme.glow}`,
+                  transition:
+                    transitionStage === "exiting"
+                      ? "width 1500ms linear"
+                      : "width 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
+              />
+            </div>
+            <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-subtle/85 flex items-center gap-1.5 select-none">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_4px_var(--color-secondary)]" />
+              </span>
+              <span>
+                {transitionStage === "entering" ? "INITIALIZING_WORKSPACE" : "CLOSING_SESSION"}
+              </span>
+              <span>·</span>
+              <span className="tabular-nums font-bold text-foreground">{progressBarWidth}%</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

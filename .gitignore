@@ -42,6 +42,7 @@ dist-ssr
 .workspace/
 .agents/
 .gemini/
+.crosspost-state.json
 
 # Archives and build bundles
 *.zip
