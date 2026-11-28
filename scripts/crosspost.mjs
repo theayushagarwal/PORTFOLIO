@@ -195,7 +195,7 @@ async function syncHashnode(post, token, publicationId, live, existing) {
       title: post.title,
       contentMarkdown: post.articleMarkdown,
       originalArticleURL: post.canonicalUrl,
-      ...(post.coverImage ? { coverImageOptions: { coverImageURL: post.coverImage } } : {}),
+      ...(post.coverImage ? { coverImage: post.coverImage } : {}),
     };
   } else if (live) {
     query = `mutation PublishPost($input: PublishPostInput!) {
@@ -206,7 +206,7 @@ async function syncHashnode(post, token, publicationId, live, existing) {
       title: post.title,
       contentMarkdown: post.articleMarkdown,
       originalArticleURL: post.canonicalUrl,
-      ...(post.coverImage ? { coverImageOptions: { coverImageURL: post.coverImage } } : {}),
+      ...(post.coverImage ? { coverImage: post.coverImage } : {}),
     };
   } else {
     query = `mutation CreateDraft($input: CreateDraftInput!) {
@@ -217,7 +217,7 @@ async function syncHashnode(post, token, publicationId, live, existing) {
       title: post.title,
       contentMarkdown: post.articleMarkdown,
       originalArticleURL: post.canonicalUrl,
-      ...(post.coverImage ? { coverImageOptions: { coverImageURL: post.coverImage } } : {}),
+      ...(post.coverImage ? { coverImage: post.coverImage } : {}),
     };
   }
 
@@ -293,7 +293,9 @@ function listPosts() {
   const postsDir = path.resolve("posts");
   const state = loadState();
   const files = fs.existsSync(postsDir)
-    ? fs.readdirSync(postsDir).filter((f) => f.endsWith(".md") || f.endsWith(".json"))
+    ? fs
+        .readdirSync(postsDir)
+        .filter((f) => (f.endsWith(".md") || f.endsWith(".json")) && !/^(HANDOFF|README)/i.test(f))
     : [];
 
   if (files.length === 0) {

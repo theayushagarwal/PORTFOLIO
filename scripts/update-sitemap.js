@@ -71,7 +71,7 @@ const rssItems = [
     title: "AegisFlow — Cutting Cluster Deadline Misses by 87% With a 0.64 ms/step Bayesian HMM",
     link: "https://theayush.pages.dev/projects/aegisflow",
     pubDate: "Tue, 24 Nov 2026 09:00:00 GMT",
-    imageFile: "portfolio-preview.webp",
+    imageFile: "aegisflow-preview.webp",
     categories: ["Python", "Bayesian Inference", "Distributed Systems"],
     description:
       "Zero-dependency pure Python cluster scheduler inferring latent node health via an Exact 3-state Bayesian HMM (99.58% accuracy, 0.000% false condemnations), analytical triage gating (-87% deadline misses, 98.3% on-time rate), cold-restart EV barriers (0.00 churn), and 31/31 passing invariants.",
@@ -85,7 +85,7 @@ const rssItems = [
     title: "Chronosync — Autonomous FastAPI + Playwright Web Monitor & Visual Regression Diff Studio",
     link: "https://theayush.pages.dev/projects/chronosync",
     pubDate: "Mon, 23 Nov 2026 09:00:00 GMT",
-    imageFile: "portfolio-preview.webp",
+    imageFile: "chronosync-preview.webp",
     categories: ["Python", "FastAPI", "Playwright", "Visual Regression"],
     description:
       "Headless Playwright web monitoring engine with canonical URL deduplication (pages vs watches), outage/CAPTCHA classification, 4-layer dynamic noise suppression with 2-check persistence, interactive Diff Studio (swipe slider, pixel heatmap, SVG price history), and 29 automated tests.",
@@ -150,9 +150,10 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
     <atom:link href="https://theayush.pages.dev/rss.xml" rel="self" type="application/rss+xml" />
 ${rssItems
   .map((item) => {
-    const imageUrl = `https://theayush.pages.dev/${item.imageFile}`;
-    const byteLength = getPublicFileBytes(item.imageFile);
-    const htmlContent = `<p><img src="${imageUrl}" alt="${escapeXml(item.title)}" /></p><p>${escapeXml(item.description)}</p><ul>${item.highlights.map((h) => `<li>${escapeXml(h)}</li>`).join("")}</ul><p><a href="${item.link}">Read the full interactive case study on theayush.pages.dev</a></p>`;
+    const imageUrl = item.imageFile ? `https://theayush.pages.dev/${item.imageFile}` : "";
+    const byteLength = item.imageFile ? getPublicFileBytes(item.imageFile) : 0;
+    const imgPrefix = imageUrl ? `<p><img src="${imageUrl}" alt="${escapeXml(item.title)}" /></p>` : "";
+    const htmlContent = `${imgPrefix}<p>${escapeXml(item.description)}</p><ul>${item.highlights.map((h) => `<li>${escapeXml(h)}</li>`).join("")}</ul><p><a href="${item.link}">Read the full interactive case study on theayush.pages.dev</a></p>`;
 
     return `    <item>
       <title>${escapeXml(item.title)}</title>
@@ -162,8 +163,7 @@ ${rssItems
       <author>theayush.codes@gmail.com (Ayush Agarwal)</author>
       <description>${escapeXml(item.description)}</description>
       <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
-      <media:content url="${imageUrl}" medium="image" type="image/webp" />
-${byteLength > 0 ? `      <enclosure url="${imageUrl}" length="${byteLength}" type="image/webp" />\n` : ""}${item.categories.map((c) => `      <category>${escapeXml(c)}</category>`).join("\n")}
+${imageUrl ? `      <media:content url="${imageUrl}" medium="image" type="image/webp" />\n` : ""}${byteLength > 0 ? `      <enclosure url="${imageUrl}" length="${byteLength}" type="image/webp" />\n` : ""}${item.categories.map((c) => `      <category>${escapeXml(c)}</category>`).join("\n")}
     </item>`;
   })
   .join("\n")}

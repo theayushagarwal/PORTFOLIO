@@ -166,6 +166,7 @@ export const PROJECTS: Project[] = [
     subtitle: "Bayesian HMM • 99.58% State Accuracy • Zero Dependencies",
     visual: "hmm-scheduler",
     visualLabel: "aegis.hmm",
+    image: "/aegisflow-preview.webp",
   },
   {
     index: "04",
@@ -199,6 +200,7 @@ export const PROJECTS: Project[] = [
     subtitle: "Visual Regression Studio • Noise Suppression • 29 Tests",
     visual: "diff-studio",
     visualLabel: "chronosync.diff",
+    image: "/chronosync-preview.webp",
   },
   {
     index: "05",

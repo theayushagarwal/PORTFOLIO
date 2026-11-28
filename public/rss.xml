@@ -5,7 +5,7 @@
     <link>https://theayush.pages.dev/</link>
     <description>Deep-dive technical case studies on distributed systems, CRDT workspaces, Bayesian schedulers, visual regression tooling, and multi-model AI pipelines by Ayush Agarwal (VIT Vellore Class of 2030).</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Nov 2026 20:26:31 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2026 15:14:14 GMT</lastBuildDate>
     <atom:link href="https://theayush.pages.dev/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Carrel — Real-Time Collaborative Workspace With 1-Byte WebSocket Multiplexing</title>
@@ -29,9 +29,9 @@
       <pubDate>Tue, 24 Nov 2026 09:00:00 GMT</pubDate>
       <author>theayush.codes@gmail.com (Ayush Agarwal)</author>
       <description>Zero-dependency pure Python cluster scheduler inferring latent node health via an Exact 3-state Bayesian HMM (99.58% accuracy, 0.000% false condemnations), analytical triage gating (-87% deadline misses, 98.3% on-time rate), cold-restart EV barriers (0.00 churn), and 31/31 passing invariants.</description>
-      <content:encoded><![CDATA[<p><img src="https://theayush.pages.dev/portfolio-preview.webp" alt="AegisFlow — Cutting Cluster Deadline Misses by 87% With a 0.64 ms/step Bayesian HMM" /></p><p>Zero-dependency pure Python cluster scheduler inferring latent node health via an Exact 3-state Bayesian HMM (99.58% accuracy, 0.000% false condemnations), analytical triage gating (-87% deadline misses, 98.3% on-time rate), cold-restart EV barriers (0.00 churn), and 31/31 passing invariants.</p><ul><li>Exact 3-state Bayesian HMM detecting node degradation in 0.13–0.35 steps (99.58% accuracy)</li><li>87% reduction in deadline misses (98.3% on-time completion) &amp; 96% of theoretical Oracle ceiling</li><li>Cold-restart expected-value barrier guaranteeing 0.00 unnecessary migrations at 0.64 ms/step</li></ul><p><a href="https://theayush.pages.dev/projects/aegisflow">Read the full interactive case study on theayush.pages.dev</a></p>]]></content:encoded>
-      <media:content url="https://theayush.pages.dev/portfolio-preview.webp" medium="image" type="image/webp" />
-      <enclosure url="https://theayush.pages.dev/portfolio-preview.webp" length="30690" type="image/webp" />
+      <content:encoded><![CDATA[<p><img src="https://theayush.pages.dev/aegisflow-preview.webp" alt="AegisFlow — Cutting Cluster Deadline Misses by 87% With a 0.64 ms/step Bayesian HMM" /></p><p>Zero-dependency pure Python cluster scheduler inferring latent node health via an Exact 3-state Bayesian HMM (99.58% accuracy, 0.000% false condemnations), analytical triage gating (-87% deadline misses, 98.3% on-time rate), cold-restart EV barriers (0.00 churn), and 31/31 passing invariants.</p><ul><li>Exact 3-state Bayesian HMM detecting node degradation in 0.13–0.35 steps (99.58% accuracy)</li><li>87% reduction in deadline misses (98.3% on-time completion) &amp; 96% of theoretical Oracle ceiling</li><li>Cold-restart expected-value barrier guaranteeing 0.00 unnecessary migrations at 0.64 ms/step</li></ul><p><a href="https://theayush.pages.dev/projects/aegisflow">Read the full interactive case study on theayush.pages.dev</a></p>]]></content:encoded>
+      <media:content url="https://theayush.pages.dev/aegisflow-preview.webp" medium="image" type="image/webp" />
+      <enclosure url="https://theayush.pages.dev/aegisflow-preview.webp" length="52492" type="image/webp" />
       <category>Python</category>
       <category>Bayesian Inference</category>
       <category>Distributed Systems</category>
@@ -43,9 +43,9 @@
       <pubDate>Mon, 23 Nov 2026 09:00:00 GMT</pubDate>
       <author>theayush.codes@gmail.com (Ayush Agarwal)</author>
       <description>Headless Playwright web monitoring engine with canonical URL deduplication (pages vs watches), outage/CAPTCHA classification, 4-layer dynamic noise suppression with 2-check persistence, interactive Diff Studio (swipe slider, pixel heatmap, SVG price history), and 29 automated tests.</description>
-      <content:encoded><![CDATA[<p><img src="https://theayush.pages.dev/portfolio-preview.webp" alt="Chronosync — Autonomous FastAPI + Playwright Web Monitor &amp; Visual Regression Diff Studio" /></p><p>Headless Playwright web monitoring engine with canonical URL deduplication (pages vs watches), outage/CAPTCHA classification, 4-layer dynamic noise suppression with 2-check persistence, interactive Diff Studio (swipe slider, pixel heatmap, SVG price history), and 29 automated tests.</p><ul><li>URL normalization &amp; pages-vs-watches split (1 scheduled fetch for N subscribers)</li><li>Outage &amp; CAPTCHA gating before diffing + 4-layer dynamic noise suppression</li><li>Interactive Visual Diff Studio (swipe slider, pixel heatmap, unified diff) &amp; 29 tests in ~1.5s</li></ul><p><a href="https://theayush.pages.dev/projects/chronosync">Read the full interactive case study on theayush.pages.dev</a></p>]]></content:encoded>
-      <media:content url="https://theayush.pages.dev/portfolio-preview.webp" medium="image" type="image/webp" />
-      <enclosure url="https://theayush.pages.dev/portfolio-preview.webp" length="30690" type="image/webp" />
+      <content:encoded><![CDATA[<p><img src="https://theayush.pages.dev/chronosync-preview.webp" alt="Chronosync — Autonomous FastAPI + Playwright Web Monitor &amp; Visual Regression Diff Studio" /></p><p>Headless Playwright web monitoring engine with canonical URL deduplication (pages vs watches), outage/CAPTCHA classification, 4-layer dynamic noise suppression with 2-check persistence, interactive Diff Studio (swipe slider, pixel heatmap, SVG price history), and 29 automated tests.</p><ul><li>URL normalization &amp; pages-vs-watches split (1 scheduled fetch for N subscribers)</li><li>Outage &amp; CAPTCHA gating before diffing + 4-layer dynamic noise suppression</li><li>Interactive Visual Diff Studio (swipe slider, pixel heatmap, unified diff) &amp; 29 tests in ~1.5s</li></ul><p><a href="https://theayush.pages.dev/projects/chronosync">Read the full interactive case study on theayush.pages.dev</a></p>]]></content:encoded>
+      <media:content url="https://theayush.pages.dev/chronosync-preview.webp" medium="image" type="image/webp" />
+      <enclosure url="https://theayush.pages.dev/chronosync-preview.webp" length="36532" type="image/webp" />
       <category>Python</category>
       <category>FastAPI</category>
       <category>Playwright</category>

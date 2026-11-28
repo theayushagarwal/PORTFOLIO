@@ -1503,7 +1503,13 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "Extend task urgency planning with batch-aware bin packing when heterogeneous task durations arrive in synchronized bursts.",
       "Export real-time Prometheus/OpenTelemetry metrics from the decision log stream for live cluster operator visibility.",
     ],
-    gallery: [],
+    gallery: [
+      { label: "Live Overview & Trajectory", img: "/aegisflow-preview.webp" },
+      { label: "Cluster Telemetry · 3D Arena", img: "/aegisflow-hmm-timeline.webp" },
+      { label: "Ablation Lab Waterfall", img: "/aegisflow-ablation.webp" },
+      { label: "Detector Confusion Matrix", img: "/aegisflow-telemetry-audit.webp" },
+      { label: "System Invariants & Terminal", img: "/aegisflow-invariants-terminal.webp" },
+    ],
   },
   Chronosync: {
     theme: {
@@ -1715,6 +1721,12 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
       "Add visual region-masking directly on screenshots (bounding-box ignore zones) alongside DOM CSS ignore selectors for canvas/ad blocks.",
       "Support webhook signature verification and Slack Block Kit payloads alongside Discord/Telegram/Email.",
     ],
-    gallery: [],
+    gallery: [
+      { label: "Diff Studio · Interactive Slider", img: "/chronosync-preview.webp" },
+      { label: "Diff Studio · Visual Heatmap", img: "/chronosync-heatmap.webp" },
+      { label: "Price History & Unified Diff", img: "/chronosync-price-chart.webp" },
+      { label: "Target Registry & Health Status", img: "/chronosync-monitors.webp" },
+      { label: "Visual Element Selector", img: "/chronosync-picker.webp" },
+    ],
   },
 };
